@@ -1,0 +1,3 @@
+cd /nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/;
+make -j;
+cd /nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/config;

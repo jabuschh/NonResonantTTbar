@@ -28,8 +28,8 @@
 #include <UHH2/common/include/CommonModules.h>
 
 #include <UHH2/NonResonantTTbar/include/ModuleBASE.h>
-// #include <UHH2/NonResonantTTbar/include/NonResonantTTbarSelections.h>
-// #include <UHH2/NonResonantTTbar/include/NonResonantTTbarModules.h>
+#include <UHH2/NonResonantTTbar/include/NonResonantTTbarSelections.h>
+#include <UHH2/NonResonantTTbar/include/NonResonantTTbarModules.h> // not needed
 #include <UHH2/NonResonantTTbar/include/NonResonantTTbarPreselectionHists.h>
 #include <UHH2/NonResonantTTbar/include/NonResonantTTbarGeneratorHists.h>
 #include <UHH2/NonResonantTTbar/include/TopJetCorrections.h>
@@ -125,10 +125,10 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
   double MET(50.); // not used
 
 
-
-  // MET filters
-  //metfilters_sel.reset(new uhh2::AndSelection(ctx, "metfilters"));
-  //if(!isMC){
+  // // just as information:
+  // // MET filters
+  // metfilters_sel.reset(new uhh2::AndSelection(ctx, "metfilters"));
+  // if(!isMC){
   //  metfilters_sel->add<TriggerSelection>("1-good-vtx", "Flag_goodVertices");
   //  metfilters_sel->add<TriggerSelection>("globalTightHalo2016Filter", "Flag_globalTightHalo2016Filter");
   //  metfilters_sel->add<TriggerSelection>("HBHENoiseFilter", "Flag_HBHENoiseFilter");
@@ -137,20 +137,19 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
   //  if(!isMC)  metfilters_sel->add<TriggerSelection>("eeBadScFilter", "Flag_eeBadScFilter");
   //  metfilters_sel->add<TriggerSelection>("chargedHadronTrackResolutionFilter", "Flag_chargedHadronTrackResolutionFilter");
   //  metfilters_sel->add<TriggerSelection>("muonBadTrackFilter", "Flag_muonBadTrackFilter");
-  //}
-
-
-  // commented out by Henrik
-  // // GEN Flavor selection [W+jets flavor-splitting]
-  // if(ctx.get("dataset_version").find("WJets") != std::string::npos){
-  //
-  //   if     (ctx.get("dataset_version").find("_B") != std::string::npos) genflavor_sel.reset(new GenFlavorSelection("b"));
-  //   else if(ctx.get("dataset_version").find("_C") != std::string::npos) genflavor_sel.reset(new GenFlavorSelection("c"));
-  //   else if(ctx.get("dataset_version").find("_L") != std::string::npos) genflavor_sel.reset(new GenFlavorSelection("l"));
-  //
-  //   else genflavor_sel.reset(new uhh2::AndSelection(ctx));
   // }
-  // else genflavor_sel.reset(new uhh2::AndSelection(ctx));
+
+
+  // GEN Flavor selection [W+jets flavor-splitting]
+  if(ctx.get("dataset_version").find("WJets") != std::string::npos){
+
+    if     (ctx.get("dataset_version").find("_B") != std::string::npos) genflavor_sel.reset(new GenFlavorSelection("b"));
+    else if(ctx.get("dataset_version").find("_C") != std::string::npos) genflavor_sel.reset(new GenFlavorSelection("c"));
+    else if(ctx.get("dataset_version").find("_L") != std::string::npos) genflavor_sel.reset(new GenFlavorSelection("l"));
+
+    else genflavor_sel.reset(new uhh2::AndSelection(ctx));
+  }
+  else genflavor_sel.reset(new uhh2::AndSelection(ctx));
 
 
   // Cleaning: Mu, Ele, Jets
@@ -189,7 +188,7 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
   //// EVENT SELECTION
   jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(jet1_pt, 2.4))));
   jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut(jet2_pt, 2.4))));
-  // met_sel .reset(new METCut  (MET   , uhh2::infinity)); // commented out by Henrik
+  met_sel .reset(new METCut  (MET   , uhh2::infinity));
 
 
   // Book histograms
@@ -227,7 +226,7 @@ chsjetInd++;
 }
 */
 
-  //cout<<"Getting started... "<<event.event<<endl;
+  // cout<<"Getting started... "<<event.event<<endl;
   fill_histograms(event, "Input");
 
   bool commonResult = common->process(event);
@@ -239,15 +238,15 @@ chsjetInd++;
   } else {
   topjetCorr->process(event);
   }
-  //cout<<"TopJEC_JLC ... "<<event.event<<endl;
-  //cout<<"Common Modules... "<<event.event<<endl;
+  // cout<<"TopJEC_JLC ... "<<event.event<<endl;
+  // cout<<"Common Modules... "<<event.event<<endl;
 
   fill_histograms(event, "CommonModules");
 
-  //// MET filters
-  //if(!metfilters_sel->passes(event)) return false;
-  //fill_histograms(event, "Metfilters");
-  ////  cout<<"Met filters ... "<<event.event<<endl;
+  // MET filters
+  // if(!metfilters_sel->passes(event)) return false;
+  // fill_histograms(event, "Metfilters");
+  // cout<<"Met filters ... "<<event.event<<endl;
 
   // GEN ME quark-flavor selection
   if(!event.isRealData){

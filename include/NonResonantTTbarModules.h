@@ -3,22 +3,22 @@
 #include <UHH2/core/include/AnalysisModule.h>
 #include <UHH2/core/include/Event.h>
 #include <UHH2/core/include/NtupleObjects.h>
+#include <UHH2/NonResonantTTbar/include/ZprimeCandidate.h>
 #include <UHH2/core/include/LorentzVector.h>
 #include <UHH2/common/include/TTbarGen.h>
-#include <UHH2/NonResonantTTbar/include/TTbarCandidate.h>
 
 #include "TH1.h"
 
 float inv_mass(const LorentzVector&);
 
-class TTbarCandidateBuilder : uhh2::AnalysisModule{
+class ZprimeCandidateBuilder : uhh2::AnalysisModule{
 
 public:
-  explicit TTbarCandidateBuilder(uhh2::Context&, TString mode, float minDR = 1.2);
+  explicit ZprimeCandidateBuilder(uhh2::Context&, TString mode, float minDR = 1.2);
   virtual bool process(uhh2::Event&) override;
 
 private:
-  uhh2::Event::Handle< std::vector<TTbarCandidate> > h_TTbarCandidates_;
+  uhh2::Event::Handle< std::vector<ZprimeCandidate> > h_ZprimeCandidates_;
   uhh2::Event::Handle< std::vector<TopJet> > h_AK8TopTags;
   uhh2::Event::Handle< std::vector<const TopJet*> > h_AK8TopTagsPtr;
 
@@ -27,15 +27,15 @@ private:
 
 };
 
-class TTbarChi2Discriminator : uhh2::AnalysisModule{
+class ZprimeChi2Discriminator : uhh2::AnalysisModule{
 
 public:
-  explicit TTbarChi2Discriminator(uhh2::Context&);
+  explicit ZprimeChi2Discriminator(uhh2::Context&);
   virtual bool process(uhh2::Event&) override;
 
 private:
-  uhh2::Event::Handle< std::vector<TTbarCandidate> > h_TTbarCandidates_;
-  uhh2::Event::Handle<TTbarCandidate*> h_BestCandidate_;
+  uhh2::Event::Handle< std::vector<ZprimeCandidate> > h_ZprimeCandidates_;
+  uhh2::Event::Handle<ZprimeCandidate*> h_BestCandidate_;
   uhh2::Event::Handle<bool> h_is_zprime_reconstructed_;
   float mtoplep_, mtoplep_ttag_;
   float sigmatoplep_, sigmatoplep_ttag_;
@@ -44,16 +44,16 @@ private:
 
 };
 
-class TTbarCorrectMatchDiscriminator : uhh2::AnalysisModule{
+class ZprimeCorrectMatchDiscriminator : uhh2::AnalysisModule{
 
 public:
-  explicit TTbarCorrectMatchDiscriminator(uhh2::Context&);
+  explicit ZprimeCorrectMatchDiscriminator(uhh2::Context&);
   virtual bool process(uhh2::Event&) override;
 
 private:
-  uhh2::Event::Handle< std::vector<TTbarCandidate> > h_TTbarCandidates_;
+  uhh2::Event::Handle< std::vector<ZprimeCandidate> > h_ZprimeCandidates_;
   uhh2::Event::Handle<TTbarGen> h_ttbargen_;
-  uhh2::Event::Handle<TTbarCandidate*> h_BestCandidate_;
+  uhh2::Event::Handle<ZprimeCandidate*> h_BestCandidate_;
   uhh2::Event::Handle<bool> h_is_zprime_reconstructed_;
 
   bool is_mc;
@@ -149,7 +149,7 @@ public:
 
 private:
   uhh2::Event::Handle<bool> h_is_zprime_reconstructed_chi2;
-  uhh2::Event::Handle<TTbarCandidate*> h_BestTTbarCandidateChi2;
+  uhh2::Event::Handle<ZprimeCandidate*> h_BestZprimeCandidateChi2;
   uhh2::Event::Handle< float > h_eventweight;
   uhh2::Event::Handle< float > h_Mu_pt, h_Mu_eta, h_Mu_phi, h_Mu_E;
   uhh2::Event::Handle< float > h_Ele_pt, h_Ele_eta, h_Ele_phi, h_Ele_E;

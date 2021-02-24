@@ -4,12 +4,12 @@
 #include "UHH2/core/include/TopJet.h"
 #include <map>
 
-class TTbarCandidate{
+class ZprimeCandidate{
 
 public:
 
   // Getter
-  LorentzVector TTbar_v4() const{return m_TTbar_v4;}
+  LorentzVector Zprime_v4() const{return m_Zprime_v4;}
   LorentzVector top_leptonic_v4() const{return m_top_leptonic_v4;}
   LorentzVector top_hadronic_v4() const{return m_top_hadronic_v4;}
   std::vector<Particle> jets_hadronic() const{return m_jets_hadronic;}
@@ -22,13 +22,13 @@ public:
   bool is_puppi_reconstruction() const{return m_is_puppi_reconstruction;}
   float discriminator(const TString & l) const {
     auto it = m_discriminators.find(l);
-    if(it == m_discriminators.end()) throw std::runtime_error("TTbarCandidate::discriminator(): discriminator with label '" + l + "' not set");
+    if(it == m_discriminators.end()) throw std::runtime_error("ZprimeCandidate::discriminator(): discriminator with label '" + l + "' not set");
     return it->second;
   }
   bool has_discriminator(const std::string & label) const {return m_discriminators.find(label) != m_discriminators.end();}
 
   // Setters
-  void set_TTbar_v4(LorentzVector x) {m_TTbar_v4=x;}
+  void set_Zprime_v4(LorentzVector x) {m_Zprime_v4=x;}
   void set_top_leptonic_v4(LorentzVector x) {m_top_leptonic_v4=x;}
   void set_top_hadronic_v4(LorentzVector x) {m_top_hadronic_v4=x;}
   void set_jets_hadronic(std::vector<Particle> x) {m_jets_hadronic=x;}
@@ -45,7 +45,7 @@ public:
 private:
 
 
-  LorentzVector m_TTbar_v4;
+  LorentzVector m_Zprime_v4;
   LorentzVector m_top_leptonic_v4;
   LorentzVector m_top_hadronic_v4;
   std::vector<Particle> m_jets_hadronic;
