@@ -209,24 +209,24 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
 
         // Escape cases where the W radiates an intermediate photon, that splits into llbar
         if(Wd1->pdgId() == -Wd2->pdgId()){
-          cout << "Entered the escape-part" << endl;
+          // cout << "Entered the escape-part" << endl;
           // Find 2 genparts with 11,12,13,14 that follow each other in the list and don't have the same fabs
           int idx = 0;
           for(const auto & genp : *event.genparticles){
             if(found_lep) break;
             if(abs(genp.pdgId()) >= 11 && abs(genp.pdgId()) <= 14){
               bool is_charged = (abs(genp.pdgId()) == 11 || abs(genp.pdgId()) == 13);
-              cout << "Found a genpart at index " << idx << " with id " << genp.pdgId() << ", is_charged: " << is_charged << endl;
+              // cout << "Found a genpart at index " << idx << " with id " << genp.pdgId() << ", is_charged: " << is_charged << endl;
 
               // check if end of particle list is reached
               if(idx+1 == event.genparticles->size()){
-                cout << "reached end of particle list" << endl;
+                // cout << "reached end of particle list" << endl;
                 break;
               }
 
               // if the first one is charged, the second one has to have pdgId of +1 wrt. this genpart
               if(is_charged){
-                cout << "(charged) Going to check for next particle in list" << endl;
+                // cout << "(charged) Going to check for next particle in list" << endl;
                 if(abs(event.genparticles->at(idx+1).pdgId()) == abs(genp.pdgId()) + 1){
                   Wd1 = &genp;
                   Wd2 = &event.genparticles->at(idx+1);
@@ -234,7 +234,7 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
                 }
               }
               else{
-                cout << "(neutral) Going to check for next particle in list" << endl;
+                // cout << "(neutral) Going to check for next particle in list" << endl;
                 if(abs(event.genparticles->at(idx+1).pdgId()) == abs(genp.pdgId()) - 1){
                   Wd2 = &genp;
                   Wd1 = &event.genparticles->at(idx+1);
@@ -243,8 +243,8 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
               }
             }
             idx++;
-            cout << "                       idx: " << idx << endl;
-            cout << "event.genparticles->size(): " << event.genparticles->size() << endl;
+            // cout << "                       idx: " << idx << endl;
+            // cout << "event.genparticles->size(): " << event.genparticles->size() << endl;
           }
           if(!found_lep) return false;
         }
