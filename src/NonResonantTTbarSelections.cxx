@@ -93,11 +93,11 @@ bool Chi2CandidateMatchedSelection::passes(const Event & event){
 }
 
 TTbarSemiLepMatchableSelection::TTbarSemiLepMatchableSelection(){
-  Wlep = GenParticle(); Whad = GenParticle();
-  blep =  GenParticle(); bhad = GenParticle();
-  thad =  GenParticle(); tlep =  GenParticle();
-  lepton =  GenParticle(); neutrino =  GenParticle();
-  Whadd1 =  GenParticle(); Whadd2 =  GenParticle();
+  Wlep   = GenParticle(); Whad     = GenParticle();
+  blep   = GenParticle(); bhad     = GenParticle();
+  thad   = GenParticle(); tlep     = GenParticle();
+  lepton = GenParticle(); neutrino = GenParticle();
+  Whadd1 = GenParticle(); Whadd2   = GenParticle();
 }
 bool TTbarSemiLepMatchableSelection::passes(const Event & event){
   if(event.isRealData) return false;
@@ -105,6 +105,7 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
 
   //check, if one top decays had and one decays lep
   bool found_had = false, found_lep = false;
+
 
   //Loop over genparticles
   for(const auto & gp : *event.genparticles){
@@ -120,10 +121,10 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
       }
 
       if(abs(W->pdgId()) != 24) {
-        for(unsigned int j = 0; j < event.genparticles->size(); ++j) {
+        for(unsigned int j = 0; j < event.genparticles->size(); ++j){
           const GenParticle & genp = event.genparticles->at(j);
-          auto m1 = genp.mother(event.genparticles, 1);
-          auto m2 = genp.mother(event.genparticles, 2);
+          auto m1 = genp.mother(event.genparticles,1);
+          auto m2 = genp.mother(event.genparticles,2);
           bool has_top_mother = ((m1 && m1->index() == gp.index()) || (m2 && m2->index() == gp.index()));
           if(has_top_mother && (abs(genp.pdgId()) == 24)) {
             W = &genp;
@@ -131,7 +132,7 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
           }
         }
       }
-      if(abs(b->pdgId()) != 5 && abs(b->pdgId()) != 3 && abs(b->pdgId()) != 1) {
+      if(abs(b->pdgId()) != 5 && abs(b->pdgId()) != 3 && abs(b->pdgId()) != 1){
         for(unsigned int j = 0; j < event.genparticles->size(); ++j) {
           const GenParticle & genp = event.genparticles->at(j);
           auto m1 = genp.mother(event.genparticles, 1);
@@ -202,25 +203,30 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
         // if(!(matched_d1 && matched_d2)) return false;
         if(!(matched_b_ak4 && matched_d1_ak4 && matched_d2_ak4) && !(matched_b_ak8 && matched_d1_ak8 && matched_d2_ak8)) return false;
       }
-
       //leptonic
       else if((abs(Wd1->pdgId()) == 11 || abs(Wd1->pdgId()) == 13) || (abs(Wd2->pdgId()) == 11 || abs(Wd2->pdgId()) == 13)){
         if(found_lep) return false;
 
         // Escape cases where the W radiates an intermediate photon, that splits into llbar
         if(Wd1->pdgId() == -Wd2->pdgId()){
-          // cout << "Entered the escape-part" << endl;
+          cout << "Entered the escape-part" << endl;
           // Find 2 genparts with 11,12,13,14 that follow each other in the list and don't have the same fabs
           int idx = 0;
           for(const auto & genp : *event.genparticles){
             if(found_lep) break;
             if(abs(genp.pdgId()) >= 11 && abs(genp.pdgId()) <= 14){
               bool is_charged = (abs(genp.pdgId()) == 11 || abs(genp.pdgId()) == 13);
-              // cout << "Found a genpart at index " << idx << " with id " << genp.pdgId() << ", is_charged: " << is_charged << endl;
+              cout << "Found a genpart at index " << idx << " with id " << genp.pdgId() << ", is_charged: " << is_charged << endl;
+
+              // check if end of particle list is reached
+              if(idx+1 == event.genparticles->size()){
+                cout << "reached end of particle list" << endl;
+                break;
+              }
 
               // if the first one is charged, the second one has to have pdgId of +1 wrt. this genpart
               if(is_charged){
-                // cout << "(charged) Going to check for next particle in list" << endl;
+                cout << "(charged) Going to check for next particle in list" << endl;
                 if(abs(event.genparticles->at(idx+1).pdgId()) == abs(genp.pdgId()) + 1){
                   Wd1 = &genp;
                   Wd2 = &event.genparticles->at(idx+1);
@@ -228,7 +234,7 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
                 }
               }
               else{
-                // cout << "(neutral) Going to check for next particle in list" << endl;
+                cout << "(neutral) Going to check for next particle in list" << endl;
                 if(abs(event.genparticles->at(idx+1).pdgId()) == abs(genp.pdgId()) - 1){
                   Wd2 = &genp;
                   Wd1 = &event.genparticles->at(idx+1);
@@ -237,6 +243,8 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
               }
             }
             idx++;
+            cout << "                       idx: " << idx << endl;
+            cout << "event.genparticles->size(): " << event.genparticles->size() << endl;
           }
           if(!found_lep) return false;
         }
@@ -279,6 +287,7 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
 
   if(!(found_had && found_lep)) return false;
   return true;
+
 }
 
 std::pair<bool,double> TTbarSemiLepMatchableSelection::check_reco(const ReconstructionHypothesis hyp){

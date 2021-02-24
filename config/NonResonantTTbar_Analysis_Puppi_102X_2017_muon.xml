@@ -96,7 +96,7 @@
 
 <!--
 <ConfigParse NEventsBreak="100000" LastBreak="0" FileSplit="50" AutoResubmit="100"/>
-<ConfigSGE RAM="2" DISK="2" Mail="henrik.jabusch@desy.de" Notification="as" Workdir="workdir_NonResonantTTbar_Analysis_2017_muon_WJetsToLNu_HT-2500ToInf_2017v2"/>
+<ConfigSGE RAM="2" DISK="2" Mail="henrik.jabusch@desy.de" Notification="as" Workdir="workdir_NonResonantTTbar_Analysis_2017_muon"/>
 -->
 
 <JobConfiguration JobName="NonResonantTTbarAnalysisJob" OutputLevel="INFO">
@@ -170,7 +170,7 @@
       &DATA_SingleMuon_Run2017v2_F;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
-    </InputData>
+    </InputData> -->
 
     <InputData Lumi="35279949.78" NEventsMax="&NEVT;" Type="MC" Version="TTToSemiLeptonic_2017v2" Cacheable="&b_Cacheable;">
       &TTToSemiLeptonic_2017v2;
@@ -178,11 +178,11 @@
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="109490.4712" NEventsMax="&NEVT;" Type="MC" Version="TTToHadronic_2017v2" Cacheable="&b_Cacheable;">
+    <!-- <InputData Lumi="109490.4712" NEventsMax="&NEVT;" Type="MC" Version="TTToHadronic_2017v2" Cacheable="&b_Cacheable;">
       &TTToHadronic_2017v2;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
-    </InputData>
+    </InputData> -->
 
     <InputData Lumi="7427723.054" NEventsMax="&NEVT;" Type="MC" Version="TTTo2L2Nu_2017v2" Cacheable="&b_Cacheable;">
       &TTTo2L2Nu_2017v2;
@@ -190,7 +190,7 @@
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="7.277908556" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT100to200_2017v2" Cacheable="&b_Cacheable;">
+    <!-- <InputData Lumi="7.277908556" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT100to200_2017v2" Cacheable="&b_Cacheable;">
       &QCD_HT100to200_2017v2;
       <InputTree Name="AnalysisTree"/>
       <OutputTree Name="AnalysisTree"/>
@@ -279,7 +279,7 @@
       &WJetsToLNu_HT-1200To2500_2017v2;
       <InputTree Name="AnalysisTree"/>
       <OutputTree Name="AnalysisTree"/>
-    </InputData> -->
+    </InputData>
 
     <InputData Lumi="2558175728" NEventsMax="&NEVT;" Type="MC" Version="WJetsToLNu_HT-2500ToInf_2017v2" Cacheable="&b_Cacheable;">
       &WJetsToLNu_HT-2500ToInf_2017v2;
@@ -289,7 +289,7 @@
 
 
 
-    <!-- <InputData Lumi="61665.7621" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_M-50_HT-100to200_2017v2" Cacheable="&b_Cacheable;">
+    <InputData Lumi="61665.7621" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_M-50_HT-100to200_2017v2" Cacheable="&b_Cacheable;">
       &DYJetsToLL_M-50_HT-100to200_2017v2;
       <InputTree Name="AnalysisTree"/>
       <OutputTree Name="AnalysisTree"/>
