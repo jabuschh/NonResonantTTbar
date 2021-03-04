@@ -522,7 +522,7 @@
       <Item Name="METName"                 Value="slimmedMETsPuppi"/>
       <Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
 
-      <Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.root"/>
+      <Item Name="lumi_file"              Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.root"/>
       <Item Name="lumihists_lumi_per_bin" Value="500.0"/>
 
       <Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/MyMCPileupHistogram.root" />
@@ -532,7 +532,9 @@
 
       <Item Name="BTagCalibration" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/DeepFlavour_94XSF_V4_B_F.csv" />
 
-      <Item Name="is_puppi" Value="&IS_PUPPI;"/>
+      <!-- <Item Name="NLOCorrections" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/" /> -->
+
+      <Item Name="is_puppi"            Value="&IS_PUPPI;"/>
       <Item Name="is_looser_selection" Value="&IS_LOOSER_SELECTION;"/>
 
 
@@ -543,6 +545,8 @@
       <Item Name="ScaleVariationMuF"  Value="nominal"/>
       <Item Name="Sys_MuonID"         Value="nominal"/>
       <Item Name="Sys_MuonTrigger"    Value="nominal"/>
+      <Item Name="Sys_EleID"          Value="nominal"/>
+      <Item Name="Sys_EleTrigger"     Value="nominal"/>
       <Item Name="Sys_PU"             Value="central"/>
       <Item Name="Sys_BTagSF"         Value="nominal"/>
       <Item Name="channel"            Value="&CHANNEL;"/>

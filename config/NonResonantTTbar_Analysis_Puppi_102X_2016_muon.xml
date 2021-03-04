@@ -527,7 +527,7 @@
       <Item Name="METName"                 Value="slimmedMETsPuppi"/>
       <Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
 
-      <Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.root"/>
+      <Item Name="lumi_file"              Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.root"/>
       <Item Name="lumihists_lumi_per_bin" Value="500.0"/>
 
       <Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MyMCPileupHistogram.root" />
@@ -535,9 +535,11 @@
       <Item Name="pileup_directory_data_up"   Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MyDataPileupHistogram_72383.root" />
       <Item Name="pileup_directory_data_down" Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MyDataPileupHistogram_66017.root" />
 
-      <!-- <Item Name="BTagCalibration" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/DeepJet_102XSF_V2.csv" /> -->
+      <Item Name="BTagCalibration" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/DeepJet_2016LegacySF_WP_V1.csv" />
 
-      <Item Name="is_puppi" Value="&IS_PUPPI;"/>
+      <!-- <Item Name="NLOCorrections" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/" /> -->
+
+      <Item Name="is_puppi"            Value="&IS_PUPPI;"/>
       <Item Name="is_looser_selection" Value="&IS_LOOSER_SELECTION;"/>
 
 
@@ -548,8 +550,10 @@
       <Item Name="ScaleVariationMuF"  Value="nominal"/>
       <Item Name="Sys_MuonID"         Value="nominal"/>
       <Item Name="Sys_MuonTrigger"    Value="nominal"/>
+      <Item Name="Sys_EleID"          Value="nominal"/>
+      <Item Name="Sys_EleTrigger"     Value="nominal"/>
       <Item Name="Sys_PU"             Value="central"/>
-      <!-- <Item Name="Sys_BTagSF"         Value="nominal"/> -->
+      <Item Name="Sys_BTagSF"         Value="nominal"/>
       <Item Name="channel"            Value="&CHANNEL;"/>
 
 

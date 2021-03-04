@@ -69,7 +69,7 @@ protected:
 
   // Scale Factors -- Systematics
   unique_ptr<MCMuonScaleFactor> MuonID_module, MuonTrigger_module;
-  //unique_ptr<MCElecScaleFactor> EleID_module, EleTrigger_module;
+  unique_ptr<MCElecScaleFactor> EleID_module, EleTrigger_module;
 
   // AnalysisModules
   unique_ptr<AnalysisModule> LumiWeight_module, PUWeight_module, printer_genparticles, BTagWeight_module, TopPtReweight_module, MCScale_module;
@@ -108,7 +108,7 @@ protected:
 
   // Configuration
   bool isMC, ispuppi, islooserselection;
-  string Sys_MuonID, Sys_MuonTrigger, Sys_PU, Sys_btag; //Sys_EleID, Sys_EleTrigger
+  string Sys_MuonID, Sys_MuonTrigger, Sys_PU, Sys_btag, Sys_EleID, Sys_EleTrigger;
   TString sample;
   int runnr_oldtriggers = 299368;
 
@@ -210,12 +210,12 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
 
 
 
-  Sys_MuonID = ctx.get("Sys_MuonID");
+  Sys_MuonID      = ctx.get("Sys_MuonID");
   Sys_MuonTrigger = ctx.get("Sys_MuonTrigger");
-  //  Sys_EleID = ctx.get("Sys_EleID");
-  //  Sys_EleTrigger = ctx.get("Sys_EleTrigger");
-  Sys_PU = ctx.get("Sys_PU");
-  // Sys_btag = ctx.get("Sys_BTagSF"); // commented out by Henrik 22.02.21 (not available for 2016, only needed for check for Titas)
+  Sys_EleID       = ctx.get("Sys_EleID");
+  Sys_EleTrigger  = ctx.get("Sys_EleTrigger");
+  Sys_PU          = ctx.get("Sys_PU");
+  Sys_btag        = ctx.get("Sys_BTagSF");
 
   BTag::algo btag_algo = BTag::DEEPJET;
   BTag::wp btag_wp_tight = BTag::WP_TIGHT;
@@ -233,6 +233,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   //BTagWeight_module.reset(new MCBTagDiscriminantReweighting(ctx, btag_algo, "jets", Sys_btag));
   TopPtReweight_module.reset(new TopPtReweight(ctx, a_toppt, b_toppt));
   MCScale_module.reset(new MCScaleVariation(ctx));
+  // NLO corrections will come here
 
 
   if((is2016v3 || is2016v2) && isMuon){
@@ -246,8 +247,20 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   if(is2018 && isMuon){
     MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Muon_ID_SF_RunABCD.root", "NUM_HighPtID_DEN_TrackerMuons_pair_newTuneP_probe_pt_abseta", 0., "HighPtID", true, Sys_MuonID));
     MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Muon_Trigger_Eff_SF_AfterMuonHLTUpdate.root", "Mu50_OR_OldMu100_OR_TkMu100_PtEtaBins/pt_abseta_ratio", 0.5, "Trigger", true, Sys_MuonTrigger));
-    //    EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/2018_ElectronTight.root", 0., "TightID", Sys_EleID));
-    //    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/SF_2018.root", 0.5, "Trigger", Sys_EleTrigger));
+  }
+
+  // Electron
+  if((is2016v3 || is2016v2) && isElectron){
+    EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/egammaEffi.txt_EGM2D_CutBased_Tight_ID.root", 1.0, "TightID", Sys_EleID));
+    //EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/", 0.5, "Trigger", Sys_EleTrigger));
+  }
+  if(is2017v2 && isElectron){
+    EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/2017_ElectronTight.root", 1.0, "TightID", Sys_EleID));
+    //EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/", 0.5, "Trigger", Sys_EleTrigger));
+  }
+  if(is2018 && isElectron){
+    EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/2018_ElectronTight.root", 1.0, "TightID", Sys_EleID));
+    //EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/", 0.5, "Trigger", Sys_EleTrigger));
   }
 
   // Selection modules
@@ -304,7 +317,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   TopJetBtagSubjet_selection.reset(new ZprimeBTagFatSubJetSelection(ctx));
 
   // Book histograms
-  vector<string> histogram_tags = {"Weights", "Weights_MuonID", "Weights_PU", "Weights_Lumi", "Weights_TopPt", "Weights_MCScale", "Muon1", "TriggerMuon", "Muon2", "Electron1", "TriggerEle", "TwoDCut", "Jet1", "Jet2", "MET", "HTlep", "NNInputsBeforeReweight", "MatchableBeforeChi2Cut", "NotMatchableBeforeChi2Cut", "CorrectMatchBeforeChi2Cut", "NotCorrectMatchBeforeChi2Cut", "Chi2", "Matchable", "NotMatchable", "CorrectMatch", "NotCorrectMatch", "TopTagReconstruction", "NotTopTagReconstruction", "Btags2", "Btags1","TopJetBtagSubjet"};
+  vector<string> histogram_tags = {"Weights", "Weights_MuonID", "Weights_EleID", "Weights_PU", "Weights_Lumi", "Weights_TopPt", "Weights_MCScale", "Muon1", "TriggerMuon", "Muon2", "Electron1", "TriggerEle", "TwoDCut", "Jet1", "Jet2", "MET", "HTlep", "NNInputsBeforeReweight", "MatchableBeforeChi2Cut", "NotMatchableBeforeChi2Cut", "CorrectMatchBeforeChi2Cut", "NotCorrectMatchBeforeChi2Cut", "Chi2", "Matchable", "NotMatchable", "CorrectMatch", "NotCorrectMatch", "TopTagReconstruction", "NotTopTagReconstruction", "Btags2", "Btags1","TopJetBtagSubjet"};
   book_histograms(ctx, histogram_tags);
 }
 
@@ -360,10 +373,11 @@ bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
     if(debug)  cout<<"MuonID ok"<<endl;
   }
   fill_histograms(event, "Weights_MuonID");
-  // if(isElectron){
-  //   EleID_module->process(event);
-  //   if(debug)  cout<<"EleID ok"<<endl;
-  // }
+  if(isElectron){
+    EleID_module->process(event);
+    if(debug)  cout<<"EleID ok"<<endl;
+  }
+  fill_histograms(event, "Weights_EleID");
   PUWeight_module->process(event);
   if(debug)  cout<<"PUWeight ok"<<endl;
   fill_histograms(event, "Weights_PU");

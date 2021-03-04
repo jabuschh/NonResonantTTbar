@@ -219,7 +219,7 @@ bool TTbarSemiLepMatchableSelection::passes(const Event & event){
               // cout << "Found a genpart at index " << idx << " with id " << genp.pdgId() << ", is_charged: " << is_charged << endl;
 
               // check if end of particle list is reached
-              if(idx+1 == event.genparticles->size()){
+              if((unsigned) idx+1 == event.genparticles->size()){
                 // cout << "reached end of particle list" << endl;
                 break;
               }

@@ -105,7 +105,7 @@
 
   <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTPUTdir;/" PostFix="" TargetLumi="&TargetLumi;">
 
-    <!-- <InputData Lumi="3386024.049" NEventsMax="&NEVT;" Type="MC" Version="ST_t-channel_antitop_2017v2" Cacheable="&b_Cacheable;">
+    <InputData Lumi="3386024.049" NEventsMax="&NEVT;" Type="MC" Version="ST_t-channel_antitop_2017v2" Cacheable="&b_Cacheable;">
       &ST_t-channel_antitop_2017v2;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
@@ -170,7 +170,7 @@
       &DATA_SingleMuon_Run2017v2_F;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
-    </InputData> -->
+    </InputData>
 
     <InputData Lumi="35279949.78" NEventsMax="&NEVT;" Type="MC" Version="TTToSemiLeptonic_2017v2" Cacheable="&b_Cacheable;">
       &TTToSemiLeptonic_2017v2;
@@ -178,11 +178,11 @@
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <!-- <InputData Lumi="109490.4712" NEventsMax="&NEVT;" Type="MC" Version="TTToHadronic_2017v2" Cacheable="&b_Cacheable;">
+    <InputData Lumi="109490.4712" NEventsMax="&NEVT;" Type="MC" Version="TTToHadronic_2017v2" Cacheable="&b_Cacheable;">
       &TTToHadronic_2017v2;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
-    </InputData> -->
+    </InputData>
 
     <InputData Lumi="7427723.054" NEventsMax="&NEVT;" Type="MC" Version="TTTo2L2Nu_2017v2" Cacheable="&b_Cacheable;">
       &TTTo2L2Nu_2017v2;
@@ -190,7 +190,7 @@
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <!-- <InputData Lumi="7.277908556" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT100to200_2017v2" Cacheable="&b_Cacheable;">
+    <InputData Lumi="7.277908556" NEventsMax="&NEVT;" Type="MC" Version="QCD_HT100to200_2017v2" Cacheable="&b_Cacheable;">
       &QCD_HT100to200_2017v2;
       <InputTree Name="AnalysisTree"/>
       <OutputTree Name="AnalysisTree"/>
@@ -329,7 +329,7 @@
       &DYJetsToLL_M-50_HT-2500toInf_2017v2;
       <InputTree Name="AnalysisTree"/>
       <OutputTree Name="AnalysisTree"/>
-    </InputData> -->
+    </InputData>
 
 
     <!-- <InputData Lumi="16947" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M500_W50_2017v2" Cacheable="&b_Cacheable;">
@@ -522,7 +522,7 @@
       <Item Name="METName"                 Value="slimmedMETsPuppi"/>
       <Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
 
-      <Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.root"/>
+      <Item Name="lumi_file"              Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.root"/>
       <Item Name="lumihists_lumi_per_bin" Value="500.0"/>
 
       <Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/MyMCPileupHistogram.root" />
@@ -532,7 +532,9 @@
 
       <Item Name="BTagCalibration" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/DeepFlavour_94XSF_V4_B_F.csv" />
 
-      <Item Name="is_puppi" Value="&IS_PUPPI;"/>
+      <!-- <Item Name="NLOCorrections" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/" /> -->
+
+      <Item Name="is_puppi"            Value="&IS_PUPPI;"/>
       <Item Name="is_looser_selection" Value="&IS_LOOSER_SELECTION;"/>
 
 
@@ -543,6 +545,8 @@
       <Item Name="ScaleVariationMuF"  Value="nominal"/>
       <Item Name="Sys_MuonID"         Value="nominal"/>
       <Item Name="Sys_MuonTrigger"    Value="nominal"/>
+      <Item Name="Sys_EleID"          Value="nominal"/>
+      <Item Name="Sys_EleTrigger"     Value="nominal"/>
       <Item Name="Sys_PU"             Value="central"/>
       <Item Name="Sys_BTagSF"         Value="nominal"/>
       <Item Name="channel"            Value="&CHANNEL;"/>
