@@ -6,8 +6,10 @@
 #include <UHH2/NonResonantTTbar/include/ZprimeCandidate.h>
 #include <UHH2/core/include/LorentzVector.h>
 #include <UHH2/common/include/TTbarGen.h>
+#include <UHH2/NonResonantTTbar/include/constants.hpp>
 
 #include "TH1.h"
+#include "TFile.h"
 
 float inv_mass(const LorentzVector&);
 
@@ -170,3 +172,28 @@ private:
 };
 
 ////
+
+// Generic Class for Applying SFs - from Andrea
+class ScaleFactorsFromHistos : public uhh2::AnalysisModule {
+
+public:
+  void LoadHisto(TFile* file, std::string name, std::string hname);
+  double Evaluator(std::string hname, double var);
+
+protected:
+  std::unordered_map<std::string, std::unique_ptr<TH1F> > histos;
+
+};
+
+// Apply Corrections V+jets
+class NLOCorrections : public ScaleFactorsFromHistos {
+
+public:
+  explicit NLOCorrections(uhh2::Context& ctx);
+  virtual bool process(uhh2::Event&) override;
+  double GetPartonObjectPt(uhh2::Event& event, ParticleID objID);
+
+private:
+  bool is_Wjets, is_Zjets, is_DY, is_Znn, is2016;
+
+};

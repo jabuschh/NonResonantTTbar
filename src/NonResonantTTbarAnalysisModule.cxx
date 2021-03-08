@@ -33,7 +33,7 @@
 #include <UHH2/NonResonantTTbar/include/NonResonantTTbarModules.h>
 #include <UHH2/NonResonantTTbar/include/TTbarLJHists.h>
 #include <UHH2/NonResonantTTbar/include/NonResonantTTbarHists.h>
-// #include <UHH2/NonResonantTTbar/include/NonResonantTTbarGeneratorHists.h>
+#include <UHH2/NonResonantTTbar/include/NonResonantTTbarGeneratorHists.h>
 #include <UHH2/NonResonantTTbar/include/ZprimeCandidate.h>
 
 // #include <UHH2/common/include/TTbarGen.h>
@@ -72,7 +72,7 @@ protected:
   unique_ptr<MCElecScaleFactor> EleID_module, EleTrigger_module;
 
   // AnalysisModules
-  unique_ptr<AnalysisModule> LumiWeight_module, PUWeight_module, printer_genparticles, BTagWeight_module, TopPtReweight_module, MCScale_module;
+  unique_ptr<AnalysisModule> LumiWeight_module, PUWeight_module, printer_genparticles, BTagWeight_module, TopPtReweight_module, MCScale_module, Corrections_module;
 
   // Taggers
   unique_ptr<AK8PuppiTopTagger> TopTaggerPuppi;
@@ -233,7 +233,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   //BTagWeight_module.reset(new MCBTagDiscriminantReweighting(ctx, btag_algo, "jets", Sys_btag));
   TopPtReweight_module.reset(new TopPtReweight(ctx, a_toppt, b_toppt));
   MCScale_module.reset(new MCScaleVariation(ctx));
-  // NLO corrections will come here
+  Corrections_module.reset(new NLOCorrections(ctx)); // NLO corrections
 
 
   if((is2016v3 || is2016v2) && isMuon){
@@ -317,7 +317,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   TopJetBtagSubjet_selection.reset(new ZprimeBTagFatSubJetSelection(ctx));
 
   // Book histograms
-  vector<string> histogram_tags = {"Weights", "Weights_MuonID", "Weights_EleID", "Weights_PU", "Weights_Lumi", "Weights_TopPt", "Weights_MCScale", "Muon1", "TriggerMuon", "Muon2", "Electron1", "TriggerEle", "TwoDCut", "Jet1", "Jet2", "MET", "HTlep", "NNInputsBeforeReweight", "MatchableBeforeChi2Cut", "NotMatchableBeforeChi2Cut", "CorrectMatchBeforeChi2Cut", "NotCorrectMatchBeforeChi2Cut", "Chi2", "Matchable", "NotMatchable", "CorrectMatch", "NotCorrectMatch", "TopTagReconstruction", "NotTopTagReconstruction", "Btags2", "Btags1","TopJetBtagSubjet"};
+  vector<string> histogram_tags = {"Weights", "Weights_MuonID", "Weights_EleID", "Weights_PU", "Weights_Lumi", "Weights_TopPt", "Weights_MCScale", "NLOCorrections","Muon1", "TriggerMuon", "Muon2", "Electron1", "TriggerEle", "TwoDCut", "Jet1", "Jet2", "MET", "HTlep", "NNInputsBeforeReweight", "MatchableBeforeChi2Cut", "NotMatchableBeforeChi2Cut", "CorrectMatchBeforeChi2Cut", "NotCorrectMatchBeforeChi2Cut", "Chi2", "Matchable", "NotMatchable", "CorrectMatch", "NotCorrectMatch", "TopTagReconstruction", "NotTopTagReconstruction", "Btags2", "Btags1","TopJetBtagSubjet"};
   book_histograms(ctx, histogram_tags);
 }
 
@@ -392,7 +392,13 @@ bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
   MCScale_module->process(event);
   fill_histograms(event, "Weights_MCScale");
 
+  // Higher order corrections - EWK & QCD NLO
+  Corrections_module->process(event);
+  fill_histograms(event, "NLOCorrections");
+
   //BTagWeight_module->process(event);
+
+
 
   if(!(Trigger1_selection->passes(event)|| Trigger2_selection->passes(event))) return false;
   if(isMuon){

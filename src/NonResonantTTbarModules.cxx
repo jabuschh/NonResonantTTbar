@@ -5,6 +5,7 @@
 #include <UHH2/core/include/Utils.h>
 #include <UHH2/common/include/Utils.h>
 #include <UHH2/NonResonantTTbar/include/ZprimeCandidate.h>
+#include <UHH2/NonResonantTTbar/include/constants.hpp>
 
 #include "Riostream.h"
 #include "TFile.h"
@@ -246,8 +247,8 @@ bool ZprimeCandidateBuilder::process(uhh2::Event& event){
               if(deltaR(event.jets->at(k), chsjet_matched) > minDR_) separated_jets.emplace_back(event.jets->at(k));
             }
             unsigned int njets = separated_jets.size();
-	    if(njets < 1)  continue; //only consider AK8 jets not overlaping with AK4
-	    //            if(njets < 1) throw runtime_error("In TopTagReco (CHS): This toptag does not have >= 1 well-separated AK4 jet. This should have been caught by earlier messages. There is a logic error.");
+            if(njets < 1)  continue; //only consider AK8 jets not overlaping with AK4
+            //            if(njets < 1) throw runtime_error("In TopTagReco (CHS): This toptag does not have >= 1 well-separated AK4 jet. This should have been caught by earlier messages. There is a logic error.");
             if(njets > 10) njets = 10;
 
             unsigned int jetiters = pow(2, njets);
@@ -906,23 +907,23 @@ Variables_NN::Variables_NN(uhh2::Context& ctx){
 
   h_eventweight = ctx.declare_event_output<float> ("eventweight");
 
-///  MUONS
+  ///  MUONS
   h_Mu_pt = ctx.declare_event_output<float> ("Mu_pt");
   h_Mu_eta = ctx.declare_event_output<float> ("Mu_eta");
   h_Mu_phi = ctx.declare_event_output<float> ("Mu_phi");
   h_Mu_E = ctx.declare_event_output<float> ("Mu_E");
 
-///  ELECTRONS
+  ///  ELECTRONS
   h_Ele_pt = ctx.declare_event_output<float> ("Ele_pt");
   h_Ele_eta = ctx.declare_event_output<float> ("Ele_eta");
   h_Ele_phi = ctx.declare_event_output<float> ("Ele_phi");
   h_Ele_E = ctx.declare_event_output<float> ("Ele_E");
 
-///  MET
+  ///  MET
   h_MET_pt = ctx.declare_event_output<float> ("MET_pt");
   h_MET_phi = ctx.declare_event_output<float> ("MET_phi");
 
-///  AK4 JETS
+  ///  AK4 JETS
   h_N_Ak4 = ctx.declare_event_output<float> ("N_Ak4");
 
   h_Ak4_j1_pt = ctx.declare_event_output<float> ("Ak4_j1_pt");
@@ -967,7 +968,7 @@ Variables_NN::Variables_NN(uhh2::Context& ctx){
   h_Ak4_j6_m = ctx.declare_event_output<float>  ("Ak4_j6_m");
   h_Ak4_j6_deepjetbscore = ctx.declare_event_output<float>  ("Ak4_j6_deepjetbscore");
 
-///  AK8 JETS
+  ///  AK8 JETS
   h_N_Ak8 = ctx.declare_event_output<float> ("N_Ak8");
 
   h_Ak8_j1_pt = ctx.declare_event_output<float> ("Ak8_j1_pt");
@@ -995,7 +996,7 @@ Variables_NN::Variables_NN(uhh2::Context& ctx){
   h_Ak8_j3_tau32 = ctx.declare_event_output<float>("Ak8_j3_tau32");
 
 
-///  M ttbar
+  ///  M ttbar
   h_M_tt = ctx.declare_event_output<float> ("M_tt");
 
 }
@@ -1006,7 +1007,7 @@ bool Variables_NN::process(uhh2::Event& evt){
   evt.set(h_eventweight, -10);
   evt.set(h_eventweight, weight);
 
-/////////   MUONS
+  /////////   MUONS
   evt.set(h_Mu_pt, -10);
   evt.set(h_Mu_eta,-10);
   evt.set(h_Mu_phi, -10);
@@ -1016,14 +1017,14 @@ bool Variables_NN::process(uhh2::Event& evt){
   int Nmuons = muons->size();
 
   for(int i=0; i<Nmuons; i++){
-      evt.set(h_Mu_pt, muons->at(i).pt());
-      evt.set(h_Mu_eta, muons->at(i).eta());
-      evt.set(h_Mu_phi, muons->at(i).phi());
-      evt.set(h_Mu_E, muons->at(i).energy());
+    evt.set(h_Mu_pt, muons->at(i).pt());
+    evt.set(h_Mu_eta, muons->at(i).eta());
+    evt.set(h_Mu_phi, muons->at(i).phi());
+    evt.set(h_Mu_E, muons->at(i).energy());
   }
 
 
-/////////   ELECTRONS
+  /////////   ELECTRONS
   evt.set(h_Ele_pt, -10);
   evt.set(h_Ele_eta, -10);
   evt.set(h_Ele_phi, -10);
@@ -1033,13 +1034,13 @@ bool Variables_NN::process(uhh2::Event& evt){
   int Nelectrons = electrons->size();
 
   for(int i=0; i<Nelectrons; i++){
-      evt.set(h_Ele_pt, electrons->at(i).pt());
-      evt.set(h_Ele_eta, electrons->at(i).eta());
-      evt.set(h_Ele_phi, electrons->at(i).phi());
-      evt.set(h_Ele_E, electrons->at(i).energy());
+    evt.set(h_Ele_pt, electrons->at(i).pt());
+    evt.set(h_Ele_eta, electrons->at(i).eta());
+    evt.set(h_Ele_phi, electrons->at(i).phi());
+    evt.set(h_Ele_E, electrons->at(i).energy());
   }
 
-/////////   MET
+  /////////   MET
   evt.set(h_MET_pt, -10);
   evt.set(h_MET_phi, -10);
 
@@ -1047,7 +1048,7 @@ bool Variables_NN::process(uhh2::Event& evt){
   evt.set(h_MET_phi, evt.met->phi());
 
 
-///////// AK4 JETS
+  ///////// AK4 JETS
   evt.set(h_N_Ak4, -10);
 
   evt.set(h_Ak4_j1_pt, -10);
@@ -1098,59 +1099,59 @@ bool Variables_NN::process(uhh2::Event& evt){
   evt.set(h_N_Ak4, NAk4jets);
 
   for(int i=0; i<NAk4jets; i++){
-      if(i==0){
+    if(i==0){
       evt.set(h_Ak4_j1_pt, Ak4jets->at(i).pt());
       evt.set(h_Ak4_j1_eta, Ak4jets->at(i).eta());
       evt.set(h_Ak4_j1_phi, Ak4jets->at(i).phi());
       evt.set(h_Ak4_j1_E, Ak4jets->at(i).energy());
       evt.set(h_Ak4_j1_m, Ak4jets->at(i).v4().M());
       evt.set(h_Ak4_j1_deepjetbscore, Ak4jets->at(i).btag_DeepJet());
-      }
-      if(i==1){
+    }
+    if(i==1){
       evt.set(h_Ak4_j2_pt, Ak4jets->at(i).pt());
       evt.set(h_Ak4_j2_eta, Ak4jets->at(i).eta());
       evt.set(h_Ak4_j2_phi, Ak4jets->at(i).phi());
       evt.set(h_Ak4_j2_E, Ak4jets->at(i).energy());
       evt.set(h_Ak4_j2_m, Ak4jets->at(i).v4().M());
       evt.set(h_Ak4_j2_deepjetbscore, Ak4jets->at(i).btag_DeepJet());
-      }
-      if(i==2){
+    }
+    if(i==2){
       evt.set(h_Ak4_j3_pt, Ak4jets->at(i).pt());
       evt.set(h_Ak4_j3_eta, Ak4jets->at(i).eta());
       evt.set(h_Ak4_j3_phi, Ak4jets->at(i).phi());
       evt.set(h_Ak4_j3_E, Ak4jets->at(i).energy());
       evt.set(h_Ak4_j3_m, Ak4jets->at(i).v4().M());
       evt.set(h_Ak4_j3_deepjetbscore, Ak4jets->at(i).btag_DeepJet());
-      }
-      if(i==3){
+    }
+    if(i==3){
       evt.set(h_Ak4_j4_pt, Ak4jets->at(i).pt());
       evt.set(h_Ak4_j4_eta, Ak4jets->at(i).eta());
       evt.set(h_Ak4_j4_phi, Ak4jets->at(i).phi());
       evt.set(h_Ak4_j4_E, Ak4jets->at(i).energy());
       evt.set(h_Ak4_j4_m, Ak4jets->at(i).v4().M());
       evt.set(h_Ak4_j4_deepjetbscore, Ak4jets->at(i).btag_DeepJet());
-      }
-      if(i==4){
+    }
+    if(i==4){
       evt.set(h_Ak4_j5_pt, Ak4jets->at(i).pt());
       evt.set(h_Ak4_j5_eta, Ak4jets->at(i).eta());
       evt.set(h_Ak4_j5_phi, Ak4jets->at(i).phi());
       evt.set(h_Ak4_j5_E, Ak4jets->at(i).energy());
       evt.set(h_Ak4_j5_m, Ak4jets->at(i).v4().M());
       evt.set(h_Ak4_j5_deepjetbscore, Ak4jets->at(i).btag_DeepJet());
-      }
-      if(i==5){
+    }
+    if(i==5){
       evt.set(h_Ak4_j6_pt, Ak4jets->at(i).pt());
       evt.set(h_Ak4_j6_eta, Ak4jets->at(i).eta());
       evt.set(h_Ak4_j6_phi, Ak4jets->at(i).phi());
       evt.set(h_Ak4_j6_E, Ak4jets->at(i).energy());
       evt.set(h_Ak4_j6_m, Ak4jets->at(i).v4().M());
       evt.set(h_Ak4_j6_deepjetbscore, Ak4jets->at(i).btag_DeepJet());
-      }
+    }
   }
 
 
 
-/////////   AK8 JETS
+  /////////   AK8 JETS
   evt.set(h_N_Ak8, -10);
 
   evt.set(h_Ak8_j1_pt, -10);
@@ -1186,7 +1187,7 @@ bool Variables_NN::process(uhh2::Event& evt){
   evt.set(h_N_Ak8, NAk8jets);
 
   for(int i=0; i<NAk8jets; i++){
-      if(i==0){
+    if(i==0){
       evt.set(h_Ak8_j1_pt, Ak8jets->at(i).pt());
       evt.set(h_Ak8_j1_eta, Ak8jets->at(i).eta());
       evt.set(h_Ak8_j1_phi, Ak8jets->at(i).phi());
@@ -1194,8 +1195,8 @@ bool Variables_NN::process(uhh2::Event& evt){
       evt.set(h_Ak8_j1_mSD, Ak8jets->at(i).softdropmass());
       evt.set(h_Ak8_j1_tau21, Ak8jets->at(i).tau2()/Ak8jets->at(i).tau1());
       evt.set(h_Ak8_j1_tau32, Ak8jets->at(i).tau3()/Ak8jets->at(i).tau2());
-      }
-      if(i==1){
+    }
+    if(i==1){
       evt.set(h_Ak8_j2_pt, Ak8jets->at(i).pt());
       evt.set(h_Ak8_j2_eta, Ak8jets->at(i).eta());
       evt.set(h_Ak8_j2_phi, Ak8jets->at(i).phi());
@@ -1203,8 +1204,8 @@ bool Variables_NN::process(uhh2::Event& evt){
       evt.set(h_Ak8_j2_mSD, Ak8jets->at(i).softdropmass());
       evt.set(h_Ak8_j2_tau21, Ak8jets->at(i).tau2()/Ak8jets->at(i).tau1());
       evt.set(h_Ak8_j2_tau32, Ak8jets->at(i).tau3()/Ak8jets->at(i).tau2());
-      }
-      if(i==2){
+    }
+    if(i==2){
       evt.set(h_Ak8_j3_pt, Ak8jets->at(i).pt());
       evt.set(h_Ak8_j3_eta, Ak8jets->at(i).eta());
       evt.set(h_Ak8_j3_phi, Ak8jets->at(i).phi());
@@ -1212,7 +1213,7 @@ bool Variables_NN::process(uhh2::Event& evt){
       evt.set(h_Ak8_j3_mSD, Ak8jets->at(i).softdropmass());
       evt.set(h_Ak8_j3_tau21, Ak8jets->at(i).tau2()/Ak8jets->at(i).tau1());
       evt.set(h_Ak8_j3_tau32, Ak8jets->at(i).tau3()/Ak8jets->at(i).tau2());
-      }
+    }
   }
 
   // ttbar mass
@@ -1221,11 +1222,113 @@ bool Variables_NN::process(uhh2::Event& evt){
   if(is_zprime_reconstructed_chi2){
     ZprimeCandidate* BestZprimeCandidate = evt.get(h_BestZprimeCandidateChi2);
     float Mass_tt = BestZprimeCandidate->Zprime_v4().M();
-  evt.set(h_M_tt, Mass_tt);
+    evt.set(h_M_tt, Mass_tt);
   }
 
 
 
+  return true;
+}
+
+
+//////////////////////////////////
+////  EWK corrections
+////////////////////////////////////
+//// Generic Class for Applying SFs
+void ScaleFactorsFromHistos::LoadHisto(TFile* file, std::string name, std::string hname) {
+  histos[name].reset((TH1F*)file->Get(hname.c_str()));
+  histos[name]->SetDirectory(0);
+};
+
+double ScaleFactorsFromHistos::Evaluator(std::string hname, double var) {
+  // invalid cases
+  if (var == uhh2::infinity) return 1.0;
+
+  int firstBin = 1;
+  int lastBin  = histos[hname]->GetNbinsX();
+  double h_min = histos[hname]->GetBinCenter(firstBin)-histos[hname]->GetBinError(firstBin);
+  double h_max = histos[hname]->GetBinCenter(lastBin)+histos[hname]->GetBinError(lastBin);
+  double var_for_eval = var;
+  var_for_eval = (var_for_eval > h_min) ? var_for_eval : h_min+0.001;
+  var_for_eval = (var_for_eval < h_max) ? var_for_eval : h_max-0.001;
+  return histos[hname]->GetBinContent(histos[hname]->FindBin(var_for_eval));
+};
+
+
+NLOCorrections::NLOCorrections(uhh2::Context& ctx) {
+
+  // Corrections for 2017 and 2018 are the same. 2016 is different
+  is2016 = (ctx.get("dataset_version").find("2016") != std::string::npos);
+
+  is_Wjets  = (ctx.get("dataset_version").find("WJets") != std::string::npos);
+  is_Znn  = (ctx.get("dataset_version").find("DY_inv") != std::string::npos);
+  is_DY  = (ctx.get("dataset_version").find("DY") != std::string::npos) && !is_Znn;
+  is_Zjets  = is_DY || is_Znn;
+
+  std::string folder_ = ctx.get("NLOCorrections");
+  for (const std::string& proc: {"w","z"}) {
+    TFile* file_ = new TFile((folder_+"merged_kfactors_"+proc+"jets.root").c_str());
+    for (const std::string& corr: {"ewk","qcd","qcd_ewk"}) LoadHisto(file_, proc+"_"+corr, "kfactor_monojet_"+corr);
+    file_->Close();
+  }
+  for (const std::string& proc: {"dy","znn"}) {
+    TFile* file_ = new TFile((folder_+"kfac_"+proc+"_filter.root").c_str());
+    LoadHisto(file_, proc+"_qcd_2017", "kfac_"+proc+"_filter");
+    file_->Close();
+  }
+  TFile* file_ = new TFile((folder_+"2017_gen_v_pt_qcd_sf.root").c_str());
+  LoadHisto(file_, "w_qcd_2017", "wjet_dress_inclusive");
+  file_->Close();
+  file_ = new TFile((folder_+"lindert_qcd_nnlo_sf.root").c_str());
+  for (const std::string& proc: {"eej", "evj", "vvj"}) LoadHisto(file_, proc+"_qcd_nnlo", proc);
+  file_->Close();
+
+}
+
+double NLOCorrections::GetPartonObjectPt(uhh2::Event& event, ParticleID objID) {
+  for(const auto & gp : *event.genparticles) {if (gp.pdgId()==objID) return gp.pt(); }
+  return uhh2::infinity;
+};
+
+
+bool NLOCorrections::process(uhh2::Event& event){
+  // Sample dependant corrections
+  if ((!is_Wjets && !is_Zjets) || event.isRealData) return true;
+  double objpt = uhh2::infinity, theory_weight = 1.0;
+  std::string process = "";
+
+  const bool do_EWK = true;
+  const bool do_QCD_EWK = false;
+  const bool do_QCD_NLO  = true;
+  const bool do_QCD_NNLO = false;
+
+
+  if (is_Zjets) objpt = GetPartonObjectPt(event,ParticleID::Z);
+  if (is_Wjets) objpt = GetPartonObjectPt(event,ParticleID::W);
+
+  if (is_Zjets) process = "z";
+  if (is_Wjets) process = "w";
+
+  if (do_QCD_EWK) theory_weight *= Evaluator(process+"_qcd_ewk",objpt);
+  else {
+    if (do_EWK) theory_weight *= Evaluator(process+"_ewk",objpt);
+    if (do_QCD_NLO) {
+      if (!is2016) {
+        if (is_DY)  process = "dy";
+        if (is_Znn) process = "znn";
+      }
+      theory_weight *= Evaluator(process+"_qcd"+(is2016?"":"_2017"),objpt);
+    }
+  }
+
+  if (do_QCD_NNLO) {
+    if (is_DY)    process = "eej";
+    if (is_Znn)   process = "vvj";
+    if (is_Wjets) process = "evj";
+    theory_weight *= Evaluator(process+"_qcd_nnlo",objpt);
+  }
+
+  event.weight *= theory_weight;
   return true;
 }
 
