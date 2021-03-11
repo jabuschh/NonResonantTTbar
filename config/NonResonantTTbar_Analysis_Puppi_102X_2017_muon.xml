@@ -95,7 +95,7 @@
 ]>
 
 <!--
-<ConfigParse NEventsBreak="100000" LastBreak="0" FileSplit="50" AutoResubmit="100"/>
+<ConfigParse NEventsBreak="200000" LastBreak="0" FileSplit="20" AutoResubmit="100"/>
 <ConfigSGE RAM="2" DISK="2" Mail="henrik.jabusch@desy.de" Notification="as" Workdir="workdir_NonResonantTTbar_Analysis_2017_muon"/>
 -->
 
@@ -532,7 +532,7 @@
 
       <Item Name="BTagCalibration" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/DeepFlavour_94XSF_V4_B_F.csv" />
 
-      <!-- <Item Name="NLOCorrections" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/" /> -->
+      <Item Name="NLOCorrections" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/" />
 
       <Item Name="is_puppi"            Value="&IS_PUPPI;"/>
       <Item Name="is_looser_selection" Value="&IS_LOOSER_SELECTION;"/>

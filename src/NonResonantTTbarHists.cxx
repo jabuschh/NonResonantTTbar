@@ -62,9 +62,9 @@ void NonResonantTTbarHists::init(){
   csv_jet3          = book<TH1F>("csv_jet3", "CSV^{jet 3}", 20, 0, 1);
 
   deepjetbscore_jet           = book<TH1F>("deepjetbscore_jet", "DeepJet b-tag score all AK4 jets", 20, 0, 1);
-  deepjetbscore_jet1          = book<TH1F>("deepjetbscore_jet1", "DeppJet b-tag score AK4 jet 1}", 20, 0, 1);
-  deepjetbscore_jet2          = book<TH1F>("deepjetbscore_jet2", "DeepJet b-tag score AK4 jet 2}", 20, 0, 1);
-  deepjetbscore_jet3          = book<TH1F>("deepjetbscore_jet3", "DeepJet b-tag score AK4 jet 3}", 20, 0, 1);
+  deepjetbscore_jet1          = book<TH1F>("deepjetbscore_jet1", "DeepJet b-tag score AK4 jet 1", 20, 0, 1);
+  deepjetbscore_jet2          = book<TH1F>("deepjetbscore_jet2", "DeepJet b-tag score AK4 jet 2", 20, 0, 1);
+  deepjetbscore_jet3          = book<TH1F>("deepjetbscore_jet3", "DeepJet b-tag score AK4 jet 3", 20, 0, 1);
 
   N_bJets_loose     = book<TH1F>("N_bJets_loose", "N_{jets}^{CSV loose}", 11, -0.5, 10.5);
   N_bJets_med       = book<TH1F>("N_bJets_med", "N_{jets}^{CSV medium}", 11, -0.5, 10.5);
@@ -146,10 +146,10 @@ void NonResonantTTbarHists::init(){
   N_subjets_AK8CHSjet1      = book<TH1F>("N_subjets_AK8CHSjet1", "N_{subjets}^{AK8CHS jet 1}", 6, -0.5, 5.5);
   N_subjets_AK8CHSjet2      = book<TH1F>("N_subjets_AK8CHSjet2", "N_{subjets}^{AK8CHS jet 2}", 6, -0.5, 5.5);
   N_subjets_AK8CHSjet3      = book<TH1F>("N_subjets_AK8CHSjet3", "N_{subjets}^{AK8CHS jet 3}", 6, -0.5, 5.5);
-  N_daughters_AK8CHSjet       = book<TH1F>("N_daughters_AK8CHSjet", "N_{daughters}^{AK8CHS jets}", 51, -0.5, 50.5);
-  N_daughters_AK8CHSjet1      = book<TH1F>("N_daughters_AK8CHSjet1", "N_{daughters}^{AK8CHS jet 1}", 51, -0.5, 50.5);
-  N_daughters_AK8CHSjet2      = book<TH1F>("N_daughters_AK8CHSjet2", "N_{daughters}^{AK8CHS jet 2}", 51, -0.5, 50.5);
-  N_daughters_AK8CHSjet3      = book<TH1F>("N_daughters_AK8CHSjet3", "N_{daughters}^{AK8CHS jet 3}", 51, -0.5, 50.5);
+  N_daughters_AK8CHSjet     = book<TH1F>("N_daughters_AK8CHSjet", "N_{daughters}^{AK8CHS jets}", 51, -0.5, 50.5);
+  N_daughters_AK8CHSjet1    = book<TH1F>("N_daughters_AK8CHSjet1", "N_{daughters}^{AK8CHS jet 1}", 51, -0.5, 50.5);
+  N_daughters_AK8CHSjet2    = book<TH1F>("N_daughters_AK8CHSjet2", "N_{daughters}^{AK8CHS jet 2}", 51, -0.5, 50.5);
+  N_daughters_AK8CHSjet3    = book<TH1F>("N_daughters_AK8CHSjet3", "N_{daughters}^{AK8CHS jet 3}", 51, -0.5, 50.5);
   dRmin_AK8Puppi_AK8CHSjet  = book<TH1F>("dRmin_AK8Puppi_AK8CHSjet", "#DeltaR_{min}(AK8CHS jet, AK8Puppi jet)", 60, 0, 3);
   dRmin_AK8Puppi_AK8CHSjet1 = book<TH1F>("dRmin_AK8Puppi_AK8CHSjet1", "#DeltaR_{min}(AK8CHS jet 1, AK8Puppi jet)", 60, 0, 3);
   dRmin_AK8Puppi_AK8CHSjet2 = book<TH1F>("dRmin_AK8Puppi_AK8CHSjet2", "#DeltaR_{min}(AK8CHS jet 2, AK8Puppi jet)", 60, 0, 3);
@@ -290,20 +290,20 @@ void NonResonantTTbarHists::init(){
   tau32_AK8PuppiTaggedjet3        = book<TH1F>("tau32_AK8PuppiTaggedjet3", "#tau_{3/2}^{AK8Puppi  Tagged jet 3}", 24, 0, 1.2);
 
   deepjet_topscore_jet           = book<TH1F>("deepjet_topscore_jet", "DeepJet top score all AK8 jets", 20, 0, 1);
-  deepjet_topscore_jet1          = book<TH1F>("deepjet_topscore_jet1", "DeppJet top score AK8 jet 1}", 20, 0, 1);
-  deepjet_topscore_jet2          = book<TH1F>("deepjet_topscore_jet2", "DeepJet top score AK8 jet 2}", 20, 0, 1);
+  deepjet_topscore_jet1          = book<TH1F>("deepjet_topscore_jet1", "DeepJet top score AK8 jet 1", 20, 0, 1);
+  deepjet_topscore_jet2          = book<TH1F>("deepjet_topscore_jet2", "DeepJet top score AK8 jet 2", 20, 0, 1);
   deepjet_wscore_jet           = book<TH1F>("deepjet_wscore_jet", "DeepJet W score all AK8 jets", 20, 0, 1);
-  deepjet_wscore_jet1          = book<TH1F>("deepjet_wscore_jet1", "DeppJet W score AK8 jet 1}", 20, 0, 1);
-  deepjet_wscore_jet2          = book<TH1F>("deepjet_wscore_jet2", "DeepJet W score AK8 jet 2}", 20, 0, 1);
+  deepjet_wscore_jet1          = book<TH1F>("deepjet_wscore_jet1", "DeepJet W score AK8 jet 1", 20, 0, 1);
+  deepjet_wscore_jet2          = book<TH1F>("deepjet_wscore_jet2", "DeepJet W score AK8 jet 2", 20, 0, 1);
   deepjet_zscore_jet           = book<TH1F>("deepjet_zscore_jet", "DeepJet Z score all AK8 jets", 20, 0, 1);
-  deepjet_zscore_jet1          = book<TH1F>("deepjet_zscore_jet1", "DeppJet Z score AK8 jet 1}", 20, 0, 1);
-  deepjet_zscore_jet2          = book<TH1F>("deepjet_zscore_jet2", "DeepJet Z score AK8 jet 2}", 20, 0, 1);
+  deepjet_zscore_jet1          = book<TH1F>("deepjet_zscore_jet1", "DeepJet Z score AK8 jet 1", 20, 0, 1);
+  deepjet_zscore_jet2          = book<TH1F>("deepjet_zscore_jet2", "DeepJet Z score AK8 jet 2", 20, 0, 1);
   deepjet_higgsscore_jet           = book<TH1F>("deepjet_higgsscore_jet", "DeepJet Higgs score all AK8 jets", 20, 0, 1);
-  deepjet_higgsscore_jet1          = book<TH1F>("deepjet_higgsscore_jet1", "DeppJet Higgs score AK8 jet 1}", 20, 0, 1);
-  deepjet_higgsscore_jet2          = book<TH1F>("deepjet_higgsscore_jet2", "DeepJet Higgs score AK8 jet 2}", 20, 0, 1);
+  deepjet_higgsscore_jet1          = book<TH1F>("deepjet_higgsscore_jet1", "DeepJet Higgs score AK8 jet 1", 20, 0, 1);
+  deepjet_higgsscore_jet2          = book<TH1F>("deepjet_higgsscore_jet2", "DeepJet Higgs score AK8 jet 2", 20, 0, 1);
   deepjet_qcdscore_jet           = book<TH1F>("deepjet_qcdscore_jet", "DeepJet qcd score all AK8 jets", 20, 0, 1);
-  deepjet_qcdscore_jet1          = book<TH1F>("deepjet_qcdscore_jet1", "DeppJet qcd score AK8 jet 1}", 20, 0, 1);
-  deepjet_qcdscore_jet2          = book<TH1F>("deepjet_qcdscore_jet2", "DeepJet qcd score AK8 jet 2}", 20, 0, 1);
+  deepjet_qcdscore_jet1          = book<TH1F>("deepjet_qcdscore_jet1", "DeepJet qcd score AK8 jet 1", 20, 0, 1);
+  deepjet_qcdscore_jet2          = book<TH1F>("deepjet_qcdscore_jet2", "DeepJet qcd score AK8 jet 2", 20, 0, 1);
 
   massdecordeepjet_topscore_jet           = book<TH1F>("massdecordeepjet_topscore_jet", "Mass decor deepjet top score all AK8 jets", 20, 0, 1);
   massdecordeepjet_topscore_jet1          = book<TH1F>("massdecordeepjet_topscore_jet1", "Mass decor deepjet top score AK8 jet 1", 20, 0, 1);

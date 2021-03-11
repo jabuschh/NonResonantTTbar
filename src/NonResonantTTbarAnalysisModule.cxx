@@ -173,7 +173,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   if(ctx.get("channel") == "muon") isMuon = true;
   if(ctx.get("channel") == "electron") isElectron = true;
 
-  if(isMuon){//semileptonic muon channel
+  if(isMuon){ //semileptonic muon channel
     trigger1 = "HLT_Mu50_v*";
     if(is2016v2 || is2016v3)
     //trigger2 = "HLT_TkMu50_v*";
@@ -187,7 +187,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
     jet1_pt = 150.;
     HT_lep_cut = 150;
   }
-  if(isElectron){//semileptonic electron channel
+  if(isElectron){ //semileptonic electron channel
     nmuon_min1 = 0; nmuon_max1 = 0;
     nmuon_min2 = 0; nmuon_max2 = 0;
     nele_min = 1; nele_max = 1;
@@ -252,15 +252,15 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   // Electron
   if((is2016v3 || is2016v2) && isElectron){
     EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/egammaEffi.txt_EGM2D_CutBased_Tight_ID.root", 1.0, "TightID", Sys_EleID));
-    //EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/", 0.5, "Trigger", Sys_EleTrigger));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2016.root", 0.5, "Trigger", Sys_EleTrigger));
   }
   if(is2017v2 && isElectron){
     EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/2017_ElectronTight.root", 1.0, "TightID", Sys_EleID));
-    //EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/", 0.5, "Trigger", Sys_EleTrigger));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2017.root", 0.5, "Trigger", Sys_EleTrigger));
   }
   if(is2018 && isElectron){
     EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/2018_ElectronTight.root", 1.0, "TightID", Sys_EleID));
-    //EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/", 0.5, "Trigger", Sys_EleTrigger));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2018.root", 0.5, "Trigger", Sys_EleTrigger));
   }
 
   // Selection modules
@@ -416,7 +416,7 @@ bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
     //fill_histograms(event, "TriggerEle");
   }
   if((event.muons->size()+event.electrons->size()) != 1) return false; //veto events without leptons or with too many
-  if(debug) cout<<"N leptons ok: Nelectrons="<<event.electrons->size()<<" Nmuons="<<event.muons->size()<<endl;
+  if(debug) cout << "N leptons ok: Nelectrons=" << event.electrons->size() << " Nmuons=" << event.muons->size()<<endl;
   if(!TwoDCut_selection->passes(event)) return false;
   fill_histograms(event, "TwoDCut");
 
