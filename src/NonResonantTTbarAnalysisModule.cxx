@@ -163,7 +163,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   double jet1_pt(150.);
   double jet2_pt(50.);
   double chi2_max(30.);
-  double mtt_blind(3000.);
+  double mtt_blind(0.); // blind mtt completely
   int nmuon_min1, nmuon_max1;
   int nmuon_min2, nmuon_max2;
   int nele_min, nele_max;
@@ -235,32 +235,32 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   MCScale_module.reset(new MCScaleVariation(ctx));
   Corrections_module.reset(new NLOCorrections(ctx)); // NLO corrections
 
-
+  // Muon
   if((is2016v3 || is2016v2) && isMuon){
-    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root", "NUM_TightID_DEN_genTracks_eta_pt", 0., "MuonID", true, Sys_MuonID)); // NUM_TightID_DEN_genTracks_eta_pt ? old: MC_NUM_TightID_DEN_genTracks_PAR_pt_eta
+    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root", "NUM_TightID_DEN_genTracks_eta_pt", 1.0, "MuonID", true, Sys_MuonID)); // NUM_TightID_DEN_genTracks_eta_pt ? old: MC_NUM_TightID_DEN_genTracks_PAR_pt_eta
     MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MuonTrigger_EfficienciesAndSF_average_RunBtoH.root", "IsoMu50_OR_IsoTkMu50_PtEtaBins", 0.5, "MuonTrigger", true, Sys_MuonTrigger));
   }
   if(is2017v2 && isMuon){
-    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/MuonID_94X_RunBCDEF_SF_ID.root", "NUM_HighPtID_DEN_genTracks_pair_newTuneP_probe_pt_abseta", 0., "HighPtID", true, Sys_MuonID));
+    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/MuonID_94X_RunBCDEF_SF_ID.root", "NUM_HighPtID_DEN_genTracks_pair_newTuneP_probe_pt_abseta", 1.0, "HighPtID", true, Sys_MuonID));
     MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/MuonTrigger_EfficienciesAndSF_RunBtoF_Nov17Nov2017.root", "Mu50_PtEtaBins/pt_abseta_ratio", 0.5, "Trigger", true, Sys_MuonTrigger));
   }
   if(is2018 && isMuon){
-    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Muon_ID_SF_RunABCD.root", "NUM_HighPtID_DEN_TrackerMuons_pair_newTuneP_probe_pt_abseta", 0., "HighPtID", true, Sys_MuonID));
+    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Muon_ID_SF_RunABCD.root", "NUM_HighPtID_DEN_TrackerMuons_pair_newTuneP_probe_pt_abseta", 1.0, "HighPtID", true, Sys_MuonID));
     MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Muon_Trigger_Eff_SF_AfterMuonHLTUpdate.root", "Mu50_OR_OldMu100_OR_TkMu100_PtEtaBins/pt_abseta_ratio", 0.5, "Trigger", true, Sys_MuonTrigger));
   }
 
   // Electron
   if((is2016v3 || is2016v2) && isElectron){
     EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/egammaEffi.txt_EGM2D_CutBased_Tight_ID.root", 1.0, "TightID", Sys_EleID));
-    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2016.root", 0.5, "Trigger", Sys_EleTrigger));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2016.root", 0.5, "Trigger", Sys_EleTrigger, "electrons", "abseta_pt_ratio"));
   }
   if(is2017v2 && isElectron){
     EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/2017_ElectronTight.root", 1.0, "TightID", Sys_EleID));
-    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2017.root", 0.5, "Trigger", Sys_EleTrigger));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2017.root", 0.5, "Trigger", Sys_EleTrigger, "electrons", "abseta_pt_ratio"));
   }
   if(is2018 && isElectron){
     EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/2018_ElectronTight.root", 1.0, "TightID", Sys_EleID));
-    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2018.root", 0.5, "Trigger", Sys_EleTrigger));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2018.root", 0.5, "Trigger", Sys_EleTrigger, "electrons", "abseta_pt_ratio"));
   }
 
   // Selection modules
@@ -373,11 +373,13 @@ bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
     if(debug)  cout<<"MuonID ok"<<endl;
   }
   fill_histograms(event, "Weights_MuonID");
+
   if(isElectron){
     EleID_module->process(event);
     if(debug)  cout<<"EleID ok"<<endl;
   }
   fill_histograms(event, "Weights_EleID");
+
   PUWeight_module->process(event);
   if(debug)  cout<<"PUWeight ok"<<endl;
   fill_histograms(event, "Weights_PU");
@@ -412,8 +414,8 @@ bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
   if(isElectron){
     if(!NElectron_selection->passes(event)) return false;
     fill_histograms(event, "Electron1");
-    //EleTrigger_module->process(event);
-    //fill_histograms(event, "TriggerEle");
+    EleTrigger_module->process(event);
+    fill_histograms(event, "TriggerEle");
   }
   if((event.muons->size()+event.electrons->size()) != 1) return false; //veto events without leptons or with too many
   if(debug) cout << "N leptons ok: Nelectrons=" << event.electrons->size() << " Nmuons=" << event.muons->size()<<endl;
