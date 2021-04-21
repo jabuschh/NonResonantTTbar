@@ -96,7 +96,7 @@ protected:
   unique_ptr<Variables_NN> Variables_module;
 
   //Handles
-  Event::Handle<bool> h_is_zprime_reconstructed_chi2, h_is_zprime_reconstructed_correctmatch;
+  Event::Handle<bool>  h_is_zprime_reconstructed_chi2, h_is_zprime_reconstructed_correctmatch;
   Event::Handle<float> h_chi2;   Event::Handle<float> h_weight;
   Event::Handle<float> h_MET;   Event::Handle<int> h_NPV;
   Event::Handle<float> h_lep1_pt; Event::Handle<float> h_lep1_eta;
@@ -163,7 +163,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   double jet1_pt(150.);
   double jet2_pt(50.);
   double chi2_max(30.);
-  double mtt_blind(0.); // blind mtt completely
+  double mtt_blind(3000.); // currently not applied
   int nmuon_min1, nmuon_max1;
   int nmuon_min2, nmuon_max2;
   int nele_min, nele_max;
@@ -435,30 +435,34 @@ bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
   // }
 
   CandidateBuilder->process(event);
-  if(debug) cout<<"CandidateBuilder is ok"<<endl;
+  if(debug) cout << "CandidateBuilder is ok" << endl;
+
   Chi2DiscriminatorZprime->process(event);
-  if(debug)  cout<<"Chi2DiscriminatorZprime is ok"<<endl;
+  if(debug) cout << "Chi2DiscriminatorZprime is ok" << endl;
+
   CorrectMatchDiscriminatorZprime->process(event);
-  if(debug) cout<<"CorrectMatchDiscriminatorZprime is ok"<<endl;
+  if(debug) cout << "CorrectMatchDiscriminatorZprime is ok" << endl;
+
   if(sample.Contains("_blinded")){
     if(!BlindData_selection->passes(event)) return false;
   }
+
   if(!Jet1_selection->passes(event)) return false;
-  if(debug) cout<<"Jet1_selection is ok"<<endl;
+  if(debug) cout << "Jet1_selection is ok" << endl;
   fill_histograms(event, "Jet1");
 
   if(!Jet2_selection->passes(event)) return false;
-  if(debug) cout<<"Jet2_selection is ok"<<endl;
+  if(debug) cout << "Jet2_selection is ok" << endl;
   fill_histograms(event, "Jet2");
 
   // MET selection
   if(!met_sel->passes(event)) return false;
-  if(debug) cout<<"MET is ok"<<endl;
+  if(debug) cout << "MET is ok" << endl;
   fill_histograms(event, "MET");
   if(isMuon){
     if(!htlep_sel->passes(event)) return false;
     fill_histograms(event, "HTlep");
-    if(debug) cout<<"HTlep is ok"<<endl;
+    if(debug) cout << "HTlep is ok" << endl;
   }
 
   //  Variables for NN

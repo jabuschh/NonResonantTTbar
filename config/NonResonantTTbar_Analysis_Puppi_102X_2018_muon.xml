@@ -572,28 +572,28 @@
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018A_blinded" Cacheable="&b_Cacheable;">
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018A" Cacheable="&b_Cacheable;">
 			&DATA_SingleMuon_Run2018A;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
 
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018B_blinded" Cacheable="&b_Cacheable;">
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018B" Cacheable="&b_Cacheable;">
 			&DATA_SingleMuon_Run2018B;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
 
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018C_blinded" Cacheable="&b_Cacheable;">
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018C" Cacheable="&b_Cacheable;">
 			&DATA_SingleMuon_Run2018C;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
 
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018D_blinded" Cacheable="&b_Cacheable;">
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018D" Cacheable="&b_Cacheable;">
 			&DATA_SingleMuon_Run2018D;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />

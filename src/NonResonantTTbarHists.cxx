@@ -27,11 +27,11 @@ Hists(ctx, dirname) {
   h_BestZprimeCandidateCorrectMatch = ctx.get_handle<ZprimeCandidate*>("ZprimeCandidateBestCorrectMatch");
   h_is_zprime_reconstructed_chi2 = ctx.get_handle<bool>("is_zprime_reconstructed_chi2");
   h_is_zprime_reconstructed_correctmatch = ctx.get_handle<bool>("is_zprime_reconstructed_correctmatch");
-/*  h_NNoutput0 = ctx.get_handle<double>("NNoutput0");
+  /*  h_NNoutput0 = ctx.get_handle<double>("NNoutput0");
   h_NNoutput1 = ctx.get_handle<double>("NNoutput1");
   h_NNoutput2 = ctx.get_handle<double>("NNoutput2");
   h_NNoutput3 = ctx.get_handle<double>("NNoutput3");
-*/
+  */
   //  h_chi2 = ctx.get_handle<float>("chi2");
   init();
 }
@@ -370,8 +370,8 @@ void NonResonantTTbarHists::init(){
   M_Zprime_ttag_rebin      = book<TH1F>("M_Zprime_ttag_rebin", "M_{t#bar{t}} (t-tag reconstruction) [GeV]", 140, 0, 7000);
   M_Zprime_ttag_rebin2     = book<TH1F>("M_Zprime_ttag_rebin2", "M_{t#bar{t}} (t-tag reconstruction) [GeV]", 70, 0, 7000);
   M_Zprime_ttag_rebin3     = book<TH1F>("M_Zprime_ttag_rebin3", "M_{t#bar{t}} (t-tag reconstruction) [GeV]", 35, 0, 7000);
-  M_Zprime_ttag_rebin4     = book<TH1F>("M_Zprime_ttag_rebin4", "M_{t#bar{t}} (t-tag reconstruction [GeV]", bins_Zprime4.size()-1, &bins_Zprime4[0]);
-  M_Zprime_ttag_rebin5     = book<TH1F>("M_Zprime_ttag_rebin5", "M_{t#bar{t}} (t-tag reconstruction [GeV]", bins_Zprime5.size()-1, &bins_Zprime5[0]);
+  M_Zprime_ttag_rebin4     = book<TH1F>("M_Zprime_ttag_rebin4", "M_{t#bar{t}} (t-tag reconstruction) [GeV]", bins_Zprime4.size()-1, &bins_Zprime4[0]);
+  M_Zprime_ttag_rebin5     = book<TH1F>("M_Zprime_ttag_rebin5", "M_{t#bar{t}} (t-tag reconstruction) [GeV]", bins_Zprime5.size()-1, &bins_Zprime5[0]);
   M_tophad_ttag            = book<TH1F>("M_tophad_ttag", "M_{t}^{had, top-tag} (t-tag reconstruction) [GeV]", 70, 0, 700);
   M_toplep_ttag            = book<TH1F>("M_toplep_ttag", "M_{t}^{lep, top-tag} (t-tag reconstruction) [GeV]", 70, 0, 700);
   chi2_Zprime_ttag         = book<TH1F>("chi2_Zprime_ttag", "#chi^{2} (t-tag reconstruction)", 50, 0, 500);
@@ -472,12 +472,12 @@ void NonResonantTTbarHists::init(){
   NN_M_tt_notweighted = book<TH1F>("NN_M_tt_notweighted", "NN_M_tt_notweighted", 100, 0, 14000);
 
 
-/*
+  /*
   DNN_out0 = book<TH1F>("DNN_out0", "NN output 0", 100, 0, 1);
   DNN_out1 = book<TH1F>("DNN_out1", "NN output 1", 100, 0, 1);
   DNN_out2 = book<TH1F>("DNN_out2", "NN output 2", 100, 0, 1);
   DNN_out3 = book<TH1F>("DNN_out3", "NN output 3", 100, 0, 1);
-*/
+  */
 }
 
 
@@ -999,7 +999,7 @@ void NonResonantTTbarHists::fill(const Event & event){
   // Zprime reco
   bool is_zprime_reconstructed_chi2 = event.get(h_is_zprime_reconstructed_chi2);
   bool is_zprime_reconstructed_correctmatch = event.get(h_is_zprime_reconstructed_correctmatch);
-  if(is_zprime_reconstructed_chi2){
+  if(is_zprime_reconstructed_chi2 && is_mc){ // added is_mc to blind mttbar hists
     ZprimeCandidate* BestZprimeCandidate = event.get(h_BestZprimeCandidateChi2);
     float Mreco = BestZprimeCandidate->Zprime_v4().M();
     float chi2 = BestZprimeCandidate->discriminator("chi2_total");
@@ -1103,29 +1103,27 @@ void NonResonantTTbarHists::fill(const Event & event){
   sum_event_weights->Fill(1., weight);
 
 
-/*
- ███    ██ ███    ██
- ████   ██ ████   ██
- ██ ██  ██ ██ ██  ██
- ██  ██ ██ ██  ██ ██
- ██   ████ ██   ████
-*/
+  /*
+  ███    ██ ███    ██
+  ████   ██ ████   ██
+  ██ ██  ██ ██ ██  ██
+  ██  ██ ██ ██  ██ ██
+  ██   ████ ██   ████
+  */
 
 
   for(int i=0; i<Nmuons; i++){
-      NN_Mu_pt->Fill(muons->at(i).pt(),weight);
-      NN_Mu_eta->Fill(muons->at(i).eta(),weight);
-      NN_Mu_phi->Fill(muons->at(i).phi(),weight);
-      NN_Mu_E->Fill(muons->at(i).energy(),weight);
+    NN_Mu_pt->Fill(muons->at(i).pt(),weight);
+    NN_Mu_eta->Fill(muons->at(i).eta(),weight);
+    NN_Mu_phi->Fill(muons->at(i).phi(),weight);
+    NN_Mu_E->Fill(muons->at(i).energy(),weight);
   }
 
-
-
   for(int i=0; i<Nelectrons; i++){
-      NN_Ele_pt->Fill(electrons->at(i).pt(),weight);
-      NN_Ele_eta->Fill(electrons->at(i).eta(),weight);
-      NN_Ele_phi->Fill(electrons->at(i).phi(),weight);
-      NN_Ele_E->Fill(electrons->at(i).energy(),weight);
+    NN_Ele_pt->Fill(electrons->at(i).pt(),weight);
+    NN_Ele_eta->Fill(electrons->at(i).eta(),weight);
+    NN_Ele_phi->Fill(electrons->at(i).phi(),weight);
+    NN_Ele_E->Fill(electrons->at(i).energy(),weight);
   }
 
   NN_MET_pt->Fill(event.met->pt(),weight);
@@ -1136,54 +1134,54 @@ void NonResonantTTbarHists::fill(const Event & event){
   NN_N_Ak4->Fill(NAk4jets,weight);
 
   for(int i=0; i<NAk4jets; i++){
-      if(i==0){
+    if(i==0){
       NN_Ak4_j1_pt->Fill(Ak4jets->at(i).pt(),weight);
       NN_Ak4_j1_eta->Fill(Ak4jets->at(i).eta(),weight);
       NN_Ak4_j1_phi->Fill(Ak4jets->at(i).phi(),weight);
       NN_Ak4_j1_E->Fill(Ak4jets->at(i).energy(),weight);
       NN_Ak4_j1_m->Fill(Ak4jets->at(i).v4().M(),weight);
       NN_Ak4_j1_btag->Fill(Ak4jets->at(i).btag_DeepJet(),weight);
-      }
-      if(i==1){
+    }
+    if(i==1){
       NN_Ak4_j2_pt->Fill(Ak4jets->at(i).pt(),weight);
       NN_Ak4_j2_eta->Fill(Ak4jets->at(i).eta(),weight);
       NN_Ak4_j2_phi->Fill(Ak4jets->at(i).phi(),weight);
       NN_Ak4_j2_E->Fill(Ak4jets->at(i).energy(),weight);
       NN_Ak4_j2_m->Fill(Ak4jets->at(i).v4().M(),weight);
       NN_Ak4_j2_btag->Fill(Ak4jets->at(i).btag_DeepJet(),weight);
-      }
-      if(i==2){
+    }
+    if(i==2){
       NN_Ak4_j3_pt->Fill(Ak4jets->at(i).pt(),weight);
       NN_Ak4_j3_eta->Fill(Ak4jets->at(i).eta(),weight);
       NN_Ak4_j3_phi->Fill(Ak4jets->at(i).phi(),weight);
       NN_Ak4_j3_E->Fill(Ak4jets->at(i).energy(),weight);
       NN_Ak4_j3_m->Fill(Ak4jets->at(i).v4().M(),weight);
       NN_Ak4_j3_btag->Fill(Ak4jets->at(i).btag_DeepJet(),weight);
-      }
-      if(i==3){
+    }
+    if(i==3){
       NN_Ak4_j4_pt->Fill(Ak4jets->at(i).pt(),weight);
       NN_Ak4_j4_eta->Fill(Ak4jets->at(i).eta(),weight);
       NN_Ak4_j4_phi->Fill(Ak4jets->at(i).phi(),weight);
       NN_Ak4_j4_E->Fill(Ak4jets->at(i).energy(),weight);
       NN_Ak4_j4_m->Fill(Ak4jets->at(i).v4().M(),weight);
       NN_Ak4_j4_btag->Fill(Ak4jets->at(i).btag_DeepJet(),weight);
-      }
-      if(i==4){
+    }
+    if(i==4){
       NN_Ak4_j5_pt->Fill(Ak4jets->at(i).pt(),weight);
       NN_Ak4_j5_eta->Fill(Ak4jets->at(i).eta(),weight);
       NN_Ak4_j5_phi->Fill(Ak4jets->at(i).phi(),weight);
       NN_Ak4_j5_E->Fill(Ak4jets->at(i).energy(),weight);
       NN_Ak4_j5_m->Fill(Ak4jets->at(i).v4().M(),weight);
       NN_Ak4_j5_btag->Fill(Ak4jets->at(i).btag_DeepJet(),weight);
-      }
-      if(i==5){
+    }
+    if(i==5){
       NN_Ak4_j6_pt->Fill(Ak4jets->at(i).pt(),weight);
       NN_Ak4_j6_eta->Fill(Ak4jets->at(i).eta(),weight);
       NN_Ak4_j6_phi->Fill(Ak4jets->at(i).phi(),weight);
       NN_Ak4_j6_E->Fill(Ak4jets->at(i).energy(),weight);
       NN_Ak4_j6_m->Fill(Ak4jets->at(i).v4().M(),weight);
       NN_Ak4_j6_btag->Fill(Ak4jets->at(i).btag_DeepJet(),weight);
-      }
+    }
   }
 
 
@@ -1192,7 +1190,7 @@ void NonResonantTTbarHists::fill(const Event & event){
   NN_N_Ak8->Fill(NAk8jets,weight);
 
   for(int i=0; i<NAk8jets; i++){
-      if(i==0){
+    if(i==0){
       NN_Ak8_j1_pt->Fill(Ak8jets->at(i).pt(),weight);
       NN_Ak8_j1_eta->Fill(Ak8jets->at(i).eta(),weight);
       NN_Ak8_j1_phi->Fill(Ak8jets->at(i).phi(),weight);
@@ -1200,8 +1198,8 @@ void NonResonantTTbarHists::fill(const Event & event){
       NN_Ak8_j1_mSD->Fill(Ak8jets->at(i).softdropmass(),weight);
       NN_Ak8_j1_tau21->Fill(Ak8jets->at(i).tau2()/Ak8jets->at(i).tau1(),weight);
       NN_Ak8_j1_tau32->Fill(Ak8jets->at(i).tau3()/Ak8jets->at(i).tau2(),weight);
-      }
-      if(i==1){
+    }
+    if(i==1){
       NN_Ak8_j2_pt->Fill(Ak8jets->at(i).pt(),weight);
       NN_Ak8_j2_eta->Fill(Ak8jets->at(i).eta(),weight);
       NN_Ak8_j2_phi->Fill(Ak8jets->at(i).phi(),weight);
@@ -1209,8 +1207,8 @@ void NonResonantTTbarHists::fill(const Event & event){
       NN_Ak8_j2_mSD->Fill(Ak8jets->at(i).softdropmass(),weight);
       NN_Ak8_j2_tau21->Fill(Ak8jets->at(i).tau2()/Ak8jets->at(i).tau1(),weight);
       NN_Ak8_j2_tau32->Fill(Ak8jets->at(i).tau3()/Ak8jets->at(i).tau2(),weight);
-      }
-      if(i==2){
+    }
+    if(i==2){
       NN_Ak8_j3_pt->Fill(Ak8jets->at(i).pt(),weight);
       NN_Ak8_j3_eta->Fill(Ak8jets->at(i).eta(),weight);
       NN_Ak8_j3_phi->Fill(Ak8jets->at(i).phi(),weight);
@@ -1218,7 +1216,7 @@ void NonResonantTTbarHists::fill(const Event & event){
       NN_Ak8_j3_mSD->Fill(Ak8jets->at(i).softdropmass(),weight);
       NN_Ak8_j3_tau21->Fill(Ak8jets->at(i).tau2()/Ak8jets->at(i).tau1(),weight);
       NN_Ak8_j3_tau32->Fill(Ak8jets->at(i).tau3()/Ak8jets->at(i).tau2(),weight);
-      }
+    }
   }
 
   if(is_zprime_reconstructed_chi2){
@@ -1228,8 +1226,8 @@ void NonResonantTTbarHists::fill(const Event & event){
     NN_M_tt_notweighted->Fill(Mass_tt);
   }
 
-/// DNN score
-/*
+  /// DNN score
+  /*
   double output0= event.get(h_NNoutput0);
   double output1= event.get(h_NNoutput1);
   double output2= event.get(h_NNoutput2);
@@ -1239,23 +1237,23 @@ void NonResonantTTbarHists::fill(const Event & event){
 
   double maxval_score = 0.0;
   for ( int i = 0; i < 4; i++ ) {
-    if ( output_event[i] > maxval_score) {
-    maxval_score = output_event[i];
-    }
-  }
+  if ( output_event[i] > maxval_score) {
+  maxval_score = output_event[i];
+}
+}
 
-  if( output0 == maxval_score ){
-     DNN_out0->Fill(output0, weight);
-  }
-  if( output1 == maxval_score ){
-     DNN_out1->Fill(output1, weight);
-  }
-  if( output2 == maxval_score ){
-     DNN_out2->Fill(output2, weight);
-  }
-  if( output3 == maxval_score ){
-     DNN_out3->Fill(output3, weight);
-  }
+if( output0 == maxval_score ){
+DNN_out0->Fill(output0, weight);
+}
+if( output1 == maxval_score ){
+DNN_out1->Fill(output1, weight);
+}
+if( output2 == maxval_score ){
+DNN_out2->Fill(output2, weight);
+}
+if( output3 == maxval_score ){
+DNN_out3->Fill(output3, weight);
+}
 */
 
 

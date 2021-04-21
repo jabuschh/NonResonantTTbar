@@ -100,7 +100,7 @@
 
 <!--
 <ConfigParse NEventsBreak="200000" LastBreak="0" FileSplit="20" AutoResubmit="100"/>
-<ConfigSGE RAM="2" DISK="2" Mail="henrik.jabusch@desy.de" Notification="as" Workdir="workdir_NonResonantTTbar_Analysis_2016_muon"/>
+<ConfigSGE RAM="2" DISK="2" Mail="henrik.jabusch@desy.de" Notification="as" Workdir="workdir_NonResonantTTbar_Analysis_2016_muon_data"/>
 -->
 
 <JobConfiguration JobName="NonResonantTTbarAnalysisJob" OutputLevel="INFO">
@@ -109,49 +109,49 @@
 
   <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTPUTdir;/" PostFix="" TargetLumi="&TargetLumi;">
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3B_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3B" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2016v3B;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3C_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3C" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2016v3C;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3D_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3D" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2016v3D;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3E_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3E" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2016v3E;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3F_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3F" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2016v3F;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3G_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3G" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2016v3G;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3H_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2016v3H" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2016v3H;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="7406.158906" NEventsMax="&NEVT;" Type="MC" Version="WJetsToLNu_HT-70To100_2016v3" Cacheable="&b_Cacheable;">
+    <!-- <InputData Lumi="7406.158906" NEventsMax="&NEVT;" Type="MC" Version="WJetsToLNu_HT-70To100_2016v3" Cacheable="&b_Cacheable;">
       &WJetsToLNu_HT-70To100_2016v3;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
@@ -197,7 +197,7 @@
       &WJetsToLNu_HT-2500ToInf_2016v3;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
-    </InputData>
+    </InputData> -->
 
 
     <!-- <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M500_2016v3" Cacheable="&b_Cacheable;">
@@ -354,7 +354,7 @@
     </InputData> -->
 
 
-    <InputData Lumi="69352.89646" NEventsMax="&NEVT;" Type="MC" Version="WW_2016v3" Cacheable="&b_Cacheable;">
+    <!-- <InputData Lumi="69352.89646" NEventsMax="&NEVT;" Type="MC" Version="WW_2016v3" Cacheable="&b_Cacheable;">
       &WW_2016v3;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
@@ -510,7 +510,7 @@
       &TT_TuneCUETP8M2T4_2016v3;
       <InputTree Name="AnalysisTree"/>
       <OutputTree Name="AnalysisTree"/>
-    </InputData>
+    </InputData> -->
 
 
     <UserConfig>

@@ -96,7 +96,7 @@
 
 <!--
 <ConfigParse NEventsBreak="200000" LastBreak="0" FileSplit="20" AutoResubmit="100"/>
-<ConfigSGE RAM="2" DISK="2" Mail="henrik.jabusch@desy.de" Notification="as" Workdir="workdir_NonResonantTTbar_Analysis_2017_muon"/>
+<ConfigSGE RAM="2" DISK="2" Mail="henrik.jabusch@desy.de" Notification="as" Workdir="workdir_NonResonantTTbar_Analysis_2017_muon_data"/>
 -->
 
 <JobConfiguration JobName="NonResonantTTbarAnalysisJob" OutputLevel="INFO">
@@ -105,7 +105,7 @@
 
   <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTPUTdir;/" PostFix="" TargetLumi="&TargetLumi;">
 
-    <InputData Lumi="3386024.049" NEventsMax="&NEVT;" Type="MC" Version="ST_t-channel_antitop_2017v2" Cacheable="&b_Cacheable;">
+    <!-- <InputData Lumi="3386024.049" NEventsMax="&NEVT;" Type="MC" Version="ST_t-channel_antitop_2017v2" Cacheable="&b_Cacheable;">
       &ST_t-channel_antitop_2017v2;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
@@ -145,34 +145,34 @@
       &ZZ_2017v2;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
-    </InputData>
+    </InputData> -->
 
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2017v2_C_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2017v2_C" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2017v2_C;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2017v2_D_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2017v2_D" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2017v2_D;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2017v2_E_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2017v2_E" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2017v2_E;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2017v2_F_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2017v2_F" Cacheable="&b_Cacheable;">
       &DATA_SingleMuon_Run2017v2_F;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="35279949.78" NEventsMax="&NEVT;" Type="MC" Version="TTToSemiLeptonic_2017v2" Cacheable="&b_Cacheable;">
+    <!-- <InputData Lumi="35279949.78" NEventsMax="&NEVT;" Type="MC" Version="TTToSemiLeptonic_2017v2" Cacheable="&b_Cacheable;">
       &TTToSemiLeptonic_2017v2;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
@@ -329,7 +329,7 @@
       &DYJetsToLL_M-50_HT-2500toInf_2017v2;
       <InputTree Name="AnalysisTree"/>
       <OutputTree Name="AnalysisTree"/>
-    </InputData>
+    </InputData> -->
 
 
     <!-- <InputData Lumi="16947" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M500_W50_2017v2" Cacheable="&b_Cacheable;">

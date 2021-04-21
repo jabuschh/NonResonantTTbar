@@ -54,8 +54,8 @@ protected:
   std::unique_ptr<TopPuppiJetCorrections> toppuppijetCorr;
 
   // Cleaners
-  std::unique_ptr<JetCleaner>                      jet_IDcleaner, jet_cleaner1, jet_cleaner2;
-  std::unique_ptr<TopJetCleaner>                   topjet_puppi_IDcleaner, topjet_puppi_cleaner, topjet_IDcleaner, topjet_cleaner;
+  std::unique_ptr<JetCleaner>    jet_IDcleaner, jet_cleaner1, jet_cleaner2;
+  std::unique_ptr<TopJetCleaner> topjet_puppi_IDcleaner, topjet_puppi_cleaner, topjet_IDcleaner, topjet_cleaner;
 
   // Selections
   //std::unique_ptr<uhh2::AndSelection> metfilters_sel;

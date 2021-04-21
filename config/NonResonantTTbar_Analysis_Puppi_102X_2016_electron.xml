@@ -109,43 +109,43 @@
 
   <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTPUTdir;/" PostFix="" TargetLumi="&TargetLumi;">
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3B_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3B" Cacheable="&b_Cacheable;">
       &DATA_SingleElectron_Run2016v3B;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3C_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3C" Cacheable="&b_Cacheable;">
       &DATA_SingleElectron_Run2016v3C;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3D_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3D" Cacheable="&b_Cacheable;">
       &DATA_SingleElectron_Run2016v3D;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3E_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3E" Cacheable="&b_Cacheable;">
       &DATA_SingleElectron_Run2016v3E;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3F_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3F" Cacheable="&b_Cacheable;">
       &DATA_SingleElectron_Run2016v3F;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3G_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3G" Cacheable="&b_Cacheable;">
       &DATA_SingleElectron_Run2016v3G;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
     </InputData>
 
-    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3H_blinded" Cacheable="&b_Cacheable;">
+    <InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleElectron_Run2016v3H" Cacheable="&b_Cacheable;">
       &DATA_SingleElectron_Run2016v3H;
       <InputTree Name="AnalysisTree" />
       <OutputTree Name="AnalysisTree" />
