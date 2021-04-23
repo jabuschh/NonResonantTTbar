@@ -999,7 +999,7 @@ void NonResonantTTbarHists::fill(const Event & event){
   // Zprime reco
   bool is_zprime_reconstructed_chi2 = event.get(h_is_zprime_reconstructed_chi2);
   bool is_zprime_reconstructed_correctmatch = event.get(h_is_zprime_reconstructed_correctmatch);
-  if(is_zprime_reconstructed_chi2 && is_mc){ // added is_mc to blind mttbar hists!
+  if(is_zprime_reconstructed_chi2 && is_mc){ // added "is_mc" to blind data in mttbar hists
     ZprimeCandidate* BestZprimeCandidate = event.get(h_BestZprimeCandidateChi2);
     float Mreco = BestZprimeCandidate->Zprime_v4().M();
     float chi2 = BestZprimeCandidate->discriminator("chi2_total");
