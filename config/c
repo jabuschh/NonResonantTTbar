@@ -1,4 +1,0 @@
-cd ..;
-scram b -j8;
-make -j;
-cd config/;

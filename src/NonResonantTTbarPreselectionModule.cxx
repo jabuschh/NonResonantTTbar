@@ -70,7 +70,7 @@ protected:
   std::unique_ptr<Hists> lumihists;
   TString METcollection;
 
-  bool is2016v2, is2016v3, is2017v2, is2018;
+  bool is2016v2, is2016v3, is2017v2, is2018, isUL16preVFP, isUL16postVFP, isUL17, isUL18;
 
 };
 
@@ -96,28 +96,46 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
 
   //// CONFIGURATION
   const TString METcollection = ctx.get("METName");
-  isMC = ctx.get("dataset_type") == "MC";
-  ispuppi = (ctx.get("is_puppi") == "true");
-  is2016v2 = (ctx.get("dataset_version").find("2016v2") != std::string::npos);
-  is2016v3 = (ctx.get("dataset_version").find("2016v3") != std::string::npos);
-  is2017v2 = (ctx.get("dataset_version").find("2017v2") != std::string::npos);
-  is2018 = (ctx.get("dataset_version").find("2018") != std::string::npos);
-  Sys_PU = ctx.get("Sys_PU");
+  isMC     = ctx.get("dataset_type") == "MC";
+  ispuppi  = (ctx.get("is_puppi") == "true");
+  Sys_PU   = ctx.get("Sys_PU");
+  is2016v2      = (ctx.get("dataset_version").find("2016v2")      != std::string::npos);
+  is2016v3      = (ctx.get("dataset_version").find("2016v3")      != std::string::npos);
+  is2017v2      = (ctx.get("dataset_version").find("2017v2")      != std::string::npos);
+  is2018        = (ctx.get("dataset_version").find("2018")        != std::string::npos);
+  isUL16preVFP  = (ctx.get("dataset_version").find("UL16preVFP")  != std::string::npos);
+  isUL16postVFP = (ctx.get("dataset_version").find("UL16postVFP") != std::string::npos);
+  isUL17        = (ctx.get("dataset_version").find("UL17")        != std::string::npos);
+  isUL18        = (ctx.get("dataset_version").find("UL18")        != std::string::npos);
 
-  cout << "Is this running on puppi: " << ispuppi << endl;
-
+  if(ispuppi){
+    cout << "is_puppi = true" << endl;
+  }
+  else{
+    cout << "is_puppi = false" << endl;
+  }
 
   ElectronId eleID;  MuonId muID;
-  if(is2017v2 || is2018){
-    eleID = ElectronID_Fall17_tight_noIso;//ToDo: compare cutBased without iso and MVA-based via wp in UHH2
-    muID  = MuonID(Muon::CutBasedIdGlobalHighPt);
-  }
+
   if(is2016v2 || is2016v3){
-    //eleID = ElectronID_Summer16_tight_noIso;//ToDo: compare cutBased without iso and MVA-based via wp in UHH2
+    //eleID = ElectronID_Summer16_tight_noIso; //ToDo: compare cutBased without iso and MVA-based via wp in UHH2
     //muID      = MuonID(Muon::Highpt);
     eleID = ElectronID_Summer16_medium_noIso;
     muID  = MuonID(Muon::CutBasedIdTight); // see more muonIDs https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonReco/interface/Muon.h#L201
   }
+  if(is2017v2 || is2018){
+    eleID = ElectronID_Fall17_tight_noIso; //ToDo: compare cutBased without iso and MVA-based via wp in UHH2
+    muID  = MuonID(Muon::CutBasedIdGlobalHighPt);
+  }
+  if(isUL16preVFP || isUL16postVFP){
+    eleID = ElectronID_Summer16_medium_noIso;
+    muID  = MuonID(Muon::CutBasedIdTight);
+  }
+  if(isUL17 || isUL18){
+    eleID = ElectronID_Fall17_tight_noIso;
+    muID  = MuonID(Muon::CutBasedIdGlobalHighPt);
+  }
+
   double electron_pt(50.);
   double muon_pt(55.);
   double jet1_pt(50.);
@@ -142,11 +160,9 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
 
   // GEN Flavor selection [W+jets flavor-splitting]
   if(ctx.get("dataset_version").find("WJets") != std::string::npos){
-
     if     (ctx.get("dataset_version").find("_B") != std::string::npos) genflavor_sel.reset(new GenFlavorSelection("b"));
     else if(ctx.get("dataset_version").find("_C") != std::string::npos) genflavor_sel.reset(new GenFlavorSelection("c"));
     else if(ctx.get("dataset_version").find("_L") != std::string::npos) genflavor_sel.reset(new GenFlavorSelection("l"));
-
     else genflavor_sel.reset(new uhh2::AndSelection(ctx));
   }
   else genflavor_sel.reset(new uhh2::AndSelection(ctx));
@@ -199,7 +215,7 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
 
 
 bool NonResonantTTbarPreselectionModule::process(uhh2::Event& event){
-
+  // cout << "event number: " << event.event << endl;
 
   //debug
   //if(event.event==97559444 || event.event==23){
@@ -208,52 +224,40 @@ bool NonResonantTTbarPreselectionModule::process(uhh2::Event& event){
   //
   //   cout<<"Getting started... "<<event.event<<endl;
   //
-  uint jetI= 0;
-  for (const Jet & jet: *event.jets) {
-    cout << "-- Ak4 jet pt = " << jet.pt() << "	"  << "jet eta = " << jet.eta() << "     "  << "jet phi = " << jet.phi() << "	" << "for jet#" << jetI << endl;
-    jetI++;
-  }
-  uint jetInd = 0;
-  for (const TopJet & toppuppijet: *event.toppuppijets) {
-    cout << "-- PUPPI Top jet pt = " << toppuppijet.pt()  << "     "  << "jet eta = " << toppuppijet.eta()<< "     "  << "jet phi = " << toppuppijet.phi() << "	"  << "for jet#" << jetInd << endl;
-    jetInd++;
-  }
-  uint chsjetInd = 0;
-  for (const TopJet & topjet: *event.topjets) {
-    cout << "--- CHS Top jet pt = " << topjet.pt() << "     "  << "jet eta = " << topjet.eta()<< "     "  << "jet phi = " << topjet.phi()  << "	" << "for jet#" << chsjetInd << endl;
-    chsjetInd++;
-  }
+  // uint jetI= 0;
+  // for (const Jet & jet: *event.jets) {
+  //   cout << "-- Ak4 jet pt = " << jet.pt() << "	"  << "jet eta = " << jet.eta() << "     "  << "jet phi = " << jet.phi() << "	" << "for jet#" << jetI << endl;
+  //   jetI++;
+  // }
+  // uint jetInd = 0;
+  // for (const TopJet & toppuppijet: *event.toppuppijets) {
+  //   cout << "-- PUPPI Top jet pt = " << toppuppijet.pt()  << "     "  << "jet eta = " << toppuppijet.eta()<< "     "  << "jet phi = " << toppuppijet.phi() << "	"  << "for jet#" << jetInd << endl;
+  //   jetInd++;
+  // }
+  // uint chsjetInd = 0;
+  // for (const TopJet & topjet: *event.topjets) {
+  //   cout << "--- CHS Top jet pt = " << topjet.pt() << "     "  << "jet eta = " << topjet.eta()<< "     "  << "jet phi = " << topjet.phi()  << "	" << "for jet#" << chsjetInd << endl;
+  //   chsjetInd++;
+  // }
 
-  cout << "----- 1 -----" << endl;
 
-  cout << "Getting started... " << event.event << endl;
+  // cout << "Getting started... " << event.event << endl;
   fill_histograms(event, "Input");
 
-  cout << "----- 2 -----" << endl;
-
-  bool commonResult = common->process(event);
-  cout << "----- A -----" << endl;
+  bool commonResult = common->process(event); // error appears here! -> see CommonModules.cxx
   if (!commonResult) return false;
-  cout << "----- B -----" << endl;
   sort_by_pt<Muon>(*event.muons);
-  cout << "----- C -----" << endl;
   sort_by_pt<Electron>(*event.electrons);
-  cout << "----- D -----" << endl;
   if(ispuppi){
     toppuppijetCorr->process(event);
-    cout << "----- E -----" << endl;
   } else {
     topjetCorr->process(event);
-    cout << "----- F -----" << endl;
   }
   // cout<<"TopJEC_JLC ... "<<event.event<<endl;
   // cout<<"Common Modules... "<<event.event<<endl;
 
-  cout << "----- 3 -----" << endl;
-
   fill_histograms(event, "CommonModules");
 
-  cout << "----- 4 -----" << endl;
 
   // MET filters
   // if(!metfilters_sel->passes(event)) return false;
@@ -265,15 +269,10 @@ bool NonResonantTTbarPreselectionModule::process(uhh2::Event& event){
     if(!genflavor_sel->passes(event)) return false;
   }
 
-  cout << "----- 5 -----" << endl;
-
   //cout<<"GEN ME quark-flavor selection ... "<<event.event<<endl;
 
   const bool pass_lep1 = ((event.muons->size() >= 1) || (event.electrons->size() >= 1));
   if(!pass_lep1) return false;
-
-  cout << "----- 6 -----" << endl;
-
   fill_histograms(event, "Lepton1");
 
   jet_IDcleaner->process(event);
@@ -283,8 +282,6 @@ bool NonResonantTTbarPreselectionModule::process(uhh2::Event& event){
   sort_by_pt<Jet>(*event.jets);
   fill_histograms(event, "JetCleaner1");
   //cout<<"JetCleaner1 ... "<<event.event<<endl;
-
-  cout << "----- 7 -----" << endl;
 
   // Lepton-2Dcut variables
   for(auto& muo : *event.muons){
@@ -296,8 +293,6 @@ bool NonResonantTTbarPreselectionModule::process(uhh2::Event& event){
     muo.set_tag(Muon::twodcut_pTrel, pTrel);
   }
 
-  cout << "----- 8 -----" << endl;
-
   for(auto& ele : *event.electrons){
 
     float    dRmin, pTrel;
@@ -307,21 +302,14 @@ bool NonResonantTTbarPreselectionModule::process(uhh2::Event& event){
     ele.set_tag(Electron::twodcut_pTrel, pTrel);
   }
 
-  cout << "----- 9 -----" << endl;
-
-
   jet_cleaner2->process(event);
   sort_by_pt<Jet>(*event.jets);
   fill_histograms(event, "JetCleaner2");
   //cout<<"JetCleaner2 ... "<<event.event<<endl;
 
-  cout << "----- 10 -----" << endl;
-
   topjet_IDcleaner->process(event);
   topjet_cleaner->process(event);
   sort_by_pt<TopJet>(*event.topjets);
-
-  cout << "----- 11 -----" << endl;
 
   topjet_puppi_IDcleaner->process(event);
   topjet_puppi_cleaner->process(event);
@@ -329,28 +317,20 @@ bool NonResonantTTbarPreselectionModule::process(uhh2::Event& event){
   fill_histograms(event, "TopjetCleaner");
   //cout<<"TopjetCleaner ... "<<event.event<<endl;
 
-  cout << "----- 12 -----" << endl;
-
   // 1st AK4 jet selection
   const bool pass_jet1 = jet1_sel->passes(event);
   if(!pass_jet1) return false;
   fill_histograms(event, "Jet1");
-
-  cout << "----- 13 -----" << endl;
 
   // 2nd AK4 jet selection
   const bool pass_jet2 = jet2_sel->passes(event);
   if(!pass_jet2) return false;
   fill_histograms(event, "Jet2");
 
-  cout << "----- 14 -----" << endl;
-
   // MET selection
   const bool pass_met = met_sel->passes(event);
   if(!pass_met) return false;
   fill_histograms(event, "MET");
-
-  cout << "----- 15 -----" << endl;
 
   return true;
 }
