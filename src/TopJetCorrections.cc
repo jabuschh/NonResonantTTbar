@@ -92,7 +92,7 @@ void TopJetCorrections::init(Context & ctx){
       jer_tag = "Summer16_25nsV1";
     } else if (year == Year::is2017v1 || year == Year::is2017v2) {
       jer_tag = "Fall17_V3";
-    } else if (year == Year::is2018) {
+    } else if (year == Year::is2018 || year == Year::isUL18) {
       jer_tag = "Autumn18_V7";
     } else {
       throw runtime_error("Cannot find suitable jet resolution file & scale factors for this year for JetResolutionSmearer");

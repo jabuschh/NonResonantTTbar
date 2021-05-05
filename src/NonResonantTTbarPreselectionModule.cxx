@@ -70,7 +70,7 @@ protected:
   std::unique_ptr<Hists> lumihists;
   TString METcollection;
 
-  bool is2016v2, is2016v3, is2017v2, is2018;
+  bool is2016v2, is2016v3, is2017v2, is2018, isUL18;
 
 };
 
@@ -96,19 +96,20 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
 
   //// CONFIGURATION
   const TString METcollection = ctx.get("METName");
-  isMC = ctx.get("dataset_type") == "MC";
-  ispuppi = (ctx.get("is_puppi") == "true");
+  isMC     = ctx.get("dataset_type") == "MC";
+  ispuppi  = (ctx.get("is_puppi") == "true");
   is2016v2 = (ctx.get("dataset_version").find("2016v2") != std::string::npos);
   is2016v3 = (ctx.get("dataset_version").find("2016v3") != std::string::npos);
   is2017v2 = (ctx.get("dataset_version").find("2017v2") != std::string::npos);
-  is2018 = (ctx.get("dataset_version").find("2018") != std::string::npos);
-  Sys_PU = ctx.get("Sys_PU");
+  is2018   = (ctx.get("dataset_version").find("2018") != std::string::npos);
+  // isUL18   = (ctx.get("dataset_version").find("UL18") != std::string::npos);
+  Sys_PU   = ctx.get("Sys_PU");
 
   cout << "Is this running on puppi: " << ispuppi << endl;
 
 
   ElectronId eleID;  MuonId muID;
-  if(is2017v2 || is2018){
+  if(is2017v2 || is2018){ //  || isUL18
     eleID = ElectronID_Fall17_tight_noIso;//ToDo: compare cutBased without iso and MVA-based via wp in UHH2
     muID  = MuonID(Muon::CutBasedIdGlobalHighPt);
   }

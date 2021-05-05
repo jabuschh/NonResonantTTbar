@@ -41,7 +41,7 @@
 #include <UHH2/common/include/TTbarReconstruction.h>
 #include <UHH2/common/include/ReconstructionHypothesisDiscriminators.h>
 
-#include "UHH2/common/include/NeuralNetworkBase.hpp"
+#include "UHH2/common/include/NeuralNetworkBase.h"
 
 using namespace std;
 using namespace uhh2;
