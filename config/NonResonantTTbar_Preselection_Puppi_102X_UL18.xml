@@ -2,7 +2,7 @@
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
 
 <!ENTITY TargetLumi      "59740">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_102X_v2/Preselection_2018/">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_106X_v1/Preselection_UL18/">
 <!-- <!ENTITY PRESELdir       "/nfs/dust/cms/group/zprime-uhh/Presel_2018_noMETcut/"> -->
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
@@ -60,7 +60,7 @@
 <!ENTITY QCD_HT1500to2000 SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT1500to2000_madgraph.xml">
 <!ENTITY QCD_HT2000toInf  SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT2000toInf_madgraph.xml">
 <!-- ALP -->
-<!ENTITY ALPtoTTbar_interference_2018 SYSTEM "../data/ALPtoTTbar_privateProduction/ALPtoTTbar_interference_private100k_colorflowSMlike.xml">
+<!ENTITY ALPtoTTbar_interference_UL18 SYSTEM "../data/ALPtoTTbar_privateProduction/ALPtoTTbar_interference_private100k_colorflowSMlike.xml">
 
 ]>
 
@@ -74,6 +74,12 @@
 	<Package Name="SUHH2NonResonantTTbar.par"/>
 
 	<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&PRESELdir;/" PostFix="" TargetLumi="&TargetLumi;">
+
+		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="ALPtoTTbar_interference_UL18" Cacheable="&b_Cacheable;">
+			&ALPtoTTbar_interference_UL18;
+			<InputTree Name="AnalysisTree"/>
+			<OutputTree Name="AnalysisTree"/>
+		</InputData>
 
 		<!-- <InputData Lumi="7432926.584" NEventsMax="&NEVT;" Type="MC" Version="ST_tW_antitop_5f_inclusiveDecays_2018" Cacheable="&b_Cacheable;">
 			&ST_tW_antitop_5f_inclusiveDecays;
@@ -346,14 +352,6 @@
 		</InputData> -->
 
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="ALPtoTTbar_interference_2018" Cacheable="&b_Cacheable;">
-			&ALPtoTTbar_interference_2018;
-			<InputTree Name="AnalysisTree"/>
-			<OutputTree Name="AnalysisTree"/>
-		</InputData>
-
-
-
 		<UserConfig>
 			<Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices"/>
 			<Item Name="GenParticleCollection"   Value="GenParticles"/>
@@ -367,11 +365,14 @@
 			<Item Name="METName"                 Value="slimmedMETsPuppi"/>
 			<Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
 
-			<Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.root"/>
+			<!-- <Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/2018/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.root"/> -->
+			<Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON_normtag.root"/>
 			<Item Name="lumihists_lumi_per_bin" Value="500.0"/>
 
-			<Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/MyMCPileupHistogram.root" />
-			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/MyDataPileupHistogram2018.root" />
+			<!-- <Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/2018/MyMCPileupHistogram.root" />
+			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/2018/MyDataPileupHistogram2018.root" /> -->
+			<Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyMCPileupHistogram_UL18.root" />
+			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18.root" />
 
 			<Item Name="is_puppi" Value="&IS_PUPPI;"/>
 			<Item Name="Sys_PU" Value="central"/>

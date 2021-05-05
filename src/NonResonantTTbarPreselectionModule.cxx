@@ -49,7 +49,7 @@ protected:
 
 
   // Corrections
-  std::unique_ptr<CommonModules>   common;
+  std::unique_ptr<CommonModules> common;
   std::unique_ptr<TopJetCorrections> topjetCorr;
   std::unique_ptr<TopPuppiJetCorrections> toppuppijetCorr;
 
@@ -82,8 +82,8 @@ void NonResonantTTbarPreselectionModule::book_histograms(uhh2::Context& ctx, vec
 }
 
 void NonResonantTTbarPreselectionModule::fill_histograms(uhh2::Event& event, string tag){
-    string mytag = tag+"_General";
-    HFolder(mytag)->fill(event);
+  string mytag = tag+"_General";
+  HFolder(mytag)->fill(event);
 }
 
 
@@ -122,7 +122,7 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
   double muon_pt(55.);
   double jet1_pt(50.);
   double jet2_pt(20.);
-  double MET(50.); // not used
+  double MET(50.);
 
 
   // // just as information:
@@ -190,7 +190,6 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
   jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut(jet2_pt, 2.4))));
   met_sel .reset(new METCut  (MET   , uhh2::infinity));
 
-
   // Book histograms
   vector<string> histogram_tags = {"Input", "CommonModules", "Lepton1", "JetID", "JetCleaner1", "JetCleaner2", "TopjetCleaner", "Jet1", "Jet2", "MET"};
   book_histograms(ctx, histogram_tags);
@@ -202,46 +201,59 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
 bool NonResonantTTbarPreselectionModule::process(uhh2::Event& event){
 
 
-//debug
-//if(event.event==97559444 || event.event==23){
-/*if(event.event!=500494653) return false;
-cout << "Event number = " << event.event << endl;
+  //debug
+  //if(event.event==97559444 || event.event==23){
+  // if(event.event!=500494653) return false;
+  // cout << "Event number = " << event.event << endl;
+  //
+  //   cout<<"Getting started... "<<event.event<<endl;
+  //
+  uint jetI= 0;
+  for (const Jet & jet: *event.jets) {
+    cout << "-- Ak4 jet pt = " << jet.pt() << "	"  << "jet eta = " << jet.eta() << "     "  << "jet phi = " << jet.phi() << "	" << "for jet#" << jetI << endl;
+    jetI++;
+  }
+  uint jetInd = 0;
+  for (const TopJet & toppuppijet: *event.toppuppijets) {
+    cout << "-- PUPPI Top jet pt = " << toppuppijet.pt()  << "     "  << "jet eta = " << toppuppijet.eta()<< "     "  << "jet phi = " << toppuppijet.phi() << "	"  << "for jet#" << jetInd << endl;
+    jetInd++;
+  }
+  uint chsjetInd = 0;
+  for (const TopJet & topjet: *event.topjets) {
+    cout << "--- CHS Top jet pt = " << topjet.pt() << "     "  << "jet eta = " << topjet.eta()<< "     "  << "jet phi = " << topjet.phi()  << "	" << "for jet#" << chsjetInd << endl;
+    chsjetInd++;
+  }
 
-  cout<<"Getting started... "<<event.event<<endl;
+  cout << "----- 1 -----" << endl;
 
-uint jetI= 0;
-for (const Jet & jet: *event.jets) {
-cout << "-- Ak4 jet pt = " << jet.pt() << "	"  << "jet eta = " << jet.eta() << "     "  << "jet phi = " << jet.phi() << "	" << "for jet#" << jetI << endl;
-jetI++;
-}
-uint jetInd = 0;
-for (const TopJet & toppuppijet: *event.toppuppijets) {
-cout << "-- PUPPI Top jet pt = " << toppuppijet.pt()  << "     "  << "jet eta = " << toppuppijet.eta()<< "     "  << "jet phi = " << toppuppijet.phi() << "	"  << "for jet#" << jetInd << endl;
-jetInd++;
-}
-uint chsjetInd = 0;
-for (const TopJet & topjet: *event.topjets) {
-cout << "--- CHS Top jet pt = " << topjet.pt() << "     "  << "jet eta = " << topjet.eta()<< "     "  << "jet phi = " << topjet.phi()  << "	" << "for jet#" << chsjetInd << endl;
-chsjetInd++;
-}
-*/
-
-  // cout<<"Getting started... "<<event.event<<endl;
+  cout << "Getting started... " << event.event << endl;
   fill_histograms(event, "Input");
 
+  cout << "----- 2 -----" << endl;
+
   bool commonResult = common->process(event);
+  cout << "----- A -----" << endl;
   if (!commonResult) return false;
+  cout << "----- B -----" << endl;
   sort_by_pt<Muon>(*event.muons);
+  cout << "----- C -----" << endl;
   sort_by_pt<Electron>(*event.electrons);
+  cout << "----- D -----" << endl;
   if(ispuppi){
-  toppuppijetCorr->process(event);
+    toppuppijetCorr->process(event);
+    cout << "----- E -----" << endl;
   } else {
-  topjetCorr->process(event);
+    topjetCorr->process(event);
+    cout << "----- F -----" << endl;
   }
   // cout<<"TopJEC_JLC ... "<<event.event<<endl;
   // cout<<"Common Modules... "<<event.event<<endl;
 
+  cout << "----- 3 -----" << endl;
+
   fill_histograms(event, "CommonModules");
+
+  cout << "----- 4 -----" << endl;
 
   // MET filters
   // if(!metfilters_sel->passes(event)) return false;
@@ -253,10 +265,14 @@ chsjetInd++;
     if(!genflavor_sel->passes(event)) return false;
   }
 
-    //cout<<"GEN ME quark-flavor selection ... "<<event.event<<endl;
+  cout << "----- 5 -----" << endl;
+
+  //cout<<"GEN ME quark-flavor selection ... "<<event.event<<endl;
 
   const bool pass_lep1 = ((event.muons->size() >= 1) || (event.electrons->size() >= 1));
   if(!pass_lep1) return false;
+
+  cout << "----- 6 -----" << endl;
 
   fill_histograms(event, "Lepton1");
 
@@ -268,6 +284,8 @@ chsjetInd++;
   fill_histograms(event, "JetCleaner1");
   //cout<<"JetCleaner1 ... "<<event.event<<endl;
 
+  cout << "----- 7 -----" << endl;
+
   // Lepton-2Dcut variables
   for(auto& muo : *event.muons){
 
@@ -278,6 +296,8 @@ chsjetInd++;
     muo.set_tag(Muon::twodcut_pTrel, pTrel);
   }
 
+  cout << "----- 8 -----" << endl;
+
   for(auto& ele : *event.electrons){
 
     float    dRmin, pTrel;
@@ -287,39 +307,52 @@ chsjetInd++;
     ele.set_tag(Electron::twodcut_pTrel, pTrel);
   }
 
+  cout << "----- 9 -----" << endl;
+
 
   jet_cleaner2->process(event);
   sort_by_pt<Jet>(*event.jets);
   fill_histograms(event, "JetCleaner2");
-    //cout<<"JetCleaner2 ... "<<event.event<<endl;
+  //cout<<"JetCleaner2 ... "<<event.event<<endl;
+
+  cout << "----- 10 -----" << endl;
 
   topjet_IDcleaner->process(event);
   topjet_cleaner->process(event);
   sort_by_pt<TopJet>(*event.topjets);
 
+  cout << "----- 11 -----" << endl;
+
   topjet_puppi_IDcleaner->process(event);
   topjet_puppi_cleaner->process(event);
   sort_by_pt<TopJet>(*event.toppuppijets);
   fill_histograms(event, "TopjetCleaner");
-    //cout<<"TopjetCleaner ... "<<event.event<<endl;
+  //cout<<"TopjetCleaner ... "<<event.event<<endl;
+
+  cout << "----- 12 -----" << endl;
 
   // 1st AK4 jet selection
   const bool pass_jet1 = jet1_sel->passes(event);
   if(!pass_jet1) return false;
   fill_histograms(event, "Jet1");
 
+  cout << "----- 13 -----" << endl;
+
   // 2nd AK4 jet selection
   const bool pass_jet2 = jet2_sel->passes(event);
   if(!pass_jet2) return false;
   fill_histograms(event, "Jet2");
+
+  cout << "----- 14 -----" << endl;
 
   // MET selection
   const bool pass_met = met_sel->passes(event);
   if(!pass_met) return false;
   fill_histograms(event, "MET");
 
-  return true;
+  cout << "----- 15 -----" << endl;
 
+  return true;
 }
 
 UHH2_REGISTER_ANALYSIS_MODULE(NonResonantTTbarPreselectionModule)

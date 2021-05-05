@@ -163,7 +163,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   double jet1_pt(150.);
   double jet2_pt(50.);
   double chi2_max(30.);
-  double mtt_blind(10000.); // effectively no blinding -> not plotting mttbar related plots with data
+  // double mtt_blind(3000.);
   int nmuon_min1, nmuon_max1;
   int nmuon_min2, nmuon_max2;
   int nele_min, nele_max;
@@ -279,7 +279,7 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   TTbarMatchable_selection.reset(new TTbarSemiLepMatchableSelection());
   Chi2CandidateMatched_selection.reset(new Chi2CandidateMatchedSelection(ctx));
   ZprimeTopTag_selection.reset(new ZprimeTopTagSelection(ctx));
-  BlindData_selection.reset(new BlindDataSelection(ctx, mtt_blind));
+  // BlindData_selection.reset(new BlindDataSelection(ctx, mtt_blind));
 
   HEM_selection.reset(new HEMSelection(ctx)); // HEM issue in 2018, veto on leptons and jets
 

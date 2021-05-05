@@ -18,7 +18,6 @@ void TopJetCorrections::fail_if_init() const{
   }
 }
 
-
 TopJetCorrections::TopJetCorrections(){
   tjec_tag_2016 = "Summer16_07Aug2017";
   tjec_ver_2016 = "11";
@@ -29,10 +28,22 @@ TopJetCorrections::TopJetCorrections(){
   tjec_tag_2018 = "Autumn18";
   tjec_ver_2018 = "19";
 
+  tjec_tag_UL16preVFP = "Summer19UL16";
+  tjec_ver_UL16preVFP = "2";
+
+  tjec_tag_UL16postVFP = "Summer19UL16APV";
+  tjec_ver_UL16postVFP = "2";
+
+  tjec_tag_UL17 = "Summer19UL17";
+  tjec_ver_UL17 = "5";
+
+  // FIXME: update when official set
+  tjec_tag_UL18 = "Summer19UL18";
+  tjec_ver_UL18 = "5";
+
   tjec_tjet_coll = "dummy";
   tjec_subjet_coll = "dummy";
 }
-
 
 void TopJetCorrections::init(Context & ctx){
   if(init_done){
@@ -49,122 +60,187 @@ void TopJetCorrections::init(Context & ctx){
 
   std::string algo = "";
   // algo size
-  if (userTopJetColl.find("ak4") != std::string::npos) {
+  if(userTopJetColl.find("ak4") != std::string::npos){
     algo = "AK4";
   }
   else if(userTopJetColl.find("ak8") != std::string::npos){
     algo = "AK8";
   }
-  else if (userTopJetColl.find("ak8") == std::string::npos) {
+  else if(userTopJetColl.find("ak8") == std::string::npos){
     std::cout << "TopJetCorrections.cxx: Cannot determine tjet cone + radius (neither AK4 nor AK8) - going to assume it is AK8 for JECs" << '\n';
     algo = "AK8";
   }
 
   std::string pus = "PFchs";
   // Pileup subtraction
-  if (userTopJetColl.find("puppi") != std::string::npos) {
+  if(userTopJetColl.find("puppi") != std::string::npos){
     pus = "PFPuppi";
-  } else if (userTopJetColl.find("chs") == std::string::npos) {
-    std::cout << "Cannot determine pileup subtraction (neither CHS nor PUPPI) - going to assume it is CHS for JECs" << std::endl;
+  }
+  else if(userTopJetColl.find("chs") == std::string::npos){
+    std::cout << "TopJetCorrections.cxx: Cannot determine pileup subtraction (neither CHS nor PUPPI) - going to assume it is CHS for JECs" << std::endl;
   }
   tjec_tjet_coll = algo + pus;
   tjec_subjet_coll = "AK4PFchs";
 
   if(is_mc){
     tjet_corrector_MC.reset(new YearSwitcher(ctx));
-    tjet_corrector_MC->setup2016(std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2016, tjec_ver_2016, tjec_tjet_coll)));
-    tjet_corrector_MC->setup2017(std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2017, tjec_ver_2017, tjec_tjet_coll)));
-    tjet_corrector_MC->setup2018(std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2018, tjec_ver_2018, tjec_tjet_coll)));
+    tjet_corrector_MC->setup2016       (std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2016       , tjec_ver_2016       , tjec_tjet_coll)));
+    tjet_corrector_MC->setup2017       (std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2017       , tjec_ver_2017       , tjec_tjet_coll)));
+    tjet_corrector_MC->setup2018       (std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2018       , tjec_ver_2018       , tjec_tjet_coll)));
+    tjet_corrector_MC->setupUL16preVFP (std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_UL16preVFP , tjec_ver_UL16preVFP , tjec_tjet_coll)));
+    tjet_corrector_MC->setupUL16postVFP(std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_UL16postVFP, tjec_ver_UL16postVFP, tjec_tjet_coll)));
+    tjet_corrector_MC->setupUL17       (std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_UL17       , tjec_ver_UL17       , tjec_tjet_coll)));
+    tjet_corrector_MC->setupUL18       (std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_UL18       , tjec_ver_UL18       , tjec_tjet_coll)));
 
     tjet_subjet_corrector_MC.reset(new YearSwitcher(ctx));
-    tjet_subjet_corrector_MC->setup2016(std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2016, tjec_ver_2016, tjec_subjet_coll)));
-    tjet_subjet_corrector_MC->setup2017(std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2017, tjec_ver_2017, tjec_subjet_coll)));
-    tjet_subjet_corrector_MC->setup2018(std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2018, tjec_ver_2018, tjec_subjet_coll)));
+    tjet_subjet_corrector_MC->setup2016       (std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2016       , tjec_ver_2016       , tjec_subjet_coll)));
+    tjet_subjet_corrector_MC->setup2017       (std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2017       , tjec_ver_2017       , tjec_subjet_coll)));
+    tjet_subjet_corrector_MC->setup2018       (std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_2018       , tjec_ver_2018       , tjec_subjet_coll)));
+    tjet_subjet_corrector_MC->setupUL16preVFP (std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_UL16preVFP , tjec_ver_UL16preVFP , tjec_subjet_coll)));
+    tjet_subjet_corrector_MC->setupUL16postVFP(std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_UL16postVFP, tjec_ver_UL16postVFP, tjec_subjet_coll)));
+    tjet_subjet_corrector_MC->setupUL17       (std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_UL17       , tjec_ver_UL17       , tjec_subjet_coll)));
+    tjet_subjet_corrector_MC->setupUL18       (std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesMC(tjec_tag_UL18       , tjec_ver_UL18       , tjec_subjet_coll)));
 
     tjet_JLC_MC.reset(new YearSwitcher(ctx));
-    tjet_JLC_MC->setup2016(std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_2016, tjec_ver_2016, tjec_tjet_coll),"topjets"));
-    tjet_JLC_MC->setup2017(std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_2017, tjec_ver_2017, tjec_tjet_coll),"topjets"));
-    tjet_JLC_MC->setup2018(std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_2018, tjec_ver_2018, tjec_tjet_coll),"topjets"));
+    tjet_JLC_MC->setup2016       (std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_2016       , tjec_ver_2016       , tjec_tjet_coll), "topjets"));
+    tjet_JLC_MC->setup2017       (std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_2017       , tjec_ver_2017       , tjec_tjet_coll), "topjets"));
+    tjet_JLC_MC->setup2018       (std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_2018       , tjec_ver_2018       , tjec_tjet_coll), "topjets"));
+    tjet_JLC_MC->setupUL16preVFP (std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_UL16preVFP , tjec_ver_UL16preVFP , tjec_tjet_coll), "topjets"));
+    tjet_JLC_MC->setupUL16postVFP(std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_UL16postVFP, tjec_ver_UL16postVFP, tjec_tjet_coll), "topjets"));
+    tjet_JLC_MC->setupUL17       (std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_UL17       , tjec_ver_UL17       , tjec_tjet_coll), "topjets"));
+    tjet_JLC_MC->setupUL18       (std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesMC(tjec_tag_UL18       , tjec_ver_UL18       , tjec_tjet_coll), "topjets"));
 
     const Year & year = extract_year(ctx);
     std::string jer_tag = "";
-    if (year == Year::is2016v2 || year == Year::is2016v3) {
+    if(year == Year::is2016v2 || year == Year::is2016v3){
       jer_tag = "Summer16_25nsV1";
-    } else if (year == Year::is2017v1 || year == Year::is2017v2) {
+    }
+    else if(year == Year::is2017v1 || year == Year::is2017v2){
       jer_tag = "Fall17_V3";
-    } else if (year == Year::is2018) {
+    }
+    else if(year == Year::is2018){
       jer_tag = "Autumn18_V7";
-    } else {
-      throw runtime_error("Cannot find suitable jet resolution file & scale factors for this year for JetResolutionSmearer");
     }
-    tjet_resolution_smearer.reset(new GenericJetResolutionSmearer(ctx, "topjets", "gentopjets", JERFiles::JERPathStringMC(jer_tag,algo+pus,"SF"), JERFiles::JERPathStringMC(jer_tag,algo+pus,"PtResolution")));
-
-
+    else if(year == Year::isUL17){
+      jer_tag = "Summer19UL17_JRV2";
+    }
+    else if(year == Year::isUL18){
+      jer_tag = "Summer19UL18_JRV2";
+    }
+    else{
+      throw runtime_error("TopJetCorrections.cxx: Cannot find suitable jet resolution file & scale factors for this year for JetResolutionSmearer");
+    }
+    tjet_resolution_smearer.reset(new GenericJetResolutionSmearer(ctx, "topjets", "gentopjets", JERFiles::JERPathStringMC(jer_tag, algo + pus, "SF"), JERFiles::JERPathStringMC(jer_tag, algo + pus, "PtResolution")));
   }
-   if(is_data){
-
-    tjec_switcher_16.reset(new RunSwitcher(ctx, "2016"));
+  if(is_data){
+    tjec_switcher_16       .reset(new RunSwitcher(ctx, "2016"));
     tjec_subjet_switcher_16.reset(new RunSwitcher(ctx, "2016"));
-    tjec_JLC_switcher_16.reset(new RunSwitcher(ctx, "2016"));
+    tjec_JLC_switcher_16   .reset(new RunSwitcher(ctx, "2016"));
     for (const auto & runItr : runPeriods2016) { // runPeriods defined in common/include/Utils.h
-      tjec_switcher_16->setupRun(runItr, std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesDATA(tjec_tag_2016, tjec_ver_2016, tjec_tjet_coll, runItr)));
-      tjec_subjet_switcher_16->setupRun(runItr, std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesDATA(tjec_tag_2016, tjec_ver_2016, tjec_subjet_coll, runItr)));
-      tjec_JLC_switcher_16->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_2016, tjec_ver_2016, tjec_subjet_coll, runItr),"topjets"));
+      tjec_switcher_16       ->setupRun(runItr, std::make_shared<TopJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_2016, tjec_ver_2016, tjec_tjet_coll  , runItr)));
+      tjec_subjet_switcher_16->setupRun(runItr, std::make_shared<SubJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_2016, tjec_ver_2016, tjec_subjet_coll, runItr)));
+      tjec_JLC_switcher_16   ->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_2016, tjec_ver_2016, tjec_subjet_coll, runItr), "topjets"));
     }
 
-    tjec_switcher_17.reset(new RunSwitcher(ctx, "2017"));
+    tjec_switcher_17       .reset(new RunSwitcher(ctx, "2017"));
     tjec_subjet_switcher_17.reset(new RunSwitcher(ctx, "2017"));
-    tjec_JLC_switcher_17.reset(new RunSwitcher(ctx, "2017"));
+    tjec_JLC_switcher_17   .reset(new RunSwitcher(ctx, "2017"));
     for (const auto & runItr : runPeriods2017) {
-      tjec_switcher_17->setupRun(runItr, std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesDATA(tjec_tag_2017, tjec_ver_2017, tjec_tjet_coll, runItr)));
-      tjec_subjet_switcher_17->setupRun(runItr, std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesDATA(tjec_tag_2017, tjec_ver_2017, tjec_subjet_coll, runItr)));
-      tjec_JLC_switcher_17->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_2017, tjec_ver_2017, tjec_subjet_coll, runItr),"topjets"));
+      tjec_switcher_17       ->setupRun(runItr, std::make_shared<TopJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_2017, tjec_ver_2017, tjec_tjet_coll  , runItr)));
+      tjec_subjet_switcher_17->setupRun(runItr, std::make_shared<SubJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_2017, tjec_ver_2017, tjec_subjet_coll, runItr)));
+      tjec_JLC_switcher_17   ->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_2017, tjec_ver_2017, tjec_subjet_coll, runItr), "topjets"));
     }
 
-    tjec_switcher_18.reset(new RunSwitcher(ctx, "2018"));
+    tjec_switcher_18       .reset(new RunSwitcher(ctx, "2018"));
     tjec_subjet_switcher_18.reset(new RunSwitcher(ctx, "2018"));
-    tjec_JLC_switcher_18.reset(new RunSwitcher(ctx, "2018"));
+    tjec_JLC_switcher_18   .reset(new RunSwitcher(ctx, "2018"));
     for (const auto & runItr : runPeriods2018) {
-      tjec_switcher_18->setupRun(runItr, std::make_shared<TopJetCorrector>(ctx, JERFiles::JECFilesDATA(tjec_tag_2018, tjec_ver_2018, tjec_tjet_coll, runItr)));
-      tjec_subjet_switcher_18->setupRun(runItr, std::make_shared<SubJetCorrector>(ctx, JERFiles::JECFilesDATA(tjec_tag_2018, tjec_ver_2018, tjec_subjet_coll, runItr)));
-      tjec_JLC_switcher_18->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_2018, tjec_ver_2018, tjec_subjet_coll, runItr),"topjets"));
+      tjec_switcher_18       ->setupRun(runItr, std::make_shared<TopJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_2018, tjec_ver_2018, tjec_tjet_coll  , runItr)));
+      tjec_subjet_switcher_18->setupRun(runItr, std::make_shared<SubJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_2018, tjec_ver_2018, tjec_subjet_coll, runItr)));
+      tjec_JLC_switcher_18   ->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_2018, tjec_ver_2018, tjec_subjet_coll, runItr), "topjets"));
+    }
+
+    tjec_switcher_UL16preVFP       .reset(new RunSwitcher(ctx, "2016"));
+    tjec_subjet_switcher_UL16preVFP.reset(new RunSwitcher(ctx, "2016"));
+    tjec_JLC_switcher_UL16preVFP   .reset(new RunSwitcher(ctx, "2016"));
+    for (const auto & runItr : runPeriodsUL16preVFP) {
+      tjec_switcher_UL16preVFP       ->setupRun(runItr, std::make_shared<TopJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_UL16preVFP, tjec_ver_UL16preVFP, tjec_tjet_coll  , runItr)));
+      tjec_subjet_switcher_UL16preVFP->setupRun(runItr, std::make_shared<SubJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_UL16preVFP, tjec_ver_UL16preVFP, tjec_subjet_coll, runItr)));
+      tjec_JLC_switcher_UL16preVFP   ->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_UL16preVFP, tjec_ver_UL16preVFP, tjec_subjet_coll, runItr), "topjets"));
+    }
+
+    tjec_switcher_UL16postVFP       .reset(new RunSwitcher(ctx, "2016"));
+    tjec_subjet_switcher_UL16postVFP.reset(new RunSwitcher(ctx, "2016"));
+    tjec_JLC_switcher_UL16postVFP   .reset(new RunSwitcher(ctx, "2016"));
+    for (const auto & runItr : runPeriodsUL16postVFP) {
+      tjec_switcher_UL16postVFP       ->setupRun(runItr, std::make_shared<TopJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_UL16postVFP, tjec_ver_UL16postVFP, tjec_tjet_coll  , runItr)));
+      tjec_subjet_switcher_UL16postVFP->setupRun(runItr, std::make_shared<SubJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_UL16postVFP, tjec_ver_UL16postVFP, tjec_subjet_coll, runItr)));
+      tjec_JLC_switcher_UL16postVFP   ->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_UL16postVFP, tjec_ver_UL16postVFP, tjec_subjet_coll, runItr), "topjets"));
+    }
+
+    tjec_switcher_UL17       .reset(new RunSwitcher(ctx, "2017"));
+    tjec_subjet_switcher_UL17.reset(new RunSwitcher(ctx, "2017"));
+    tjec_JLC_switcher_UL17   .reset(new RunSwitcher(ctx, "2017"));
+    for (const auto & runItr : runPeriods2017) {
+      tjec_switcher_UL17       ->setupRun(runItr, std::make_shared<TopJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_UL17, tjec_ver_UL17, tjec_tjet_coll  , runItr)));
+      tjec_subjet_switcher_UL17->setupRun(runItr, std::make_shared<SubJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_UL17, tjec_ver_UL17, tjec_subjet_coll, runItr)));
+      tjec_JLC_switcher_UL17   ->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_UL17, tjec_ver_UL17, tjec_subjet_coll, runItr), "topjets"));
+    }
+
+    tjec_switcher_UL18       .reset(new RunSwitcher(ctx, "2018"));
+    tjec_subjet_switcher_UL18.reset(new RunSwitcher(ctx, "2018"));
+    tjec_JLC_switcher_UL18   .reset(new RunSwitcher(ctx, "2018"));
+    for (const auto & runItr : runPeriods2018) {
+      tjec_switcher_UL18       ->setupRun(runItr, std::make_shared<TopJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_UL18, tjec_ver_UL18, tjec_tjet_coll  , runItr)));
+      tjec_subjet_switcher_UL18->setupRun(runItr, std::make_shared<SubJetCorrector>                (ctx, JERFiles::JECFilesDATA(tjec_tag_UL18, tjec_ver_UL18, tjec_subjet_coll, runItr)));
+      tjec_JLC_switcher_UL18   ->setupRun(runItr, std::make_shared<JetLeptonCleaner_by_KEYmatching>(ctx, JERFiles::JECFilesDATA(tjec_tag_UL18, tjec_ver_UL18, tjec_subjet_coll, runItr), "topjets"));
     }
 
     tjet_corrector_data.reset(new YearSwitcher(ctx));
-    tjet_corrector_data->setup2016(tjec_switcher_16);
-    tjet_corrector_data->setup2017(tjec_switcher_17);
-    tjet_corrector_data->setup2018(tjec_switcher_18);
+    tjet_corrector_data->setup2016       (tjec_switcher_16);
+    tjet_corrector_data->setup2017       (tjec_switcher_17);
+    tjet_corrector_data->setup2018       (tjec_switcher_18);
+    tjet_corrector_data->setupUL16preVFP (tjec_switcher_UL16preVFP);
+    tjet_corrector_data->setupUL16postVFP(tjec_switcher_UL16postVFP);
+    tjet_corrector_data->setupUL17       (tjec_switcher_UL17);
+    tjet_corrector_data->setupUL18       (tjec_switcher_UL18);
 
     tjet_subjet_corrector_data.reset(new YearSwitcher(ctx));
-    tjet_subjet_corrector_data->setup2016(tjec_subjet_switcher_16);
-    tjet_subjet_corrector_data->setup2017(tjec_subjet_switcher_17);
-    tjet_subjet_corrector_data->setup2018(tjec_subjet_switcher_18);
+    tjet_subjet_corrector_data->setup2016       (tjec_subjet_switcher_16);
+    tjet_subjet_corrector_data->setup2017       (tjec_subjet_switcher_17);
+    tjet_subjet_corrector_data->setup2018       (tjec_subjet_switcher_18);
+    tjet_subjet_corrector_data->setupUL16preVFP (tjec_subjet_switcher_UL16preVFP);
+    tjet_subjet_corrector_data->setupUL16postVFP(tjec_subjet_switcher_UL16postVFP);
+    tjet_subjet_corrector_data->setupUL17       (tjec_subjet_switcher_UL18);
+    tjet_subjet_corrector_data->setupUL18       (tjec_subjet_switcher_UL18);
 
     tjet_JLC_data.reset(new YearSwitcher(ctx));
-    tjet_JLC_data->setup2016(tjec_JLC_switcher_16);
-    tjet_JLC_data->setup2017(tjec_JLC_switcher_17);
-    tjet_JLC_data->setup2018(tjec_JLC_switcher_18);
-
+    tjet_JLC_data->setup2016       (tjec_JLC_switcher_16);
+    tjet_JLC_data->setup2017       (tjec_JLC_switcher_17);
+    tjet_JLC_data->setup2018       (tjec_JLC_switcher_18);
+    tjet_JLC_data->setupUL16preVFP (tjec_JLC_switcher_UL16preVFP);
+    tjet_JLC_data->setupUL16postVFP(tjec_JLC_switcher_UL16postVFP);
+    tjet_JLC_data->setupUL17       (tjec_JLC_switcher_UL18);
+    tjet_JLC_data->setupUL18       (tjec_JLC_switcher_UL18);
   }
-
 }
 
 bool TopJetCorrections::process(uhh2::Event & event){
   if(!init_done){
     throw runtime_error("TopJetCorrections::init not called (has to be called in AnalysisModule constructor)");
   }
-  if (is_mc) {
+  if(is_mc){
     //cout << "Going to correct CHS Ak8 jets" << endl;
-    tjet_corrector_MC->process(event);
+    tjet_corrector_MC       ->process(event);
     tjet_subjet_corrector_MC->process(event);
-    tjet_JLC_MC->process(event);
-    tjet_resolution_smearer->process(event);
+    tjet_JLC_MC             ->process(event);
+    tjet_resolution_smearer ->process(event);
   }
-  if (is_data) {
+  if(is_data){
     //cout << "Correct DATA for CHS jets" << endl;
-    tjet_corrector_data->process(event);
+    tjet_corrector_data       ->process(event);
     tjet_subjet_corrector_data->process(event);
-    tjet_JLC_data->process(event);
+    tjet_JLC_data             ->process(event);
   }
 
   return true;
