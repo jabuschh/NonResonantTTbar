@@ -69,7 +69,7 @@ protected:
 
   // Scale Factors -- Systematics
   unique_ptr<MCMuonScaleFactor> MuonID_module, MuonTrigger_module;
-  unique_ptr<MCElecScaleFactor> EleID_module, EleTrigger_module;
+  unique_ptr<MCElecScaleFactor> EleID_module , EleTrigger_module;
 
   // AnalysisModules
   unique_ptr<AnalysisModule> LumiWeight_module, PUWeight_module, printer_genparticles, BTagWeight_module, TopPtReweight_module, MCScale_module, Corrections_module;
@@ -112,21 +112,21 @@ protected:
   TString sample;
   int runnr_oldtriggers = 299368;
 
-  bool is2016v2, is2016v3, is2017v2, is2018;
+  bool is2016v2, is2016v3, is2017v2, is2018, isUL16preVFP, isUL16postVFP, isUL17, isUL18;
   bool isMuon, isElectron;
 };
 
 void NonResonantTTbarAnalysisModule::book_histograms(uhh2::Context& ctx, vector<string> tags){
   for(const auto & tag : tags){
     string mytag = tag + "_Skimming";
-    mytag = tag+"_General";
+    mytag = tag + "_General";
     book_HFolder(mytag, new NonResonantTTbarHists(ctx,mytag));
   }
 }
 
 void NonResonantTTbarAnalysisModule::fill_histograms(uhh2::Event& event, string tag){
   string mytag = tag + "_Skimming";
-  mytag = tag+"_General";
+  mytag = tag + "_General";
   HFolder(mytag)->fill(event);
 }
 
@@ -145,16 +145,20 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
     cout << " " << kv.first << " = " << kv.second << endl;
   }
   // Configuration
-  isMC = (ctx.get("dataset_type") == "MC");
+  isMC    = (ctx.get("dataset_type") == "MC");
   ispuppi = (ctx.get("is_puppi") == "true");
   TString mode = "chs";
   if(ispuppi) mode = "puppi";
   string tmp = ctx.get("dataset_version");
   sample = tmp;
-  is2016v2 = (ctx.get("dataset_version").find("2016v2") != std::string::npos);
-  is2016v3 = (ctx.get("dataset_version").find("2016v3") != std::string::npos);
-  is2017v2 = (ctx.get("dataset_version").find("2017v2") != std::string::npos);
-  is2018 = (ctx.get("dataset_version").find("2018") != std::string::npos);
+  is2016v2      = (ctx.get("dataset_version").find("2016v2")      != std::string::npos);
+  is2016v3      = (ctx.get("dataset_version").find("2016v3")      != std::string::npos);
+  is2017v2      = (ctx.get("dataset_version").find("2017v2")      != std::string::npos);
+  is2018        = (ctx.get("dataset_version").find("2018")        != std::string::npos);
+  isUL16preVFP  = (ctx.get("dataset_version").find("UL16preVFP")  != std::string::npos);
+  isUL16postVFP = (ctx.get("dataset_version").find("UL16postVFP") != std::string::npos);
+  isUL17        = (ctx.get("dataset_version").find("UL17")        != std::string::npos);
+  isUL18        = (ctx.get("dataset_version").find("UL18")        != std::string::npos);
 
   // Important selection values
   islooserselection = (ctx.get("is_looser_selection") == "true");
@@ -175,11 +179,19 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
 
   if(isMuon){ //semileptonic muon channel
     trigger1 = "HLT_Mu50_v*";
-    if(is2016v2 || is2016v3)
-    //trigger2 = "HLT_TkMu50_v*";
-    trigger2 = "HLT_Mu50_v*"; //TkMu path does not exist in 2017/2018 and RunB 2016
-    else
-    trigger2 = "HLT_Mu50_v*"; //TkMu path does not exist in 2017/2018
+    if(is2016v2 || is2016v3){
+      //trigger2 = "HLT_TkMu50_v*";
+      trigger2 = "HLT_Mu50_v*"; //TkMu path does not exist in 2017/2018 and RunB 2016
+    }
+    else if(is2017v2 || is2018){
+      trigger2 = "HLT_Mu50_v*"; //TkMu path does not exist in 2017/2018
+    }
+    else if(isUL16preVFP || isUL16postVFP){
+      trigger2 = "HLT_Mu50_v*";
+    }
+    else if(isUL17 || isUL18){
+      trigger2 = "HLT_Mu50_v*";
+    }
     nmuon_min1 = 1, nmuon_max1 = -1;
     nmuon_min2 = 1, nmuon_max2 = 1;
     nele_min = 0; nele_max = 0;
@@ -237,30 +249,63 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
 
   // Muon
   if((is2016v3 || is2016v2) && isMuon){
-    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root", "NUM_TightID_DEN_genTracks_eta_pt", 1.0, "MuonID", true, Sys_MuonID)); // NUM_TightID_DEN_genTracks_eta_pt ? old: MC_NUM_TightID_DEN_genTracks_PAR_pt_eta
-    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MuonTrigger_EfficienciesAndSF_average_RunBtoH.root", "IsoMu50_OR_IsoTkMu50_PtEtaBins", 0.5, "MuonTrigger", true, Sys_MuonTrigger));
+    MuonID_module     .reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root"     , "NUM_TightID_DEN_genTracks_eta_pt", 1.0, "MuonID"     , true, Sys_MuonID)); // NUM_TightID_DEN_genTracks_eta_pt ? old: MC_NUM_TightID_DEN_genTracks_PAR_pt_eta
+    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/MuonTrigger_EfficienciesAndSF_average_RunBtoH.root", "IsoMu50_OR_IsoTkMu50_PtEtaBins"  , 0.5, "MuonTrigger", true, Sys_MuonTrigger));
   }
   if(is2017v2 && isMuon){
-    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/MuonID_94X_RunBCDEF_SF_ID.root", "NUM_HighPtID_DEN_genTracks_pair_newTuneP_probe_pt_abseta", 1.0, "HighPtID", true, Sys_MuonID));
-    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/MuonTrigger_EfficienciesAndSF_RunBtoF_Nov17Nov2017.root", "Mu50_PtEtaBins/pt_abseta_ratio", 0.5, "Trigger", true, Sys_MuonTrigger));
+    MuonID_module     .reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/MuonID_94X_RunBCDEF_SF_ID.root"                         , "NUM_HighPtID_DEN_genTracks_pair_newTuneP_probe_pt_abseta", 1.0, "HighPtID", true, Sys_MuonID));
+    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/MuonTrigger_EfficienciesAndSF_RunBtoF_Nov17Nov2017.root", "Mu50_PtEtaBins/pt_abseta_ratio"                          , 0.5, "Trigger" , true, Sys_MuonTrigger));
   }
   if(is2018 && isMuon){
-    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Muon_ID_SF_RunABCD.root", "NUM_HighPtID_DEN_TrackerMuons_pair_newTuneP_probe_pt_abseta", 1.0, "HighPtID", true, Sys_MuonID));
-    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Muon_Trigger_Eff_SF_AfterMuonHLTUpdate.root", "Mu50_OR_OldMu100_OR_TkMu100_PtEtaBins/pt_abseta_ratio", 0.5, "Trigger", true, Sys_MuonTrigger));
+    MuonID_module     .reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Muon_ID_SF_RunABCD.root"                    , "NUM_HighPtID_DEN_TrackerMuons_pair_newTuneP_probe_pt_abseta", 1.0, "HighPtID", true, Sys_MuonID));
+    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/Muon_Trigger_Eff_SF_AfterMuonHLTUpdate.root", "Mu50_OR_OldMu100_OR_TkMu100_PtEtaBins/pt_abseta_ratio"      , 0.5, "Trigger" , true, Sys_MuonTrigger));
   }
+  if(isUL16preVFP && isMuon){
+    MuonID_module     .reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL16preVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ID.root"                , "NUM_TightID_DEN_TrackerMuons_abseta_pt"                                , 1.0, "TightID", true, Sys_MuonID));
+    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL16preVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_SingleMuonTriggers.root", "NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose_abseta_pt", 0.5, "Trigger", true, Sys_MuonTrigger));
+  }
+  if(isUL16postVFP && isMuon){
+    MuonID_module     .reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL16postVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_ID.root"                , "NUM_TightID_DEN_TrackerMuons_abseta_pt"                                , 1.0, "TightID", true, Sys_MuonID));
+    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL16postVFP/Efficiencies_muon_generalTracks_Z_Run2016_UL_SingleMuonTriggers.root", "NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose_abseta_pt", 0.5, "Trigger", true, Sys_MuonTrigger));
+  }
+  if(isUL17 && isMuon){
+    MuonID_module     .reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL17/Efficiencies_muon_generalTracks_Z_Run2017_UL_ID.root"                , "NUM_HighPtID_DEN_TrackerMuons_abseta_pt"                                            , 1.0, "HighPtID", true, Sys_MuonID));
+    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL17/Efficiencies_muon_generalTracks_Z_Run2017_UL_SingleMuonTriggers.root", "NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose_abseta_pt", 0.5, "Trigger" , true, Sys_MuonTrigger));
+  }
+  if(isUL18 && isMuon){
+    MuonID_module     .reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/Efficiencies_muon_generalTracks_Z_Run2018_UL_ID.root"                , "NUM_HighPtID_DEN_TrackerMuons_abseta_pt"                                            , 1.0, "HighPtID", true, Sys_MuonID));
+    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/Efficiencies_muon_generalTracks_Z_Run2018_UL_SingleMuonTriggers.root", "NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose_abseta_pt", 0.5, "Trigger" , true, Sys_MuonTrigger));
+  }
+
 
   // Electron
   if((is2016v3 || is2016v2) && isElectron){
-    EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/egammaEffi.txt_EGM2D_CutBased_Tight_ID.root", 1.0, "TightID", Sys_EleID));
-    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2016.root", 0.5, "Trigger", Sys_EleTrigger, "electrons", "abseta_pt_ratio"));
+    EleID_module     .reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2016/egammaEffi.txt_EGM2D_CutBased_Medium_ID.root", 1.0, "MediumID", Sys_EleID));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2016.root"              , 0.5, "Trigger" , Sys_EleTrigger, "electrons", "abseta_pt_ratio"));
   }
   if(is2017v2 && isElectron){
-    EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/2017_ElectronTight.root", 1.0, "TightID", Sys_EleID));
+    EleID_module     .reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2017/2017_ElectronTight.root"       , 1.0, "TightID", Sys_EleID));
     EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2017.root", 0.5, "Trigger", Sys_EleTrigger, "electrons", "abseta_pt_ratio"));
   }
   if(is2018 && isElectron){
-    EleID_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/2018_ElectronTight.root", 1.0, "TightID", Sys_EleID));
+    EleID_module     .reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/2018_ElectronTight.root"       , 1.0, "TightID", Sys_EleID));
     EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2018.root", 0.5, "Trigger", Sys_EleTrigger, "electrons", "abseta_pt_ratio"));
+  }
+  if(isUL16preVFP && isElectron){
+    EleID_module     .reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/NonResonantTTbar/data/ElectronSFs_UL/UL16preVFP/egammaEffi.txt_Ele_Medium_preVFP_EGM2D.root", 1.0, "MediumID", Sys_EleID));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2016.root"                                               , 0.5, "Trigger" , Sys_EleTrigger, "electrons", "abseta_pt_ratio")); // update needed!
+  }
+  if(isUL16postVFP && isElectron){
+    EleID_module     .reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/NonResonantTTbar/data/ElectronSFs_UL/UL16postVFP/egammaEffi.txt_Ele_Medium_preVFP_EGM2D.root", 1.0, "MediumID", Sys_EleID));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2016.root"                                                , 0.5, "Trigger" , Sys_EleTrigger, "electrons", "abseta_pt_ratio")); // update needed!
+  }
+  if(isUL17 && isElectron){
+    EleID_module     .reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/NonResonantTTbar/data/ElectronSFs_UL/UL17/egammaEffi.txt_EGM2D_Tight_UL17.root", 1.0, "TightID", Sys_EleID));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2017.root"                                  , 0.5, "Trigger", Sys_EleTrigger, "electrons", "abseta_pt_ratio")); // update needed!
+  }
+  if(isUL18 && isElectron){
+    EleID_module     .reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/NonResonantTTbar/data/ElectronSFs_UL/UL18/egammaEffi.txt_Ele_Tight_EGM2D.root", 1.0, "TightID", Sys_EleID));
+    EleTrigger_module.reset(new MCElecScaleFactor(ctx, "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/SF_Ele50_Ele115_2018.root"                                 , 0.5, "Trigger", Sys_EleTrigger, "electrons", "abseta_pt_ratio")); // update needed!
   }
 
   // Selection modules

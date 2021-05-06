@@ -3,6 +3,10 @@ config/workdir_*
 *~
 *.root
 !data/*.root
+!data/ElectronSFs_UL/UL16postVFP/*.root
+!data/ElectronSFs_UL/UL16preVFP/*.root
+!data/ElectronSFs_UL/UL17/*.root
+!data/ElectronSFs_UL/UL18/*.root
 *.png
 *.gif
 *.pyc
@@ -13,3 +17,4 @@ config/workdir_*
 *.log
 *.eps
 *.pdf
+*.DS_Store

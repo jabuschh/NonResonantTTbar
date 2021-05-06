@@ -61,7 +61,6 @@
 <!ENTITY QCD_HT2000toInf  SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT2000toInf_madgraph.xml">
 <!-- ALP -->
 <!ENTITY ALPtoTTbar_interference_UL18 SYSTEM "../data/ALPtoTTbar_privateProduction/ALPtoTTbar_interference_private100k_colorflowSMlike.xml">
-
 ]>
 
 <!--
@@ -365,12 +364,9 @@
 			<Item Name="METName"                 Value="slimmedMETsPuppi"/>
 			<Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
 
-			<!-- <Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/2018/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.root"/> -->
 			<Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON_normtag.root"/>
 			<Item Name="lumihists_lumi_per_bin" Value="500.0"/>
 
-			<!-- <Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/2018/MyMCPileupHistogram.root" />
-			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/2018/MyDataPileupHistogram2018.root" /> -->
 			<Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyMCPileupHistogram_UL18.root" />
 			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18.root" />
 
