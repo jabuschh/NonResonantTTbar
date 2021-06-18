@@ -1,0 +1,15 @@
+obj/
+config/workdir_*
+*~
+*.root
+!data/*.root
+*.png
+*.gif
+*.pyc
+*.tar.gz
+*.o
+*.d
+*.txt
+*.log
+*.eps
+*.pdf
