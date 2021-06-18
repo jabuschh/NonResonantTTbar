@@ -221,8 +221,9 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   BTag::wp btag_wp_tight = BTag::WP_TIGHT;
   JetId id_btag = BTag(btag_algo, btag_wp_tight);
 
-  double a_toppt = 0.0615; // par a TopPt Reweighting
-  double b_toppt = -0.0005; // par b TopPt Reweighting
+  double a_toppt = 0.0615; // top pt reweighting parameter a
+  double b_toppt = -0.0005; // top pt reweighting parameter b
+
 
   // Modules
   printer_genparticles.reset(new GenParticlesPrinter(ctx));
@@ -230,8 +231,12 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   electron_cleaner.reset(new ElectronCleaner(electronID));
   LumiWeight_module.reset(new MCLumiWeight(ctx));
   PUWeight_module.reset(new MCPileupReweight(ctx, Sys_PU));
-  //BTagWeight_module.reset(new MCBTagDiscriminantReweighting(ctx, btag_algo, "jets", Sys_btag));
-  TopPtReweight_module.reset(new TopPtReweight(ctx, a_toppt, b_toppt));
+  // BTagWeight_module.reset(new MCBTagDiscriminantReweighting(ctx, btag_algo, "jets", Sys_btag));
+
+  // top pt reweighting: https://twiki.cern.ch/twiki/bin/view/CMS/TopPtReweighting
+  // TopPtReweight_module.reset(new TopPtReweight(ctx, a_toppt, b_toppt)); // standard UHH2 implementation: flat above 500 GeV
+  TopPtReweight_module.reset(new TopPtReweighting(ctx, a_toppt, b_toppt, ctx.get("Systematic_TopPt_a", "nominal"), ctx.get("Systematic_TopPt_b", "nominal"), "", ""));
+
   MCScale_module.reset(new MCScaleVariation(ctx));
   Corrections_module.reset(new NLOCorrections(ctx)); // NLO corrections
 
