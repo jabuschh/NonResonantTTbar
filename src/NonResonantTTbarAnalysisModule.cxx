@@ -4,8 +4,8 @@
 #include <UHH2/core/include/AnalysisModule.h>
 #include <UHH2/core/include/Event.h>
 #include <UHH2/core/include/Selection.h>
-#include "UHH2/common/include/PrintingModules.h"
 
+#include "UHH2/common/include/PrintingModules.h"
 #include <UHH2/common/include/CleaningModules.h>
 #include <UHH2/common/include/NSelections.h>
 #include <UHH2/common/include/LumiSelection.h>
@@ -27,6 +27,9 @@
 #include <UHH2/common/include/EventHists.h>
 #include <UHH2/common/include/TopPtReweight.h>
 #include <UHH2/common/include/CommonModules.h>
+#include <UHH2/common/include/TTbarReconstruction.h>
+#include <UHH2/common/include/ReconstructionHypothesisDiscriminators.h>
+// #include <UHH2/common/include/TTbarGen.h>
 
 #include <UHH2/NonResonantTTbar/include/ModuleBASE.h>
 #include <UHH2/NonResonantTTbar/include/NonResonantTTbarSelections.h>
@@ -35,10 +38,6 @@
 #include <UHH2/NonResonantTTbar/include/NonResonantTTbarHists.h>
 #include <UHH2/NonResonantTTbar/include/NonResonantTTbarGeneratorHists.h>
 #include <UHH2/NonResonantTTbar/include/ZprimeCandidate.h>
-
-// #include <UHH2/common/include/TTbarGen.h>
-#include <UHH2/common/include/TTbarReconstruction.h>
-#include <UHH2/common/include/ReconstructionHypothesisDiscriminators.h>
 
 using namespace std;
 using namespace uhh2;
@@ -97,12 +96,20 @@ protected:
 
   //Handles
   Event::Handle<bool>  h_is_zprime_reconstructed_chi2, h_is_zprime_reconstructed_correctmatch;
-  Event::Handle<float> h_chi2;   Event::Handle<float> h_weight;
-  Event::Handle<float> h_MET;   Event::Handle<int> h_NPV;
-  Event::Handle<float> h_lep1_pt; Event::Handle<float> h_lep1_eta;
-  Event::Handle<float> h_ak4jet1_pt; Event::Handle<float> h_ak4jet1_eta;
-  Event::Handle<float> h_ak8jet1_pt; Event::Handle<float> h_ak8jet1_eta;
+  Event::Handle<float> h_chi2;
+  Event::Handle<float> h_weight;
+  Event::Handle<float> h_MET;
+  Event::Handle<int> h_NPV;
+  Event::Handle<float> h_lep1_pt;
+  Event::Handle<float> h_lep1_eta;
+  Event::Handle<float> h_ak4jet1_pt;
+  Event::Handle<float> h_ak4jet1_eta;
+  Event::Handle<float> h_ak8jet1_pt;
+  Event::Handle<float> h_ak8jet1_eta;
   Event::Handle<float> h_Mttbar;
+  Event::Handle<float> h_muonrecoSF_nominal;
+  Event::Handle<float> h_muonrecoSF_up;
+  Event::Handle<float> h_muonrecoSF_down;
 
   uhh2::Event::Handle<ZprimeCandidate*> h_BestZprimeCandidateChi2;
 
@@ -355,6 +362,10 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
   h_NPV = ctx.declare_event_output<int> ("NPV");
   h_weight = ctx.declare_event_output<float> ("weight");
 
+  h_muonrecoSF_nominal = ctx.declare_event_output<float> ("muonrecSF_nominal");
+  h_muonrecoSF_up = ctx.declare_event_output<float> ("muonrecSF_up");
+  h_muonrecoSF_down = ctx.declare_event_output<float> ("muonrecSF_down");
+
   sel_1btag.reset(new NJetSelection(1, 1, id_btag));
   sel_2btag.reset(new NJetSelection(2,-1, id_btag));
 
@@ -376,8 +387,8 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
 
 bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
 
-  if(debug)   cout << "++++++++++++ NEW EVENT ++++++++++++++" << endl;
-  if(debug)   cout<<" run.event: "<<event.run<<". "<<event.event<<endl;
+  if(debug) cout << "++++++++++++ NEW EVENT ++++++++++++++" << endl;
+  if(debug) cout << "run.event: " << event.run << ". " << event.event << endl;
   // Initialize reco flags with false
   event.set(h_is_zprime_reconstructed_chi2, false);
   event.set(h_is_zprime_reconstructed_correctmatch, false);
@@ -392,13 +403,16 @@ bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
   event.set(h_ak8jet1_eta,-100);
   event.set(h_NPV,-100);
   event.set(h_weight,-100);
+  event.set(h_muonrecoSF_nominal,-100);
+  event.set(h_muonrecoSF_up,-100);
+  event.set(h_muonrecoSF_down,-100);
   // Printing
   // if(!event.isRealData) printer_genparticles->process(event);
 
   // TODO Apply things that should've been done in the pre-selection already... Fix pre-selection and then remove these steps
   if(isMuon) muon_cleaner->process(event);
   if(isElectron) electron_cleaner->process(event);
-  if(debug)  cout<<"Muon and Electron cleaner ok"<<endl;
+  if(debug) cout << "Muon and Electron cleaner ok" << endl;
 
 
   if(!HEM_selection->passes(event)){
@@ -576,6 +590,101 @@ bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
   }
   event.set(h_NPV,event.pvs->size());
   if(debug) cout<<"Set some vars for monitoring"<<endl;
+
+
+  // Muon Reco SF: high-pT muons
+  // https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonPOG#User_Recommendations
+  if(isMC){
+    if(isMuon){
+      float pt_mu    = event.muons->at(0).pt();
+      float eta_mu   = event.muons->at(0).eta();
+      float abs_p_mu = pt_mu * cosh(eta_mu); // muon reco SFs depend on muon momentum p, not pT!
+
+      if(is2016v2 || is2016v3 || isUL16preVFP || isUL16postVFP){
+        if(abs(eta_mu) < 1.6){
+          if     (abs_p_mu <=   50.){cout << "Muon Reco SF: muon abs(eta) < 1.6, but momentum p < 50 GeV -> no muon reco SF applied" << endl;}
+          else if(abs_p_mu <=  100.){event.set(h_muonrecoSF_nominal, 0.9914); event.set(h_muonrecoSF_up, 0.9914+0.0008); event.set(h_muonrecoSF_down, 0.9914-0.0008);}
+          else if(abs_p_mu <=  150.){event.set(h_muonrecoSF_nominal, 0.9936); event.set(h_muonrecoSF_up, 0.9936+0.0009); event.set(h_muonrecoSF_down, 0.9936-0.0009);}
+          else if(abs_p_mu <=  200.){event.set(h_muonrecoSF_nominal, 0.993 ); event.set(h_muonrecoSF_up, 0.993 +0.001 ); event.set(h_muonrecoSF_down, 0.993 -0.001 );}
+          else if(abs_p_mu <=  300.){event.set(h_muonrecoSF_nominal, 0.993 ); event.set(h_muonrecoSF_up, 0.993 +0.002 ); event.set(h_muonrecoSF_down, 0.993 -0.002 );}
+          else if(abs_p_mu <=  400.){event.set(h_muonrecoSF_nominal, 0.990 ); event.set(h_muonrecoSF_up, 0.990 +0.004 ); event.set(h_muonrecoSF_down, 0.990 -0.004 );}
+          else if(abs_p_mu <=  600.){event.set(h_muonrecoSF_nominal, 0.990 ); event.set(h_muonrecoSF_up, 0.990 +0.003 ); event.set(h_muonrecoSF_down, 0.990 -0.003 );}
+          else if(abs_p_mu <= 1500.){event.set(h_muonrecoSF_nominal, 0.989 ); event.set(h_muonrecoSF_up, 0.989 +0.004 ); event.set(h_muonrecoSF_down, 0.989 -0.004 );}
+          else if(abs_p_mu <= 3500.){event.set(h_muonrecoSF_nominal, 0.8   ); event.set(h_muonrecoSF_up, 0.8   +0.3   ); event.set(h_muonrecoSF_down, 0.8   -0.3   );}
+          else                      {cout << "muon momentum p > 3500 Gev -> no muon reco SF applied" << endl;}
+        }
+        else if(1.6 <= abs(eta_mu) && abs(eta_mu) < 2.4){
+          if     (abs_p_mu <=  100.){cout << "Muon Reco SF: 1.6 < muon abs(eta) < 2.4, but momentum p < 100 GeV -> no muon reco SF applied" << endl;}
+          else if(abs_p_mu <=  150.){event.set(h_muonrecoSF_nominal, 0.993); event.set(h_muonrecoSF_up, 0.993+0.001); event.set(h_muonrecoSF_down, 0.993-0.001);}
+          else if(abs_p_mu <=  200.){event.set(h_muonrecoSF_nominal, 0.991); event.set(h_muonrecoSF_up, 0.991+0.001); event.set(h_muonrecoSF_down, 0.991-0.001);}
+          else if(abs_p_mu <=  300.){event.set(h_muonrecoSF_nominal, 0.985); event.set(h_muonrecoSF_up, 0.985+0.001); event.set(h_muonrecoSF_down, 0.985-0.001);}
+          else if(abs_p_mu <=  400.){event.set(h_muonrecoSF_nominal, 0.981); event.set(h_muonrecoSF_up, 0.981+0.002); event.set(h_muonrecoSF_down, 0.981-0.002);}
+          else if(abs_p_mu <=  600.){event.set(h_muonrecoSF_nominal, 0.979); event.set(h_muonrecoSF_up, 0.979+0.004); event.set(h_muonrecoSF_down, 0.979-0.004);}
+          else if(abs_p_mu <= 1500.){event.set(h_muonrecoSF_nominal, 0.978); event.set(h_muonrecoSF_up, 0.978+0.005); event.set(h_muonrecoSF_down, 0.978-0.005);}
+          else if(abs_p_mu <= 3500.){event.set(h_muonrecoSF_nominal, 0.9  ); event.set(h_muonrecoSF_up, 0.9  +0.2  ); event.set(h_muonrecoSF_down, 0.9  -0.2  );}
+          else                      {cout << "muon momentum p > 3500 Gev -> no muon reco SF applied" << endl;}
+        }
+        else cout << "absolute value of muon eta larger than 2.4 -> no muon reco SF applied" << endl;
+      }
+      else if(is2017v2 || isUL17){
+        if(abs(eta_mu) < 1.6){
+          if     (abs_p_mu <=   50.){cout << "Muon Reco SF: muon abs(eta) < 1.6, but momentum p < 50 GeV -> no muon reco SF applied" << endl;}
+          else if(abs_p_mu <=  100.){event.set(h_muonrecoSF_nominal, 0.9938); event.set(h_muonrecoSF_up, 0.9938+0.0006); event.set(h_muonrecoSF_down, 0.9938-0.0006);}
+          else if(abs_p_mu <=  150.){event.set(h_muonrecoSF_nominal, 0.9950); event.set(h_muonrecoSF_up, 0.9950+0.0007); event.set(h_muonrecoSF_down, 0.9950-0.0007);}
+          else if(abs_p_mu <=  200.){event.set(h_muonrecoSF_nominal, 0.996 ); event.set(h_muonrecoSF_up, 0.996 +0.001 ); event.set(h_muonrecoSF_down, 0.996 -0.001 );}
+          else if(abs_p_mu <=  300.){event.set(h_muonrecoSF_nominal, 0.996 ); event.set(h_muonrecoSF_up, 0.996 +0.001 ); event.set(h_muonrecoSF_down, 0.996 -0.001 );}
+          else if(abs_p_mu <=  400.){event.set(h_muonrecoSF_nominal, 0.994 ); event.set(h_muonrecoSF_up, 0.994 +0.001 ); event.set(h_muonrecoSF_down, 0.994 -0.001 );}
+          else if(abs_p_mu <=  600.){event.set(h_muonrecoSF_nominal, 1.003 ); event.set(h_muonrecoSF_up, 1.003 +0.006 ); event.set(h_muonrecoSF_down, 1.003 -0.006 );}
+          else if(abs_p_mu <= 1500.){event.set(h_muonrecoSF_nominal, 0.987 ); event.set(h_muonrecoSF_up, 0.987 +0.003 ); event.set(h_muonrecoSF_down, 0.987 -0.003 );}
+          else if(abs_p_mu <= 3500.){event.set(h_muonrecoSF_nominal, 0.9   ); event.set(h_muonrecoSF_up, 0.9   +0.1   ); event.set(h_muonrecoSF_down, 0.9   -0.1   );}
+          else                      {cout << "muon momentum p > 3500 Gev -> no muon reco SF applied" << endl;}
+        }
+        else if(1.6 <= abs(eta_mu) && abs(eta_mu) < 2.4){
+          if     (abs_p_mu <=  100.){cout << "Muon Reco SF: 1.6 < muon abs(eta) < 2.4, but momentum p < 100 GeV -> no muon reco SF applied" << endl;}
+          else if(abs_p_mu <=  150.){event.set(h_muonrecoSF_nominal, 0.993); event.set(h_muonrecoSF_up, 0.993+0.001); event.set(h_muonrecoSF_down, 0.993-0.001);}
+          else if(abs_p_mu <=  200.){event.set(h_muonrecoSF_nominal, 0.989); event.set(h_muonrecoSF_up, 0.989+0.001); event.set(h_muonrecoSF_down, 0.989-0.001);}
+          else if(abs_p_mu <=  300.){event.set(h_muonrecoSF_nominal, 0.986); event.set(h_muonrecoSF_up, 0.986+0.001); event.set(h_muonrecoSF_down, 0.986-0.001);}
+          else if(abs_p_mu <=  400.){event.set(h_muonrecoSF_nominal, 0.989); event.set(h_muonrecoSF_up, 0.989+0.001); event.set(h_muonrecoSF_down, 0.989-0.001);}
+          else if(abs_p_mu <=  600.){event.set(h_muonrecoSF_nominal, 0.983); event.set(h_muonrecoSF_up, 0.983+0.003); event.set(h_muonrecoSF_down, 0.983-0.003);}
+          else if(abs_p_mu <= 1500.){event.set(h_muonrecoSF_nominal, 0.986); event.set(h_muonrecoSF_up, 0.986+0.006); event.set(h_muonrecoSF_down, 0.986-0.006);}
+          else if(abs_p_mu <= 3500.){event.set(h_muonrecoSF_nominal, 1.01 ); event.set(h_muonrecoSF_up, 1.01 +0.01 ); event.set(h_muonrecoSF_down, 1.01 -0.01 );}
+          else                      {cout << "muon momentum p > 3500 Gev -> no muon reco SF applied" << endl;}
+        }
+        else cout << "absolute value of muon eta larger than 2.4 -> no muon reco SF applied" << endl;
+      }
+      else if(is2018 || isUL18){
+        if(abs(eta_mu) < 1.6){
+          if     (abs_p_mu <=   50.){cout << "Muon Reco SF: muon abs(eta) < 1.6, but momentum p < 50 GeV -> no muon reco SF applied" << endl;}
+          else if(abs_p_mu <=  100.){event.set(h_muonrecoSF_nominal, 0.9943); event.set(h_muonrecoSF_up, 0.9943+0.0007); event.set(h_muonrecoSF_down, 0.9943-0.0007);}
+          else if(abs_p_mu <=  150.){event.set(h_muonrecoSF_nominal, 0.9948); event.set(h_muonrecoSF_up, 0.9948+0.0007); event.set(h_muonrecoSF_down, 0.9948-0.0007);}
+          else if(abs_p_mu <=  200.){event.set(h_muonrecoSF_nominal, 0.9950); event.set(h_muonrecoSF_up, 0.9950+0.0009); event.set(h_muonrecoSF_down, 0.9950-0.0009);}
+          else if(abs_p_mu <=  300.){event.set(h_muonrecoSF_nominal, 0.994 ); event.set(h_muonrecoSF_up, 0.994 +0.001 ); event.set(h_muonrecoSF_down, 0.994 -0.001 );}
+          else if(abs_p_mu <=  400.){event.set(h_muonrecoSF_nominal, 0.9914); event.set(h_muonrecoSF_up, 0.9914+0.0009); event.set(h_muonrecoSF_down, 0.9914-0.0009);}
+          else if(abs_p_mu <=  600.){event.set(h_muonrecoSF_nominal, 0.993 ); event.set(h_muonrecoSF_up, 0.993 +0.002 ); event.set(h_muonrecoSF_down, 0.993 -0.002 );}
+          else if(abs_p_mu <= 1500.){event.set(h_muonrecoSF_nominal, 0.991 ); event.set(h_muonrecoSF_up, 0.991 +0.004 ); event.set(h_muonrecoSF_down, 0.991 -0.004 );}
+          else if(abs_p_mu <= 3500.){event.set(h_muonrecoSF_nominal, 1.0   ); event.set(h_muonrecoSF_up, 1.0   +0.1   ); event.set(h_muonrecoSF_down, 1.0   -0.1   );}
+          else                      {cout << "muon momentum p > 3500 Gev -> no muon reco SF applied" << endl;}
+
+        }
+        else if(1.6 <= abs(eta_mu) && abs(eta_mu) < 2.4){
+          if     (abs_p_mu <=  100.){cout << "Muon Reco SF: 1.6 < muon abs(eta) < 2.4, but momentum p < 100 GeV -> no muon reco SF applied" << endl;}
+          else if(abs_p_mu <=  150.){event.set(h_muonrecoSF_nominal, 0.993); event.set(h_muonrecoSF_up, 0.993+0.001); event.set(h_muonrecoSF_down, 0.993-0.001);}
+          else if(abs_p_mu <=  200.){event.set(h_muonrecoSF_nominal, 0.990); event.set(h_muonrecoSF_up, 0.990+0.001); event.set(h_muonrecoSF_down, 0.990-0.001);}
+          else if(abs_p_mu <=  300.){event.set(h_muonrecoSF_nominal, 0.988); event.set(h_muonrecoSF_up, 0.988+0.001); event.set(h_muonrecoSF_down, 0.988-0.001);}
+          else if(abs_p_mu <=  400.){event.set(h_muonrecoSF_nominal, 0.981); event.set(h_muonrecoSF_up, 0.981+0.002); event.set(h_muonrecoSF_down, 0.981-0.002);}
+          else if(abs_p_mu <=  600.){event.set(h_muonrecoSF_nominal, 0.983); event.set(h_muonrecoSF_up, 0.983+0.003); event.set(h_muonrecoSF_down, 0.983-0.003);}
+          else if(abs_p_mu <= 1500.){event.set(h_muonrecoSF_nominal, 0.978); event.set(h_muonrecoSF_up, 0.978+0.006); event.set(h_muonrecoSF_down, 0.978-0.006);}
+          else if(abs_p_mu <= 3500.){event.set(h_muonrecoSF_nominal, 0.98 ); event.set(h_muonrecoSF_up, 0.98 +0.03 ); event.set(h_muonrecoSF_down, 0.98 -0.03 );}
+          else                      {cout << "muon momentum p > 3500 Gev -> no muon reco SF applied" << endl;}
+        }
+        else cout << "absolute value of muon eta larger than 2.4 -> no muon reco SF applied" << endl;
+      }
+      else{
+        throw runtime_error("In NonResonantTTbarAnalysisModule::process: muon reco SF could not find year");
+      }
+    }
+  }
+
   return true;
 }
 
