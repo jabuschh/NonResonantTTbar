@@ -99,7 +99,7 @@ protected:
   Event::Handle<float> h_chi2;
   Event::Handle<float> h_weight;
   Event::Handle<float> h_MET;
-  Event::Handle<int> h_NPV;
+  Event::Handle<int>   h_NPV;
   Event::Handle<float> h_lep1_pt;
   Event::Handle<float> h_lep1_eta;
   Event::Handle<float> h_ak4jet1_pt;

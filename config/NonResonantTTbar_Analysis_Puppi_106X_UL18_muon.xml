@@ -9,7 +9,7 @@
 <!ENTITY IS_PUPPI            "true">
 <!ENTITY IS_LOOSER_SELECTION "false">
 <!ENTITY CHANNEL             "muon">
-<!ENTITY OUTPUTdir           "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_106X_v1/Analysis_2018/&CHANNEL;/">
+<!ENTITY OUTPUTdir           "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_106X_v1/Analysis_2018_test/&CHANNEL;/">
 
 <!-- DATA -->
 <!ENTITY DATA_EGamma_Run2018A       SYSTEM  "../data/Skimming_datasets_2018/DATA_DATA_EGamma_Run2018A.xml">
@@ -77,11 +77,11 @@
 
 	<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTPUTdir;/" PostFix="" TargetLumi="&TargetLumi;">
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="ALPtoTTbar_interference_colorflowSMlike_UL18" Cacheable="&b_Cacheable;">
+		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="ALPtoTTbar_interference_colorflowSMlike_UL18" Cacheable="&b_Cacheable;">
 			&ALPtoTTbar_interference_colorflowSMlike_UL18;
 			<InputTree Name="AnalysisTree"/>
 			<OutputTree Name="AnalysisTree"/>
-		</InputData>
+		</InputData> -->
 
 		<!-- <InputData Lumi="7432926.584" NEventsMax="&NEVT;" Type="MC" Version="ST_tW_antitop_5f_inclusiveDecays_2018" Cacheable="&b_Cacheable;">
 			&ST_tW_antitop_5f_inclusiveDecays;
@@ -124,7 +124,7 @@
 			&WW_2018;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
-		</InputData>
+		</InputData> -->
 
 		<InputData Lumi="141037.2914" NEventsMax="&NEVT;" Type="MC" Version="WZ_2018" Cacheable="&b_Cacheable;">
 			&WZ_2018;
@@ -132,7 +132,7 @@
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		<InputData Lumi="162728.3513" NEventsMax="&NEVT;" Type="MC" Version="ZZ_2018" Cacheable="&b_Cacheable;">
+		<!-- <InputData Lumi="162728.3513" NEventsMax="&NEVT;" Type="MC" Version="ZZ_2018" Cacheable="&b_Cacheable;">
 			&ZZ_2018;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
@@ -347,17 +347,17 @@
 			<Item Name="METName"                 Value="slimmedMETsPuppi"/>
 			<Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
 
-			<Item Name="lumi_file"              Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON_normtag.root"/>
+			<Item Name="lumi_file"              Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON_normtag.root"/>
 			<Item Name="lumihists_lumi_per_bin" Value="500.0"/>
 
-			<Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyMCPileupHistogram_UL18.root" />
-			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18.root" />
-			<Item Name="pileup_directory_data_up"   Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18_72383.root" />
-			<Item Name="pileup_directory_data_down" Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18_66017.root" />
+			<Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/MyMCPileupHistogram_UL18.root" />
+			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18.root" />
+			<Item Name="pileup_directory_data_up"   Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18_72383.root" />
+			<Item Name="pileup_directory_data_down" Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18_66017.root" />
 
-			<Item Name="BTagCalibration" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/common/data/2018/DeepJet_102XSF_V2.csv" />
+			<Item Name="BTagCalibration" Value = "/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/2018/DeepJet_102XSF_V2.csv" />
 
-			<Item Name="NLOCorrections" Value = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/data/" />
+			<Item Name="NLOCorrections" Value = "/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/NonResonantTTbar/data/" />
 
 			<Item Name="is_puppi"            Value="&IS_PUPPI;"/>
 			<Item Name="is_looser_selection" Value="&IS_LOOSER_SELECTION;"/>
