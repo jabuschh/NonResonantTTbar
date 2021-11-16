@@ -7,8 +7,7 @@
 class ZprimeCandidate{
 
 public:
-
-  // Getter
+  // getters
   LorentzVector Zprime_v4() const{return m_Zprime_v4;}
   LorentzVector top_leptonic_v4() const{return m_top_leptonic_v4;}
   LorentzVector top_hadronic_v4() const{return m_top_hadronic_v4;}
@@ -27,7 +26,7 @@ public:
   }
   bool has_discriminator(const std::string & label) const {return m_discriminators.find(label) != m_discriminators.end();}
 
-  // Setters
+  // setters
   void set_Zprime_v4(LorentzVector x) {m_Zprime_v4=x;}
   void set_top_leptonic_v4(LorentzVector x) {m_top_leptonic_v4=x;}
   void set_top_hadronic_v4(LorentzVector x) {m_top_hadronic_v4=x;}
@@ -43,8 +42,6 @@ public:
 
 
 private:
-
-
   LorentzVector m_Zprime_v4;
   LorentzVector m_top_leptonic_v4;
   LorentzVector m_top_hadronic_v4;
@@ -58,5 +55,4 @@ private:
   bool m_is_toptag_reconstruction;
   bool m_is_puppi_reconstruction;
   std::map<TString, float> m_discriminators;
-
 };

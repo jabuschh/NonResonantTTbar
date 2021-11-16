@@ -223,8 +223,6 @@ NonResonantTTbarAnalysisModule::NonResonantTTbarAnalysisModule(uhh2::Context& ct
 
   double a_toppt = 0.0615; // top pt reweighting parameter a
   double b_toppt = -0.0005; // top pt reweighting parameter b
-
-
   // Modules
   printer_genparticles.reset(new GenParticlesPrinter(ctx));
   muon_cleaner.reset(new MuonCleaner(muonID));
@@ -537,6 +535,8 @@ bool NonResonantTTbarAnalysisModule::process(uhh2::Event& event){
   event.set(h_NPV,event.pvs->size());
   if(debug) cout<<"Set some vars for monitoring"<<endl;
   return true;
+
+
 }
 
 UHH2_REGISTER_ANALYSIS_MODULE(NonResonantTTbarAnalysisModule)
