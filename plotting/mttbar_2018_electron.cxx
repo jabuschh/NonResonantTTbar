@@ -4,7 +4,7 @@
   else         cout << "log scale for y axis: false" << endl;
 
   //
-  TString dir      = "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_102X_v2/2018/Analysis/muon/NOMINAL/";
+  TString dir      = "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_102X_v2/2018/Analysis/electron/NOMINAL/";
   TString histname = "M_Zprime_rebin2";
 
   // ALP interference
@@ -104,9 +104,9 @@
   lumitag->SetTextFont(42);
   lumitag->SetTextSize(0.032);
   // paper tag
-  x_pos = 0.6;
+  x_pos = 0.63;
   y_pos = 0.978;
-  TLatex *channeltag = new TLatex(3.5,24,"muon channel: 2018 SM + UL18 signal");
+  TLatex *channeltag = new TLatex(3.5,24,"electron channel: 2018 SM + UL18 signal");
   channeltag->SetNDC();
   channeltag->SetTextAlign(33);
   channeltag->SetX(x_pos);
@@ -114,7 +114,7 @@
   channeltag->SetTextFont(62);
   channeltag->SetTextSize(0.028);
   // legend
-  x_pos  = 0.5;
+  x_pos  = 0.45;
   y_pos  = 0.65;
   double x_width =  0.3;
   double y_width =  0.25;
@@ -180,7 +180,7 @@
 
   // saving
   TString save_dir = "/nfs/dust/cms/user/jabuschh/UHH/CMSSW_10_2_17/src/UHH2/NonResonantTTbar/plotting/";
-  if(logyaxis) c1->SaveAs(save_dir + "mttbar" + "_muonChannel_logscale.pdf");
+  if(logyaxis) c1->SaveAs(save_dir + "mttbar" + "_electronChannel_logscale.pdf");
   else c1->SaveAs(save_dir + "mttbar" + ".pdf");
   c1->Close();
 }
