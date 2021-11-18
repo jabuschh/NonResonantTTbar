@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
 
-<!ENTITY TargetLumi      "59740">
+<!ENTITY TargetLumi      "59830"> <!-- see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM -->
 <!ENTITY PREFIX          "uhh2.AnalysisModuleRunner.">
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
@@ -9,62 +9,63 @@
 <!ENTITY IS_PUPPI            "true">
 <!ENTITY IS_LOOSER_SELECTION "false">
 <!ENTITY CHANNEL             "muon">
-<!ENTITY OUTPUTdir           "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_106X_v1/Analysis_2018_test/&CHANNEL;/">
+<!ENTITY OUTPUTdir           "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_106X_v2/UL18/Analysis/&CHANNEL;/">
 
+<!-- TODO: add all xml files once available -->
 <!-- DATA -->
-<!ENTITY DATA_EGamma_Run2018A       SYSTEM  "../data/Skimming_datasets_2018/DATA_DATA_EGamma_Run2018A.xml">
-<!ENTITY DATA_SingleMuon_Run2018A   SYSTEM  "../data/Skimming_datasets_2018/DATA_DATA_SingleMuon_Run2018A.xml">
-<!ENTITY DATA_EGamma_Run2018B       SYSTEM  "../data/Skimming_datasets_2018/DATA_DATA_EGamma_Run2018B.xml">
-<!ENTITY DATA_SingleMuon_Run2018B   SYSTEM  "../data/Skimming_datasets_2018/DATA_DATA_SingleMuon_Run2018B.xml">
-<!ENTITY DATA_EGamma_Run2018C       SYSTEM  "../data/Skimming_datasets_2018/DATA_DATA_EGamma_Run2018C.xml">
-<!ENTITY DATA_SingleMuon_Run2018C   SYSTEM  "../data/Skimming_datasets_2018/DATA_DATA_SingleMuon_Run2018C.xml">
-<!ENTITY DATA_EGamma_Run2018D       SYSTEM  "../data/Skimming_datasets_2018/DATA_DATA_EGamma_Run2018D.xml">
-<!ENTITY DATA_SingleMuon_Run2018D   SYSTEM  "../data/Skimming_datasets_2018/DATA_DATA_SingleMuon_Run2018D.xml">
+<!-- <!ENTITY DATA_EGamma_Run2018A       SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DATA_EGamma_Run2018B       SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DATA_EGamma_Run2018C       SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DATA_EGamma_Run2018D       SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DATA_SingleMuon_Run2018A   SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DATA_SingleMuon_Run2018B   SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DATA_SingleMuon_Run2018C   SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DATA_SingleMuon_Run2018D   SYSTEM  "../data/Skimming_datasets_2018/.xml"> -->
 <!-- TTbar -->
-<!ENTITY TTToSemiLeptonic_2018          SYSTEM  "../data/Skimming_datasets_2018/MC_TTToSemiLeptonic_2018.xml">
-<!ENTITY TTToHadronic_2018              SYSTEM  "../data/Skimming_datasets_2018/MC_TTToHadronic_2018.xml">
-<!ENTITY TTTo2L2Nu_2018                 SYSTEM  "../data/Skimming_datasets_2018/MC_TTTo2L2Nu_2018.xml">
+<!-- <!ENTITY TTToSemiLeptonic_2018          SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY TTToHadronic_2018              SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY TTTo2L2Nu_2018                 SYSTEM  "../data/Skimming_datasets_2018/.xml"> -->
 <!-- WJets -->
-<!ENTITY WJetsToLNu_HT-70To100_2018     SYSTEM  "../data/Skimming_datasets_2018/MC_WJetsToLNu_HT-70To100_2018.xml">
-<!ENTITY WJetsToLNu_HT-100To200_2018    SYSTEM  "../data/Skimming_datasets_2018/MC_WJetsToLNu_HT-100To200_2018.xml">
-<!ENTITY WJetsToLNu_HT-200To400_2018    SYSTEM  "../data/Skimming_datasets_2018/MC_WJetsToLNu_HT-200To400_2018.xml">
-<!ENTITY WJetsToLNu_HT-400To600_2018    SYSTEM  "../data/Skimming_datasets_2018/MC_WJetsToLNu_HT-400To600_2018.xml">
-<!ENTITY WJetsToLNu_HT-600To800_2018    SYSTEM  "../data/Skimming_datasets_2018/MC_WJetsToLNu_HT-600To800_2018.xml">
-<!ENTITY WJetsToLNu_HT-800To1200_2018   SYSTEM  "../data/Skimming_datasets_2018/MC_WJetsToLNu_HT-800To1200_2018.xml">
-<!ENTITY WJetsToLNu_HT-1200To2500_2018  SYSTEM  "../data/Skimming_datasets_2018/MC_WJetsToLNu_HT-1200To2500_2018.xml">
-<!ENTITY WJetsToLNu_HT-2500ToInf_2018   SYSTEM  "../data/Skimming_datasets_2018/MC_WJetsToLNu_HT-2500ToInf_2018.xml">
+<!-- <!ENTITY WJetsToLNu_HT-70To100_2018     SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY WJetsToLNu_HT-100To200_2018    SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY WJetsToLNu_HT-200To400_2018    SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY WJetsToLNu_HT-400To600_2018    SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY WJetsToLNu_HT-600To800_2018    SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY WJetsToLNu_HT-800To1200_2018   SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY WJetsToLNu_HT-1200To2500_2018  SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY WJetsToLNu_HT-2500ToInf_2018   SYSTEM  "../data/Skimming_datasets_2018/.xml"> -->
 <!-- DYJets -->
-<!ENTITY DYJetsToLL_M-50_HT-100to200_2018       SYSTEM  "../data/Skimming_datasets_2018/MC_DYJetsToLL_M-50_HT-100to200_2018.xml">
-<!ENTITY DYJetsToLL_M-50_HT-200to400_2018       SYSTEM  "../data/Skimming_datasets_2018/MC_DYJetsToLL_M-50_HT-200to400_2018.xml">
-<!ENTITY DYJetsToLL_M-50_HT-400to600_v7_2018    SYSTEM  "../data/Skimming_datasets_2018/MC_DYJetsToLL_M-50_HT-400to600_v7_2018.xml">
-<!ENTITY DYJetsToLL_M-50_HT-600to800_2018       SYSTEM  "../data/Skimming_datasets_2018/MC_DYJetsToLL_M-50_HT-600to800_2018.xml">
-<!ENTITY DYJetsToLL_M-50_HT-800to1200_2018      SYSTEM  "../data/Skimming_datasets_2018/MC_DYJetsToLL_M-50_HT-800to1200_2018.xml">
-<!ENTITY DYJetsToLL_M-50_HT-1200to2500_2018     SYSTEM  "../data/Skimming_datasets_2018/MC_DYJetsToLL_M-50_HT-1200to2500_2018.xml">
-<!ENTITY DYJetsToLL_M-50_HT-2500toInf_2018      SYSTEM  "../data/Skimming_datasets_2018/MC_DYJetsToLL_M-50_HT-2500toInf_2018.xml">
+<!-- <!ENTITY DYJetsToLL_M-50_HT-100to200_2018       SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-200to400_2018       SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-400to600_v7_2018    SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-600to800_2018       SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-800to1200_2018      SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-1200to2500_2018     SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-2500toInf_2018      SYSTEM  "../data/Skimming_datasets_2018/.xml"> -->
 <!-- Diboson -->
-<!ENTITY WW_2018  SYSTEM  "../data/Skimming_datasets_2018/MC_WW_2018.xml">
-<!ENTITY WZ_2018  SYSTEM  "../data/Skimming_datasets_2018/MC_WZ_2018.xml">
-<!ENTITY ZZ_2018  SYSTEM  "../data/Skimming_datasets_2018/MC_ZZ_2018.xml">
+<!-- <!ENTITY WW_2018  SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY WZ_2018  SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY ZZ_2018  SYSTEM  "../data/Skimming_datasets_2018/.xml"> -->
 <!-- ST -->
-<!ENTITY ST_tW_antitop_5f_inclusiveDecays  SYSTEM  "../data/Skimming_datasets_2018/MC_ST_tW_antitop_5f_inclusiveDecays_2018.xml">
-<!ENTITY ST_tW_top_5f_inclusiveDecays      SYSTEM  "../data/Skimming_datasets_2018/MC_ST_tW_top_5f_inclusiveDecays_2018.xml">
-<!ENTITY ST_t-channel_antitop              SYSTEM  "../data/Skimming_datasets_2018/MC_ST_t-channel_antitop_2018.xml">
-<!ENTITY ST_t-channel_top                  SYSTEM  "../data/Skimming_datasets_2018/MC_ST_t-channel_top_2018.xml">
-<!ENTITY ST_s-channel_hadronic             SYSTEM  "../data/Skimming_datasets_2018/MC_ST_s-channel_hadronic_2018.xml">
-<!ENTITY ST_s-channel_lepton               SYSTEM  "../data/Skimming_datasets_2018/MC_ST_s-channel_lepton_2018.xml">
+<!-- <!ENTITY ST_tW_antitop_5f_inclusiveDecays  SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY ST_tW_top_5f_inclusiveDecays      SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY ST_t-channel_antitop              SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY ST_t-channel_top                  SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY ST_s-channel_hadronic             SYSTEM  "../data/Skimming_datasets_2018/.xml">
+<!ENTITY ST_s-channel_lepton               SYSTEM  "../data/Skimming_datasets_2018/.xml"> -->
 <!-- QCD -->
-<!ENTITY QCD_HT50to100        SYSTEM "../data/Skimming_datasets_2018/MC_QCD_HT50to100_2018.xml">
-<!ENTITY QCD_HT100to200       SYSTEM "../data/Skimming_datasets_2018/MC_QCD_HT100to200_2018.xml">
-<!ENTITY QCD_HT200to300       SYSTEM "../data/Skimming_datasets_2018/MC_QCD_HT200to300_2018.xml">
-<!ENTITY QCD_HT300to500       SYSTEM "../data/Skimming_datasets_2018/MC_QCD_HT300to500_2018.xml">
-<!ENTITY QCD_HT500to700       SYSTEM "../data/Skimming_datasets_2018/MC_QCD_HT500to700_2018.xml">
-<!ENTITY QCD_HT700to1000      SYSTEM "../data/Skimming_datasets_2018/MC_QCD_HT700to1000_2018.xml">
-<!ENTITY QCD_HT1000to1500     SYSTEM "../data/Skimming_datasets_2018/MC_QCD_HT1000to1500_2018.xml">
-<!ENTITY QCD_HT1500to2000     SYSTEM "../data/Skimming_datasets_2018/MC_QCD_HT1500to2000_2018.xml">
-<!ENTITY QCD_HT2000toInf      SYSTEM "../data/Skimming_datasets_2018/MC_QCD_HT2000toInf_2018.xml">
+<!-- <!ENTITY QCD_HT50to100        SYSTEM "../data/Skimming_datasets_2018/.xml">
+<!ENTITY QCD_HT100to200       SYSTEM "../data/Skimming_datasets_2018/.xml">
+<!ENTITY QCD_HT200to300       SYSTEM "../data/Skimming_datasets_2018/.xml">
+<!ENTITY QCD_HT300to500       SYSTEM "../data/Skimming_datasets_2018/.xml">
+<!ENTITY QCD_HT500to700       SYSTEM "../data/Skimming_datasets_2018/.xml">
+<!ENTITY QCD_HT700to1000      SYSTEM "../data/Skimming_datasets_2018/.xml">
+<!ENTITY QCD_HT1000to1500     SYSTEM "../data/Skimming_datasets_2018/.xml">
+<!ENTITY QCD_HT1500to2000     SYSTEM "../data/Skimming_datasets_2018/.xml">
+<!ENTITY QCD_HT2000toInf      SYSTEM "../data/Skimming_datasets_2018/.xml"> -->
 <!-- ALP -->
-<!ENTITY ALPtoTTbar_interference_colorflowSMlike_UL18 SYSTEM "../data/Skimming_datasets_UL18/MC_ALP_interference_colorflowSMlike_UL18.xml">
-]>
+<!ENTITY ALP_ttbar_signal_UL18       SYSTEM "../data/Skimming_datasets_UL18/MC_ALP_ttbar_signal_UL18.xml">
+<!ENTITY ALP_ttbar_interference_UL18 SYSTEM "../data/Skimming_datasets_UL18/MC_ALP_ttbar_interference_UL18.xml">]>
 
 <!--
 <ConfigParse NEventsBreak="0" LastBreak="0" FileSplit="50" AutoResubmit="0"/>
@@ -77,11 +78,17 @@
 
 	<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTPUTdir;/" PostFix="" TargetLumi="&TargetLumi;">
 
-		<!-- <InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="ALPtoTTbar_interference_colorflowSMlike_UL18" Cacheable="&b_Cacheable;">
-			&ALPtoTTbar_interference_colorflowSMlike_UL18;
+		<InputData Lumi="9733000.0" NEventsMax="&NEVT;" Type="MC" Version="ALP_ttbar_signal_UL18" Cacheable="&b_Cacheable;">
+			&ALP_ttbar_signal_UL18;
 			<InputTree Name="AnalysisTree"/>
 			<OutputTree Name="AnalysisTree"/>
-		</InputData> -->
+		</InputData>
+
+		<InputData Lumi="9960000.0" NEventsMax="&NEVT;" Type="MC" Version="ALP_ttbar_interference_UL18" Cacheable="&b_Cacheable;">
+			&ALP_ttbar_interference_UL18;
+			<InputTree Name="AnalysisTree"/>
+			<OutputTree Name="AnalysisTree"/>
+		</InputData>
 
 		<!-- <InputData Lumi="7432926.584" NEventsMax="&NEVT;" Type="MC" Version="ST_tW_antitop_5f_inclusiveDecays_2018" Cacheable="&b_Cacheable;">
 			&ST_tW_antitop_5f_inclusiveDecays;
@@ -124,7 +131,7 @@
 			&WW_2018;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
-		</InputData> -->
+		</InputData>
 
 		<InputData Lumi="141037.2914" NEventsMax="&NEVT;" Type="MC" Version="WZ_2018" Cacheable="&b_Cacheable;">
 			&WZ_2018;
@@ -132,7 +139,7 @@
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
-		<!-- <InputData Lumi="162728.3513" NEventsMax="&NEVT;" Type="MC" Version="ZZ_2018" Cacheable="&b_Cacheable;">
+		<InputData Lumi="162728.3513" NEventsMax="&NEVT;" Type="MC" Version="ZZ_2018" Cacheable="&b_Cacheable;">
 			&ZZ_2018;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
@@ -188,29 +195,29 @@
 		</InputData>
 
 
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018A" Cacheable="&b_Cacheable;">
-			&DATA_SingleMuon_Run2018A;
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_EGamma_Run2018A" Cacheable="&b_Cacheable;">
+			&DATA_EGamma_Run2018A;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
 
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018B" Cacheable="&b_Cacheable;">
-			&DATA_SingleMuon_Run2018B;
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_EGamma_Run2018B" Cacheable="&b_Cacheable;">
+			&DATA_EGamma_Run2018B;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
 
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018C" Cacheable="&b_Cacheable;">
-			&DATA_SingleMuon_Run2018C;
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_EGamma_Run2018C" Cacheable="&b_Cacheable;">
+			&DATA_EGamma_Run2018C;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
 
 
-		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_SingleMuon_Run2018D" Cacheable="&b_Cacheable;">
-			&DATA_SingleMuon_Run2018D;
+		<InputData Lumi="1" NEventsMax="&NEVT;" Type="DATA" Version="DATA_EGamma_Run2018D" Cacheable="&b_Cacheable;">
+			&DATA_EGamma_Run2018D;
 			<InputTree Name="AnalysisTree" />
 			<OutputTree Name="AnalysisTree" />
 		</InputData>
@@ -289,6 +296,7 @@
 			<OutputTree Name="AnalysisTree"/>
 		</InputData>
 
+
 		<InputData Lumi="63598.36075" NEventsMax="&NEVT;" Type="MC" Version="DYJetsToLL_M-50_HT-100to200_2018" Cacheable="&b_Cacheable;">
 			&DYJetsToLL_M-50_HT-100to200_2018;
 			<InputTree Name="AnalysisTree"/>
@@ -347,17 +355,17 @@
 			<Item Name="METName"                 Value="slimmedMETsPuppi"/>
 			<Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
 
-			<Item Name="lumi_file"              Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON_normtag.root"/>
+			<Item Name="lumi_file"              Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/common/UHH2-data/UL18/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON_normtag.root"/>
 			<Item Name="lumihists_lumi_per_bin" Value="500.0"/>
 
-			<Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/MyMCPileupHistogram_UL18.root" />
-			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18.root" />
-			<Item Name="pileup_directory_data_up"   Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18_72383.root" />
-			<Item Name="pileup_directory_data_down" Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18_66017.root" />
+			<Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/common/UHH2-data/UL18/MyMCPileupHistogram_UL18.root" />
+			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/common/UHH2-data/UL18/MyDataPileupHistogram_UL18.root" />
+			<Item Name="pileup_directory_data_up"   Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/common/UHH2-data/UL18/MyDataPileupHistogram_UL18_72383.root" />
+			<Item Name="pileup_directory_data_down" Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/common/UHH2-data/UL18/MyDataPileupHistogram_UL18_66017.root" />
 
-			<Item Name="BTagCalibration" Value = "/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/common/data/2018/DeepJet_102XSF_V2.csv" />
+			<Item Name="BTagCalibration" Value = "/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/common/UHH2-data/UL18/DeepJet_106XUL18SF.csv" />
 
-			<Item Name="NLOCorrections" Value = "/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_26/CMSSW_10_6_26/src/UHH2/NonResonantTTbar/data/" />
+			<Item Name="NLOCorrections" Value = "/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/NonResonantTTbar/data/" />
 
 			<Item Name="is_puppi"            Value="&IS_PUPPI;"/>
 			<Item Name="is_looser_selection" Value="&IS_LOOSER_SELECTION;"/>

@@ -70,7 +70,7 @@ protected:
   std::unique_ptr<Hists> lumihists;
   TString METcollection;
 
-  bool is2016v2, is2016v3, is2017v2, is2018, isUL16preVFP, isUL16postVFP, isUL17, isUL18;
+  bool isUL16preVFP, isUL16postVFP, isUL17, isUL18;
 
 };
 
@@ -99,10 +99,6 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
   isMC     = ctx.get("dataset_type") == "MC";
   ispuppi  = (ctx.get("is_puppi") == "true");
   Sys_PU   = ctx.get("Sys_PU");
-  is2016v2      = (ctx.get("dataset_version").find("2016v2")      != std::string::npos);
-  is2016v3      = (ctx.get("dataset_version").find("2016v3")      != std::string::npos);
-  is2017v2      = (ctx.get("dataset_version").find("2017v2")      != std::string::npos);
-  is2018        = (ctx.get("dataset_version").find("2018")        != std::string::npos);
   isUL16preVFP  = (ctx.get("dataset_version").find("UL16preVFP")  != std::string::npos);
   isUL16postVFP = (ctx.get("dataset_version").find("UL16postVFP") != std::string::npos);
   isUL17        = (ctx.get("dataset_version").find("UL17")        != std::string::npos);
@@ -117,16 +113,6 @@ NonResonantTTbarPreselectionModule::NonResonantTTbarPreselectionModule(uhh2::Con
 
   ElectronId eleID;  MuonId muID;
 
-  if(is2016v2 || is2016v3){
-    //eleID = ElectronID_Summer16_tight_noIso; //ToDo: compare cutBased without iso and MVA-based via wp in UHH2
-    //muID      = MuonID(Muon::Highpt);
-    eleID = ElectronID_Summer16_medium_noIso;
-    muID  = MuonID(Muon::CutBasedIdTight); // see more muonIDs https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonReco/interface/Muon.h#L201
-  }
-  if(is2017v2 || is2018){
-    eleID = ElectronID_Fall17_tight_noIso; //ToDo: compare cutBased without iso and MVA-based via wp in UHH2
-    muID  = MuonID(Muon::CutBasedIdGlobalHighPt);
-  }
   if(isUL16preVFP || isUL16postVFP){
     eleID = ElectronID_Summer16_medium_noIso;
     muID  = MuonID(Muon::CutBasedIdTight);

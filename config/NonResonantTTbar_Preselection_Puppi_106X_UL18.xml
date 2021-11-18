@@ -2,70 +2,73 @@
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
 
 <!ENTITY TargetLumi      "59740">
-<!ENTITY PRESELdir       "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_106X_v1/Preselection_UL18/">
-<!-- <!ENTITY PRESELdir       "/nfs/dust/cms/group/zprime-uhh/Presel_2018_noMETcut/"> -->
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/jabuschh/NonResonantTTbar/RunII_106X_v2/UL18/Preselection/">
+<!-- <!ENTITY PRESELdir       "/nfs/dust/cms/group/zprime-uhh/Presel_2018_noMETcut/"> --> <!-- TODO: change to central preselection directory once available -->
 <!ENTITY b_Cacheable     "False">
 <!ENTITY NEVT            "-1">
 <!ENTITY IS_PUPPI        "true">
 
+
+<!-- TODO: add all xml files once available -->
 <!-- DATA -->
-<!ENTITY DATA_EGamma_Run2018A     SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/DATA_EGamma2018_RunA.xml">
-<!ENTITY DATA_SingleMuon_Run2018A SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/DATA_SingleMuon2018_RunA.xml">
-<!ENTITY DATA_EGamma_Run2018B     SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/DATA_EGamma2018_RunB.xml">
-<!ENTITY DATA_SingleMuon_Run2018B SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/DATA_SingleMuon2018_RunB.xml">
-<!ENTITY DATA_EGamma_Run2018C     SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/DATA_EGamma2018_RunC.xml">
-<!ENTITY DATA_SingleMuon_Run2018C SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/DATA_SingleMuon2018_RunC.xml">
-<!ENTITY DATA_EGamma_Run2018D     SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/DATA_EGamma2018_RunD.xml">
-<!ENTITY DATA_SingleMuon_Run2018D SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/DATA_SingleMuon2018_RunD.xml">
+<!-- <!ENTITY DATA_EGamma_Run2018A     SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/data/UL18/.xml">
+<!ENTITY DATA_EGamma_Run2018B     SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/data/UL18/.xml">
+<!ENTITY DATA_EGamma_Run2018C     SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/data/UL18/.xml">
+<!ENTITY DATA_EGamma_Run2018D     SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/data/UL18/.xml">
+<!ENTITY DATA_SingleMuon_Run2018A SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/data/UL18/.xml">
+<!ENTITY DATA_SingleMuon_Run2018B SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/data/UL18/.xml">
+<!ENTITY DATA_SingleMuon_Run2018C SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/data/UL18/.xml">
+<!ENTITY DATA_SingleMuon_Run2018D SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/data/UL18/.xml"> -->
 <!-- TTbar -->
-<!ENTITY TTToSemiLeptonic_2018 SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_TTToSemiLeptonic.xml">
-<!ENTITY TTToHadronic_2018     SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_TTToHadronic.xml">
-<!ENTITY TTTo2L2Nu_2018        SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_TTTo2L2Nu.xml">
+<!-- <!ENTITY TTToSemiLeptonic_2018 SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY TTToHadronic_2018     SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY TTTo2L2Nu_2018        SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml"> -->
 <!-- WJets -->
-<!ENTITY WJetsToLNu_HT-70To100_2018    SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WJetsToLNu_HT-70To100.xml">
-<!ENTITY WJetsToLNu_HT-100To200_2018   SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WJetsToLNu_HT-100To200.xml">
-<!ENTITY WJetsToLNu_HT-200To400_2018   SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WJetsToLNu_HT-200To400.xml">
-<!ENTITY WJetsToLNu_HT-400To600_2018   SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WJetsToLNu_HT-400To600.xml">
-<!ENTITY WJetsToLNu_HT-600To800_2018   SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WJetsToLNu_HT-600To800.xml">
-<!ENTITY WJetsToLNu_HT-800To1200_2018  SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WJetsToLNu_HT-800To1200.xml">
-<!ENTITY WJetsToLNu_HT-1200To2500_2018 SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WJetsToLNu_HT-1200To2500.xml">
-<!ENTITY WJetsToLNu_HT-2500ToInf_2018  SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WJetsToLNu_HT-2500ToInf.xml">
+<!-- <!ENTITY WJetsToLNu_HT-70To100_2018    SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY WJetsToLNu_HT-100To200_2018   SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY WJetsToLNu_HT-200To400_2018   SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY WJetsToLNu_HT-400To600_2018   SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY WJetsToLNu_HT-600To800_2018   SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY WJetsToLNu_HT-800To1200_2018  SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY WJetsToLNu_HT-1200To2500_2018 SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY WJetsToLNu_HT-2500ToInf_2018  SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml"> -->
 <!-- DY -->
-<!ENTITY DYJetsToLL_M-50_HT-100to200_2018    SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_DYJetsToLL_M-50_HT-100to200.xml">
-<!ENTITY DYJetsToLL_M-50_HT-200to400_2018    SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_DYJetsToLL_M-50_HT-200to400.xml">
-<!ENTITY DYJetsToLL_M-50_HT-400to600_v7_2018 SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_DYJetsToLL_M-50_HT-400to600_v7.xml">
-<!ENTITY DYJetsToLL_M-50_HT-600to800_2018    SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_DYJetsToLL_M-50_HT-600to800.xml">
-<!ENTITY DYJetsToLL_M-50_HT-800to1200_2018   SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_DYJetsToLL_M-50_HT-800to1200.xml">
-<!ENTITY DYJetsToLL_M-50_HT-1200to2500_2018  SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_DYJetsToLL_M-50_HT-1200to2500.xml">
-<!ENTITY DYJetsToLL_M-50_HT-2500toInf_2018   SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_DYJetsToLL_M-50_HT-2500toInf.xml">
+<!-- <!ENTITY DYJetsToLL_M-50_HT-100to200_2018    SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-200to400_2018    SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-400to600_v7_2018 SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-600to800_2018    SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-800to1200_2018   SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-1200to2500_2018  SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY DYJetsToLL_M-50_HT-2500toInf_2018   SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml"> -->
 <!-- Diboson -->
-<!ENTITY WW_2018 SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WW_TuneCP5_13TeV-pythia8.xml">
-<!ENTITY WZ_2018 SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_WZ_TuneCP5_13TeV-pythia8.xml">
-<!ENTITY ZZ_2018 SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_ZZ_TuneCP5_13TeV-pythia8.xml">
+<!-- <!ENTITY WW_2018 SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY WZ_2018 SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY ZZ_2018 SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml"> -->
 <!-- ST -->
-<!ENTITY ST_tW_antitop_5f_inclusiveDecays SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_ST_tW_antitop_5f_inclusiveDecays.xml">
-<!ENTITY ST_tW_top_5f_inclusiveDecays     SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_ST_tW_top_5f_inclusiveDecays.xml">
-<!ENTITY ST_t-channel_antitop             SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_SingleTop_t-channel_antitop.xml">
-<!ENTITY ST_t-channel_top                 SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_SingleTop_t-channel_top.xml">
-<!ENTITY ST_s-channel_hadronic            SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_ST_s-channel_4f_hadronicDecays.xml">
-<!ENTITY ST_s-channel_lepton              SYSTEM  "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_ST_s-channel_4f_leptonDecays.xml">
+<!-- <!ENTITY ST_tW_antitop_5f_inclusiveDecays SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY ST_tW_top_5f_inclusiveDecays     SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY ST_t-channel_antitop             SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY ST_t-channel_top                 SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY ST_s-channel_hadronic            SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY ST_s-channel_lepton              SYSTEM  "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml"> -->
 <!-- QCD -->
-<!ENTITY QCD_HT50to100    SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT50to100_madgraph.xml">
-<!ENTITY QCD_HT100to200   SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT100to200_madgraph.xml">
-<!ENTITY QCD_HT200to300   SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT200to300_madgraph.xml">
-<!ENTITY QCD_HT300to500   SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT300to500_madgraph.xml">
-<!ENTITY QCD_HT500to700   SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT500to700_madgraph.xml">
-<!ENTITY QCD_HT700to1000  SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT700to1000_madgraph.xml">
-<!ENTITY QCD_HT1000to1500 SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT1000to1500_madgraph.xml">
-<!ENTITY QCD_HT1500to2000 SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT1500to2000_madgraph.xml">
-<!ENTITY QCD_HT2000toInf  SYSTEM "../../common/UHH2-datasets/RunII_102X_v1/2018/MC_QCD_HT2000toInf_madgraph.xml">
+<!-- <!ENTITY QCD_HT50to100    SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY QCD_HT100to200   SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY QCD_HT200to300   SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY QCD_HT300to500   SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY QCD_HT500to700   SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY QCD_HT700to1000  SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY QCD_HT1000to1500 SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY QCD_HT1500to2000 SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml">
+<!ENTITY QCD_HT2000toInf  SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/UL18/.xml"> -->
 <!-- ALP -->
-<!ENTITY ALPtoTTbar_interference_UL18 SYSTEM "../data/ALPtoTTbar_privateProduction/ALPtoTTbar_interference_private100k_colorflowSMlike.xml">
+<!ENTITY ALP_ttbar_signal_UL18       SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/BSM/UL18/ALP_ttbar_signal_CP5_madgraph-pythia8_Summer20UL18_v2.xml">
+<!ENTITY ALP_ttbar_interference_UL18 SYSTEM "../../common/UHH2-datasets/RunII_106X_v2/BSM/UL18/ALP_ttbar_interference_CP5_madgraph-pythia8_Summer20UL18_v2.xml">
 ]>
 
 <!--
 <ConfigParse NEventsBreak="0" LastBreak="0" FileSplit="50" AutoResubmit="0"/>
-<ConfigSGE RAM="2" DISK="2" Mail="henrik.jabusch@desy.de" Notification="as" Workdir="workdir_NonResonantTTbar_PreSelec_2018_ALP_interference"/>
+<ConfigSGE RAM="2" DISK="2" Mail="henrik.jabusch@desy.de" Notification="as" Workdir="workdir_NonResonantTTbar_Preselection_UL18"/>
 -->
 
 <JobConfiguration JobName="NonResonantTTbarPreselectionJob" OutputLevel="INFO">
@@ -74,8 +77,14 @@
 
 	<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&PRESELdir;/" PostFix="" TargetLumi="&TargetLumi;">
 
-		<InputData Lumi="100000.0" NEventsMax="&NEVT;" Type="MC" Version="ALPtoTTbar_interference_UL18" Cacheable="&b_Cacheable;">
-			&ALPtoTTbar_interference_UL18;
+		<InputData Lumi="9733000.0" NEventsMax="&NEVT;" Type="MC" Version="ALP_ttbar_signal_UL18" Cacheable="&b_Cacheable;">
+			&ALP_ttbar_signal;
+			<InputTree Name="AnalysisTree"/>
+			<OutputTree Name="AnalysisTree"/>
+		</InputData>
+
+		<InputData Lumi="9960000.0" NEventsMax="&NEVT;" Type="MC" Version="ALP_ttbar_interference_UL18" Cacheable="&b_Cacheable;">
+			&ALP_ttbar_interference;
 			<InputTree Name="AnalysisTree"/>
 			<OutputTree Name="AnalysisTree"/>
 		</InputData>
@@ -359,16 +368,16 @@
 			<Item Name="JetCollection"           Value="jetsAk4Puppi"/>
 			<Item Name="GenJetCollection"        Value="slimmedGenJets"/>
 			<Item Name="TopJetCollection"        Value="jetsAk8CHSSubstructure_SoftDropCHS"/>
-			<Item Name="GenTopJetCollection"     Value="genjetsAk8SubstructureSoftDrop"/> <!-- Check odinary ak8GenJetsFat !--> <!-- new in ntuples! -->
+			<Item Name="GenTopJetCollection"     Value="genjetsAk8SubstructureSoftDrop"/>
 			<Item Name="TopPuppiJetCollection"   Value="jetsAk8PuppiSubstructure_SoftDropPuppi"/>
 			<Item Name="METName"                 Value="slimmedMETsPuppi"/>
 			<Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
 
-			<Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON_normtag.root"/>
+			<Item Name="lumi_file" Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/common/UHH2-data/UL18/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON_normtag.root"/>
 			<Item Name="lumihists_lumi_per_bin" Value="500.0"/>
 
-			<Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyMCPileupHistogram_UL18.root" />
-			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH_UL/CMSSW_10_6_13/src/UHH2/common/data/UL18/MyDataPileupHistogram_UL18.root" />
+			<Item Name="pileup_directory"           Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/common/UHH2-data/UL18/MyMCPileupHistogram_UL18.root" />
+			<Item Name="pileup_directory_data"      Value="/nfs/dust/cms/user/jabuschh/UHH2_UL_10_6_28/CMSSW_10_6_28/src/UHH2/common/UHH2-data/UL18/MyDataPileupHistogram_UL18.root" />
 
 			<Item Name="is_puppi" Value="&IS_PUPPI;"/>
 			<Item Name="Sys_PU" Value="central"/>
